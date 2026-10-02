@@ -15,8 +15,9 @@
 	--frame-offset: max(0px, (100vw - var(--page-width)) / 2);
 	--frame-pad: calc(var(--frame-offset) + var(--gutter));
 
-	/* The header: 28px of brand with 12px above and below. */
-	--sl-nav-height: 53px;
+	/* The header, as in every portal: a 32px row with 12px above and below,
+	   and the 1px border. */
+	--sl-nav-height: 57px;
 	--sl-nav-pad-x: var(--frame-pad);
 	--sl-nav-pad-y: 12px;
 

@@ -4,6 +4,11 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	// `task dev` behind the proxy (../develop): let the portal's public host
+	// reach the dev server.
+	server: {
+		allowedHosts: ['docs.almena.id'],
+	},
 	// The portals' typefaces, downloaded when building and served from dist/
 	// (never from Google by the visitor): Chakra Petch for the brand and the
 	// headings, Inter for the text, JetBrains Mono for code. Starlight takes
