@@ -1,6 +1,6 @@
 # almena-docu
 
-The documentation site of the Almena Network, in English and Spanish: guides and reference for the people and entities that use the platform. Built with [Astro](https://astro.build) 7 and [Starlight](https://starlight.astro.build), as a static site.
+The documentation site of Almena ID, in English and Spanish: guides and reference for the people and entities that use the platform. Built with [Astro](https://astro.build) 7 and [Starlight](https://starlight.astro.build), as a static site.
 
 ## Quick start
 
