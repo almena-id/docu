@@ -36,20 +36,39 @@ export default defineConfig({
 	],
 	integrations: [
 		starlight({
-			title: 'My Docs',
-			customCss: ['./src/styles/fonts.css'],
-			components: { Head: './src/components/Head.astro' },
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			title: 'Almena Docs',
+			// English at the root (/guides/…), Spanish under /es/ (src/content/docs/es/).
+			// A page not yet translated shows the English one with a notice.
+			defaultLocale: 'root',
+			locales: {
+				root: { label: 'English', lang: 'en' },
+				es: { label: 'Español', lang: 'es' },
+			},
+			// The tab's title, as in catalog (src/routeData.ts).
+			titleDelimiter: '·',
+			routeMiddleware: './src/routeData.ts',
+			customCss: ['./src/styles/theme.css', './src/styles/fonts.css', './src/styles/layout.css'],
+			// No search box: the header is the portals' one, as in catalog.
+			pagefind: false,
+			components: {
+				Head: './src/components/Head.astro',
+				Header: './src/components/Header.astro',
+				MobileMenuFooter: './src/components/MobileMenuFooter.astro',
+				SiteTitle: './src/components/SiteTitle.astro',
+				PageFrame: './src/components/PageFrame.astro',
+			},
 			sidebar: [
 				{
 					label: 'Guides',
+					translations: { es: 'Guías' },
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
+						{ label: 'Example Guide', translations: { es: 'Guía de ejemplo' }, slug: 'guides/example' },
 					],
 				},
 				{
 					label: 'Reference',
+					translations: { es: 'Referencia' },
 					items: [{ autogenerate: { directory: 'reference' } }],
 				},
 			],

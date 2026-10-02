@@ -1,49 +1,63 @@
-# Starlight Starter Kit: Basics
+# almena-docu
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+The documentation site of the Almena Network, in English and Spanish: guides and reference for the people and entities that use the platform. Built with [Astro](https://astro.build) 7 and [Starlight](https://starlight.astro.build), as a static site.
 
-```
-pnpm create astro@latest -- --template starlight
-```
+## Quick start
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Needs Node.js 24 or later, [pnpm](https://pnpm.io), [Task](https://taskfile.dev) and Docker.
 
-## 🚀 Project Structure
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+```bash
+task init     # .env from .env.example
+task dev      # the site with hot reload on http://localhost:4322
+task build    # the static site in dist/
+task preview  # serves dist/ locally
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+To run the production build in Docker instead (the static site served by nginx):
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+```bash
+task up      # builds the image and starts it
+task health  # ok
+```
 
-Static assets, like favicons, can be placed in the `public/` directory.
+## Configuration
 
-## 🧞 Commands
+Read from the environment or `.env`; [.env.example](.env.example) explains it.
 
-All commands are run from the root of the project, from a terminal:
+| Variable | Default | |
+|---|---|---|
+| `DOCU_PORT` | `4322` | Port of `task dev`, `task preview` and the Docker container on the host |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## Endpoints
 
-## 👀 Want to learn more?
+| | |
+|---|---|
+| `GET /` | The documentation |
+| `GET /health` | Liveness, used by the Docker health check |
 
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+## Layout
+
+| | |
+|---|---|
+| `src/content/docs/` | The pages, in Markdown or MDX; each file is a route named after its path. English at the root, Spanish in `es/` (served under `/es/`) |
+| `src/content/i18n/` | The footer's UI strings per language (`en.json`, `es.json`) |
+| `src/assets/` | Images embedded in the pages through relative links |
+| `src/styles/` | Starlight `customCss`: the identity colour (`theme.css`), the typefaces (`fonts.css`) and the page frame shared by header, sidebar, content and footer (`layout.css`) |
+| `src/components/` | Overrides of Starlight components: the typefaces (`Head.astro`), the portals' header and footer (`Header.astro`, `SiteTitle.astro`, `SiteFooter.astro` placed by `PageFrame.astro`, and the footer's language and theme menus) |
+| `src/routeData.ts` | The browser tab's title ("Page · Almena Docs") |
+| `public/` | Static files served as they are (the favicon, the Almena mark in yellow) |
+| `astro.config.mjs` | Site title, sidebar and the typefaces, through Astro's Fonts API |
+
+The typefaces (Chakra Petch, Inter, JetBrains Mono) are downloaded when building and served from `dist/`, never from Google by the visitor. Docu's identity colour is yellow `#f2b705`; [CLAUDE.md](CLAUDE.md) explains how it reads on each theme.
+
+## Development
+
+`task --list` shows every task. Before sending a change, `task check` (a production build) must pass; see [CONTRIBUTING.md](CONTRIBUTING.md). This Astro version differs from older ones: [AGENTS.md](AGENTS.md) points to the guides to read first.
+
+## Contributing and security
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+
+## License
+
+Licensed under the [Apache License 2.0](LICENSE).

@@ -1,0 +1,12 @@
+.git
+.astro
+.vscode
+dist
+node_modules
+.env
+.env.*
+!.env.example
+pnpm-debug.log*
+Dockerfile
+compose.yml
+Taskfile.yml

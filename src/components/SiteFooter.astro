@@ -1,0 +1,74 @@
+---
+// The portals' foot, as in catalog: the mark and the name, the copyright and
+// almena.id, and where the language and the theme are chosen. Placed by
+// src/components/PageFrame.astro below everything else, across the whole
+// width, its content within the page frame like the header's.
+import LanguageMenu from './LanguageMenu.astro';
+import ThemeMenu from './ThemeMenu.astro';
+import Logo from './Logo.astro';
+
+const { siteTitle } = Astro.locals.starlightRoute;
+---
+
+<footer class="site-footer print:hidden">
+	<div class="frame">
+		<span class="name">
+			<Logo size={18} />
+			{siteTitle}
+		</span>
+		<div class="end">
+			<span>
+				© {new Date().getFullYear()} {Astro.locals.t('almena.rights')} · <a href="https://almena.id">almena.id</a>
+			</span>
+			<div class="preferences">
+				<LanguageMenu />
+				<ThemeMenu />
+			</div>
+		</div>
+	</div>
+</footer>
+
+<style>
+	/* Above the fixed sidebar, which it covers at the bottom of the page. */
+	.site-footer {
+		position: relative;
+		z-index: calc(var(--sl-z-index-menu) + 1);
+		padding-inline: var(--frame-pad);
+		border-top: 1px solid var(--sl-color-hairline-shade);
+		background-color: var(--sl-color-bg);
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.frame {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 1.25rem;
+	}
+	.name {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--sl-color-white);
+	}
+	.end {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+	}
+	.preferences {
+		display: flex;
+		gap: 0.25rem;
+	}
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+	a:hover {
+		color: var(--sl-color-white);
+		text-decoration: underline;
+	}
+</style>

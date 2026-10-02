@@ -1,0 +1,96 @@
+# https://taskfile.dev
+version: "3"
+
+dotenv: [".env"]
+
+vars:
+  IMAGE: almena-docu:dev
+  PORT: '{{.DOCU_PORT | default "4322"}}'
+
+env:
+  ASTRO_TELEMETRY_DISABLED: "1"
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  init:
+    desc: Create .env from .env.example (an existing .env is left untouched)
+    cmds:
+      - cp .env.example .env
+    status:
+      - test -f .env
+
+  install:
+    desc: Install the dependencies from pnpm-lock.yaml
+    cmds:
+      - pnpm install --frozen-lockfile
+    sources:
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+    generates:
+      - node_modules/.modules.yaml
+
+  dev:
+    desc: Run the documentation site locally with hot reload
+    deps: [install]
+    cmds:
+      - pnpm astro dev --port {{.PORT}}
+
+  build:
+    desc: Build the static site (dist/)
+    deps: [install]
+    cmds:
+      - pnpm build
+
+  preview:
+    desc: Serve the production build locally (after task build)
+    cmds:
+      - pnpm astro preview --port {{.PORT}}
+
+  sync:
+    desc: Regenerate the content collection types (.astro/)
+    deps: [install]
+    cmds:
+      - pnpm astro sync
+
+  check:
+    desc: Everything that must pass before finishing a change (production build)
+    cmds:
+      - task: build
+
+  docker:build:
+    desc: Build the Docker image
+    cmds:
+      - docker compose build
+
+  up:
+    desc: Start the documentation site in Docker (detached) and wait until it is healthy
+    cmds:
+      - docker compose up --build --detach --wait
+
+  down:
+    desc: Stop and remove the Docker containers
+    cmds:
+      - docker compose down
+
+  logs:
+    desc: Follow the documentation site's container logs
+    cmds:
+      - docker compose logs --follow web
+
+  health:
+    desc: Query the running container's health endpoint
+    cmds:
+      - curl --fail --silent --show-error http://localhost:{{.PORT}}/health
+    silent: true
+
+  clean:
+    desc: Remove node_modules, the build output and the local Docker image
+    cmds:
+      - rm -rf node_modules dist .astro
+      - docker image rm -f {{.IMAGE}}

@@ -1,0 +1,69 @@
+---
+// Light, dark or the system's, as in catalog, kept where Starlight keeps it
+// (localStorage `starlight-theme`, read before the page paints by Starlight's
+// ThemeProvider), so the choice applies at once and on every later page.
+import ChoiceMenu from './ChoiceMenu.astro';
+
+const t = Astro.locals.t;
+---
+
+<ChoiceMenu
+	kind="theme"
+	label={t('almena.theme')}
+	icon="monitor"
+	value="auto"
+	choices={[
+		{ value: 'auto', label: t('almena.theme.auto'), icon: 'monitor' },
+		{ value: 'light', label: t('almena.theme.light'), icon: 'sun' },
+		{ value: 'dark', label: t('almena.theme.dark'), icon: 'moon' },
+	]}
+/>
+
+<script>
+	type Theme = 'auto' | 'dark' | 'light';
+	type Menu = HTMLElement & { setValue(value: string): void };
+
+	const storageKey = 'starlight-theme';
+
+	const parseTheme = (theme: unknown): Theme =>
+		theme === 'dark' || theme === 'light' ? theme : 'auto';
+
+	function loadTheme(): Theme {
+		try {
+			return parseTheme(localStorage.getItem(storageKey));
+		} catch {
+			return 'auto';
+		}
+	}
+
+	function storeTheme(theme: Theme) {
+		try {
+			localStorage.setItem(storageKey, theme === 'auto' ? '' : theme);
+		} catch {
+			// Not remembered (private mode, blocked storage): still applied now.
+		}
+	}
+
+	const systemTheme = (): 'dark' | 'light' =>
+		matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
+	function applyTheme(theme: Theme) {
+		document.documentElement.dataset.theme = theme === 'auto' ? systemTheme() : theme;
+	}
+
+	// Following the system while on it.
+	matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+		if (loadTheme() === 'auto') applyTheme('auto');
+	});
+
+	customElements.whenDefined('almena-choice-menu').then(() => {
+		document.querySelectorAll<Menu>('almena-choice-menu[data-kind="theme"]').forEach((menu) => {
+			menu.setValue(loadTheme());
+			menu.addEventListener('choice', (event) => {
+				const theme = parseTheme((event as CustomEvent<string>).detail);
+				applyTheme(theme);
+				storeTheme(theme);
+			});
+		});
+	});
+</script>

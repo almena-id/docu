@@ -1,0 +1,35 @@
+---
+// The language menu, as in catalog: each language named in itself, leading to
+// the same page in that language (Starlight shows the default language's page,
+// with a notice, where a translation is missing). Only on multilingual sites.
+import config from 'virtual:starlight/user-config';
+import ChoiceMenu from './ChoiceMenu.astro';
+
+const { locale: current } = Astro.locals.starlightRoute;
+
+/** The current path in another locale ('root' has no prefix). */
+function localizedPath(code: string): string {
+	let path = Astro.url.pathname;
+	if (current) path = path.replace(new RegExp(`^/${current}(?=/|$)`), '') || '/';
+	return code === 'root' ? path : `/${code}${path}`;
+}
+
+const choices = Object.entries(config.locales ?? {}).map(([code, locale]) => ({
+	value: code,
+	label: locale!.label,
+	lang: locale!.lang,
+	href: localizedPath(code),
+}));
+---
+
+{
+	config.isMultilingual && (
+		<ChoiceMenu
+			kind="language"
+			label={Astro.locals.t('almena.language')}
+			icon="languages"
+			value={current ?? 'root'}
+			choices={choices}
+		/>
+	)
+}

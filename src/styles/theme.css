@@ -1,0 +1,31 @@
+/*
+ * Yellow #f2b705 is docu's identity (the wallet's yellow accent), the same in
+ * both themes as Starlight's --sl-color-accent. On the dark theme it is also
+ * the text accent; on the light one, yellow text cannot be read on white, so
+ * links take a dark gold of the same hue (accent-high) while backgrounds,
+ * highlights and the Almena mark keep the yellow.
+ */
+:root {
+	--sl-color-accent-low: #3d2e00;
+	--sl-color-accent: #f2b705;
+	--sl-color-accent-high: #ffe08a;
+	--sl-color-text-accent: var(--sl-color-accent);
+	--sl-color-bg-accent: var(--sl-color-accent);
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #fdf0c4;
+	--sl-color-accent: #f2b705;
+	--sl-color-accent-high: #6b4f00;
+	--sl-color-text-accent: var(--sl-color-accent-high);
+	--sl-color-bg-accent: var(--sl-color-accent);
+}
+
+/* Starlight paints its primary button with the text accent: keep it yellow,
+   with dark text (on the light theme --sl-color-black is the light one). */
+:root[data-theme='light'] .sl-link-button.primary,
+:root[data-theme='light'] .sl-link-button.primary:hover {
+	background: var(--sl-color-accent);
+	border-color: var(--sl-color-accent);
+	color: var(--sl-color-white);
+}

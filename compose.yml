@@ -1,0 +1,10 @@
+name: almena-docu
+
+services:
+  web:
+    build:
+      context: .
+    image: almena-docu:dev
+    restart: unless-stopped
+    ports:
+      - "${DOCU_PORT:-4322}:8080"

@@ -1,0 +1,21 @@
+---
+// The portals' header, as in catalog: only the brand (src/components/SiteTitle.astro),
+// in the page frame (src/styles/layout.css). Search and the social links are left out; the theme and
+// the language are chosen in the footer (src/components/SiteFooter.astro).
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+---
+
+<div class="header">
+	<SiteTitle />
+</div>
+
+<style>
+	.header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		height: 100%;
+		/* Keep a long title clear of the mobile menu button. */
+		overflow: clip;
+	}
+</style>

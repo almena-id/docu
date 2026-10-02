@@ -1,0 +1,51 @@
+/*
+ * The page frame, as in catalog: header, sidebar, content and footer share
+ * one frame, up to 1920px wide and centred, with gutters that grow with the
+ * viewport. Backgrounds and borders run across the whole width; what they
+ * hold starts and ends at the frame's gutters.
+ *
+ * --frame-offset is the empty space beside the frame on screens wider than
+ * it, --frame-pad the offset plus the gutter: where the header's brand, the
+ * sidebar's links and the footer start (Starlight's fixed elements cannot be
+ * centred with margins, so everything takes the same offset).
+ */
+:root {
+	--page-width: 1920px;
+	--gutter: clamp(16px, 3vw, 48px);
+	--frame-offset: max(0px, (100vw - var(--page-width)) / 2);
+	--frame-pad: calc(var(--frame-offset) + var(--gutter));
+
+	/* The header: 28px of brand with 12px above and below. */
+	--sl-nav-height: 53px;
+	--sl-nav-pad-x: var(--frame-pad);
+	--sl-nav-pad-y: 12px;
+
+	/* Content and sidebars keep the gutter on their outer sides; the sidebar
+	   grows by what the gutter adds to Starlight's own 1rem. */
+	--sl-content-pad-x: var(--gutter);
+	--sl-sidebar-width: calc(17.75rem + var(--gutter));
+}
+
+/* The text takes the whole width of the content column, between the sidebar
+   and the table of contents, instead of Starlight's 45rem (67.5rem on pages
+   without a sidebar). Doubled :root to win over the value Starlight sets for
+   pages without a sidebar. */
+:root:root {
+	--sl-content-width: 100%;
+}
+
+/* The page's own background at 80% with a blur behind, instead of
+   Starlight's nav colour. */
+.page > .header {
+	background-color: color-mix(in srgb, var(--sl-color-bg) 80%, transparent);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+}
+
+/* The table of contents ends at the frame's gutter, like the footer. */
+.right-sidebar-panel {
+	padding-inline-end: var(--gutter);
+}
+.right-sidebar-panel .sl-container {
+	width: calc(var(--sl-sidebar-width) - var(--sl-sidebar-pad-x) - var(--gutter));
+}
