@@ -94,3 +94,14 @@ tasks:
     cmds:
       - rm -rf node_modules dist .astro
       - docker image rm -f {{.IMAGE}}
+
+  clean:all:
+    desc: Leave the repository as cloned — clean, plus the containers and their volumes, .env and the Task checksums
+    prompt: Remove the containers and volumes and .env? They are recreated by `task init` and `task up`.
+    cmds:
+      # By the project's name, away from compose.yml: it needs no .env, so a
+      # second run, or one after .env is gone, still works.
+      - cd / && docker compose --project-name almena-docu down --volumes --remove-orphans
+      - task: clean
+      - rm -rf .task
+      - find . -maxdepth 1 -name '.env*' ! -name '.env.example' -exec rm -f {} +
