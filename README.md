@@ -34,6 +34,7 @@ Read from the environment or `.env`; [.env.example](.env.example) explains it.
 |---|---|
 | `GET /` | The documentation |
 | `GET /health` | Liveness, used by the Docker health check |
+| `GET /.well-known/security.txt` | Where to report a vulnerability ([RFC 9116](https://www.rfc-editor.org/rfc/rfc9116)): this repository's private advisories; written at build time, `Expires` a year ahead less a day |
 
 ## Layout
 
@@ -44,6 +45,7 @@ Read from the environment or `.env`; [.env.example](.env.example) explains it.
 | `src/assets/` | Images embedded in the pages through relative links |
 | `src/styles/` | Starlight `customCss`: the identity colour (`theme.css`), the typefaces (`fonts.css`) and the page frame shared by header, sidebar, content and footer (`layout.css`) |
 | `src/components/` | Overrides of Starlight components: the typefaces (`Head.astro`), the portals' header and footer (`Header.astro`, `SiteTitle.astro`, `SiteFooter.astro` placed by `PageFrame.astro`, and the footer's language and theme menus) |
+| `src/pages/` | Routes outside the docs: `.well-known/security.txt.ts`, generated when building |
 | `src/routeData.ts` | The browser tab's title ("Page · Almena Docs") |
 | `public/` | Static files served as they are (the favicon, the Almena mark in yellow) |
 | `astro.config.mjs` | Site title, sidebar and the typefaces, through Astro's Fonts API |
