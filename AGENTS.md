@@ -27,7 +27,7 @@ The portals' typefaces, through Astro's Fonts API (`fonts` in `astro.config.mjs`
 
 ## Identity colour
 
-Yellow `#f2b705` (the wallet's yellow accent) is docu's identity, the same in both themes: Starlight's `--sl-color-accent*` in `src/styles/theme.css` (Starlight `customCss`). On the dark theme it is also the text accent; on the light one, links take a dark gold of the same hue (`#6b4f00`), since yellow text cannot be read on white, while backgrounds, highlights, the Almena mark and the primary button keep the yellow (with dark text). The identity colours across Almena: status cyan `#3fe0ff`, catalog blue `#2563eb`, registry green `#1f9d55`, mediator blue `#2f6fed`, landing orange `#eb7229`, docu yellow `#f2b705`, the wallet the person's choice (orange by default).
+Yellow `#f2b705` (the wallet's yellow accent) is docu's identity, the same in both themes: Starlight's `--sl-color-accent*` in `src/styles/theme.css` (Starlight `customCss`). On the dark theme it is also the text accent; on the light one, links take a dark gold of the same hue (`#6b4f00`), since yellow text cannot be read on white, while backgrounds, highlights, the Almena mark and the primary button keep the yellow (with dark text). The identity colours across Almena: status cyan `#3fe0ff`, catalog blue `#2563eb`, registry green `#1f9d55`, mediator magenta `#d63384`, landing orange `#eb7229`, docu yellow `#f2b705`, the wallet the person's choice (orange by default).
 
 ## Header and footer
 
