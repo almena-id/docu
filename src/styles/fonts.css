@@ -1,0 +1,15 @@
+/*
+ * The portals' typefaces on Starlight: Inter for the text, JetBrains Mono for
+ * code, Chakra Petch for the site title and the headings.
+ */
+:root {
+	--sl-font: var(--font-sans);
+	--sl-font-mono: var(--font-mono);
+}
+
+.site-title,
+h1,
+h2,
+h3 {
+	font-family: var(--font-brand);
+}
