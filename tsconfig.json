@@ -1,5 +1,12 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist"],
+  "compilerOptions": {
+    // The pages import the documentation's components as `@docs/…`,
+    // however deep they sit.
+    "paths": {
+      "@docs/*": ["./src/components/docs/*"]
+    }
+  }
 }

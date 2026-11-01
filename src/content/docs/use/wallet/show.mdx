@@ -1,0 +1,44 @@
+---
+title: Show a credential
+description: "Someone asks to see a credential: what you see in the wallet and what they get."
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+At a door, on a website, at an office: whoever asks to see a credential
+shows you a code on their screen.
+
+<Flow
+	label="Showing a credential"
+	steps={[
+		{ icon: 'qr', title: 'They show a code', text: 'On their screen, or as a link on your phone.' },
+		{ icon: 'scan', title: 'You scan it', text: 'From the Scan QR tab of the wallet.' },
+		{ icon: 'shield-check', title: 'You decide', text: 'The wallet says who asks and exactly what would go.' },
+		{ icon: 'badge-check', title: 'They check it', text: 'In a second: genuine, from its issuer, still valid.' },
+	]}
+/>
+
+<Steps>
+
+1. Open the wallet and the **Scan QR** tab, and point the camera at the code.
+
+2. The wallet shows who is asking and what for <Mark n={1} />: the
+   credential that would go and, in it, only the data they asked for.
+
+   <Screenshot phone name="wallet-verify" alt="The wallet asks whether to present a membership credential to Campus Access, listing the two pieces of data that would go." />
+
+3. If that is who you expect, press **Present** <Mark n={2} />. If not,
+   **Cancel**: nothing is sent.
+
+</Steps>
+
+Whoever asked sees on their screen that the credential is genuine, who issued
+it and that it still holds — and only the data they asked for.
+
+<Aside type="tip" title="Only accept what you started">
+Accept only when you are in front of whoever the wallet names and you expect
+them to ask. A code you did not expect can come from anyone.
+</Aside>

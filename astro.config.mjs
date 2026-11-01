@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightSidebarTopics from 'starlight-sidebar-topics';
 
 // https://astro.build/config
 export default defineConfig({
@@ -53,29 +54,94 @@ export default defineConfig({
 			titleDelimiter: '·',
 			routeMiddleware: './src/routeData.ts',
 			customCss: ['./src/styles/theme.css', './src/styles/fonts.css', './src/styles/layout.css'],
-			// No search box: the header is the portals' one, as in catalog.
-			pagefind: false,
 			components: {
 				Head: './src/components/Head.astro',
 				Header: './src/components/Header.astro',
+				Hero: './src/components/Hero.astro',
 				MobileMenuFooter: './src/components/MobileMenuFooter.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				PageFrame: './src/components/PageFrame.astro',
 			},
-			sidebar: [
-				{
-					label: 'Guides',
-					translations: { es: 'Guías' },
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', translations: { es: 'Guía de ejemplo' }, slug: 'guides/example' },
+			// Five topics, each with its own sidebar (starlight-sidebar-topics): the
+			// shared concepts, a door per audience — using Almena, integrating
+			// with it, building it — and the generated reference.
+			plugins: [
+				starlightSidebarTopics(
+					[
+						{
+							label: { en: 'Concepts', es: 'Conceptos' },
+							link: '/concepts/',
+							icon: 'information',
+							items: ['concepts', 'concepts/credential-life', 'concepts/glossary'],
+						},
+						{
+							label: { en: 'Use Almena', es: 'Usar Almena' },
+							link: '/use/',
+							icon: 'open-book',
+							items: [
+								'use',
+								{
+									label: 'Your wallet',
+									translations: { es: 'Tu wallet' },
+									items: ['use/wallet', 'use/wallet/apply', 'use/wallet/credentials', 'use/wallet/show'],
+								},
+								{
+									label: 'Your organisation',
+									translations: { es: 'Tu organización' },
+									items: [
+										'use/organisation',
+										'use/organisation/sign-in',
+										'use/organisation/issuers',
+										'use/organisation/applications',
+									],
+								},
+							],
+						},
+						{
+							label: { en: 'Integrate', es: 'Integrar' },
+							link: '/integrate/',
+							icon: 'puzzle',
+							items: [
+								'integrate',
+								'integrate/quick-start',
+								{
+									label: 'Protocols',
+									translations: { es: 'Protocolos' },
+									items: [{ autogenerate: { directory: 'integrate/protocols' } }],
+								},
+							],
+						},
+						{
+							label: { en: 'Build', es: 'Construir' },
+							link: '/build/',
+							icon: 'setting',
+							items: ['build', 'build/architecture'],
+						},
+						{
+							label: { en: 'Reference', es: 'Referencia' },
+							link: '/reference/',
+							icon: 'document',
+							items: [
+								'reference',
+								'reference/errors',
+								// Generated (`task refs`): the API from its OpenAPI document,
+								// the CLI from its own help.
+								{
+									label: 'API',
+									collapsed: true,
+									items: [{ autogenerate: { directory: 'reference/api' } }],
+								},
+								{
+									label: 'CLI',
+									collapsed: true,
+									items: [{ autogenerate: { directory: 'reference/cli' } }],
+								},
+							],
+						},
 					],
-				},
-				{
-					label: 'Reference',
-					translations: { es: 'Referencia' },
-					items: [{ autogenerate: { directory: 'reference' } }],
-				},
+					// The home page belongs to no topic.
+					{ exclude: ['/', '/es/'] },
+				),
 			],
 		}),
 	],

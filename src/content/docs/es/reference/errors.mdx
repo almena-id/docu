@@ -1,0 +1,37 @@
+---
+title: Errores
+description: Cada código con el que la API de Almena rechaza algo, por estado HTTP.
+tableOfContents: false
+---
+
+import ErrorCodes from '@docs/ErrorCodes.astro';
+
+Cuando la API rechaza una petición, su cuerpo dice por qué con un código:
+
+```json
+{ "detail": "category_in_use" }
+```
+
+Actúa sobre el código, no solo sobre el estado: un mismo estado tiene muchas
+razones. Esta página se genera a partir del documento OpenAPI de la API, así
+que el significado de cada código está en inglés, con las palabras de la
+propia API.
+
+<ErrorCodes
+	headings={{ code: 'Código', meaning: 'Qué significa', where: 'Lo devuelve' }}
+	other="También se rechaza con"
+	problems={{ title: 'Problemas de una presentación', lead: 'Por qué una verificación no cree una credencial presentada: cada problema se da por credencial en el veredicto, no como rechazo.', code: 'Problema', meaning: 'Qué significa' }}
+	statuses={{
+		'400': 'La petición está mal formada',
+		'401': 'Sin entrar',
+		'403': 'Sin permiso',
+		'404': 'No existe',
+		'409': 'No en este estado',
+		'410': 'Ya no existe',
+		'413': 'Demasiado grande',
+		'422': 'No es válido',
+		'429': 'Demasiadas peticiones',
+		'502': 'Falló un servicio de detrás',
+		'503': 'No disponible por ahora',
+	}}
+/>

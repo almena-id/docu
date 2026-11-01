@@ -1,0 +1,19 @@
+---
+// Phone screenshots side by side, in the order they happen; one under the
+// other on a phone. Each a <Screenshot phone />, its caption under it.
+---
+
+<div class="screens not-content"><slot /></div>
+
+<style>
+	.screens {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+		gap: 1.25rem;
+		align-items: start;
+		margin-block: 1.5rem;
+	}
+	.screens > :global(.screenshot) {
+		margin-block: 0;
+	}
+</style>

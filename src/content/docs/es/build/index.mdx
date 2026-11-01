@@ -1,0 +1,35 @@
+---
+title: Construir Almena
+description: Para quien trabaja en la propia plataforma.
+---
+
+import Paths from '@docs/Paths.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside>
+Esta sección está en inglés, como el código, los `AGENTS.md` y los commits de
+la plataforma: todo lo que se escribe para construirla se escribe en inglés.
+</Aside>
+
+Almena ID es un conjunto de repositorios, uno por proyecto, en
+[github.com/almena-id](https://github.com/almena-id), que se clonan uno al lado
+del otro en un mismo espacio de trabajo.
+
+<Paths
+	paths={[
+		{
+			icon: 'wrench',
+			who: 'In English',
+			title: 'Build Almena',
+			text: 'What every change keeps, and how to run the platform on your machine.',
+			href: '/build/',
+		},
+		{
+			icon: 'layers',
+			who: 'In English',
+			title: 'Architecture',
+			text: 'Every project, what it does and how they talk to each other.',
+			href: '/build/architecture/',
+		},
+	]}
+/>

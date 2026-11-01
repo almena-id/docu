@@ -1,40 +1,56 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: Almena Docs
+description: How to use Almena ID, connect your systems to it and help build it.
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
+  title: Your credentials, in your hands
+  tagline: Almena ID lets organisations give people digital credentials — a degree, a membership, a proof of employment — that people keep in their own wallet and show whenever they need to. Anyone can check they are genuine.
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: How it works
+      link: /concepts/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
+    - text: Get started
+      link: /use/
       variant: minimal
+# Drawn beside the hero's text (src/components/Hero.astro).
+trust:
+  label: An organisation gives a person a credential; the person keeps it in their wallet and shows it; whoever sees it checks that it is genuine.
+  issuer: { title: An organisation, text: "a university, a club, a city hall" }
+  holder: { title: You, text: with the Almena wallet }
+  verifier: { title: Whoever asks, text: "a company, a door, a website" }
+  gives: gives you a credential
+  shows: you show it
+  checks: they check it is genuine
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import Paths from '@docs/Paths.astro';
 
-## Next steps
+## Where do you want to start?
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+<Paths
+	paths={[
+		{
+			icon: 'user',
+			who: 'For everyone',
+			title: 'Use Almena',
+			text: 'Get the wallet and your credentials, or run your organisation in the registry: step by step, with pictures.',
+			href: '/use/',
+		},
+		{
+			icon: 'puzzle',
+			who: 'For integrators',
+			title: 'Integrate',
+			text: 'Issue and verify credentials from your own applications, with the API, the command line and the open standards Almena speaks.',
+			href: '/integrate/',
+		},
+		{
+			icon: 'wrench',
+			who: 'For developers',
+			title: 'Build',
+			text: 'How the platform is made, how to run it on your machine and how to contribute to it.',
+			href: '/build/',
+		},
+	]}
+/>
+
+New to all this? Start with [how Almena works](/concepts/): five minutes, no technical words.

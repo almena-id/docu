@@ -1,0 +1,67 @@
+---
+title: Protocolos
+description: Qué estándar abierto habla Almena en cada paso, y sus propias especificaciones.
+sidebar: { order: 0, label: Resumen }
+---
+
+import Flow from '@docs/Flow.astro';
+
+Almena habla estándares abiertos siempre que existe uno, así que cualquier
+wallet, emisor o verificador que los implemente puede participar. Donde añade
+algo propio, lo especifica y lo publica aquí.
+
+<Flow
+	label="Los protocolos en cada paso de una credencial"
+	steps={[
+		{ icon: 'key', title: 'Entrar', text: 'SIOPv2: el wallet responde con un id_token firmado.' },
+		{ icon: 'file-text', title: 'Solicitar', text: 'OpenID4VP + DCQL para presentar las credenciales que pide el formulario.' },
+		{ icon: 'badge-check', title: 'Emitir', text: 'SD-JWT VC, firmada por el emisor desde su wallet.' },
+		{ icon: 'scan', title: 'Verificar', text: 'OpenID4VP, con un JWT de vinculación de clave por credencial.' },
+		{ icon: 'refresh', title: 'Retirar', text: 'IETF Token Status List, firmada por el emisor.' },
+	]}
+/>
+
+## Entre un wallet y el registry
+
+Los portales del registry muestran un código QR con un enlace `almena://`; el
+wallet lee la petición del dominio de identidad (`almena.id`) y responde allí.
+
+| Para qué | Estándar | Qué viaja |
+| --- | --- | --- |
+| Entrar, vincular un wallet, emparejarse con un emisor | [Self-Issued OpenID Provider v2](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html), `direct_post` | Un `id_token` (JWS, `EdDSA`) para el `nonce` de la petición, con una clave derivada por registry o por emisor |
+| Presentar credenciales | [OpenID for Verifiable Presentations](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html), consultas DCQL | Un `vp_token`: SD-JWT VC con solo los datos pedidos, cada una con su `kb+jwt` |
+| Firmar una entrada del registro de una identidad | [`did:webvh`](https://identity.foundation/didwebvh/) + Data Integrity `eddsa-jcs-2022` | Una prueba sobre la entrada canónica (JCS) |
+| Firmar una credencial o una lista de estado | JWS (`EdDSA`) | La firma del emisor sobre lo que mostró la hoja |
+
+## Las credenciales y su estado
+
+| Tema | Estándar |
+| --- | --- |
+| Formato | [SD-JWT-based Verifiable Credentials](https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/) (`dc+sd-jwt`), con su Type Metadata en `https://almena.id/.well-known/vct/…` |
+| Esquemas de los datos | JSON Schema 2020-12, en `https://almena.id/schemas/…` |
+| Revocación y suspensión | [IETF Token Status List](https://datatracker.ietf.org/doc/draft-ietf-oauth-status-list/) |
+| Identidades de las organizaciones | [`did:webvh` 1.0](https://identity.foundation/didwebvh/), resueltas desde `almena.id` |
+| Identidades de los wallets | `did:peer:2` (relaciones, la tarjeta de invitación), `did:key` (emparejar, entrar) |
+
+## Entre wallets
+
+Los wallets solo hablan a través de mediadores, con
+[DIDComm Messaging v2.0](https://identity.foundation/didcomm-messaging/spec/v2.0/):
+sobres cifrados de punta a punta que el mediador guarda y reenvía sin poder
+leerlos.
+
+| Protocolo | Uso |
+| --- | --- |
+| Coordinate Mediation 3.0, Routing 2.0, Message Pickup 3.0 (modo en vivo) | El buzón de un wallet en su mediador |
+| Trust Ping 2.0, Out-of-Band 2.0 | Abrir una relación a partir de una invitación |
+| Basic Message 2.0, User Profile 1.0 | Texto, y el nombre de cada parte |
+| Almena calls 1.0, Almena TURN 1.0 | Llamadas de voz y vídeo, por el servidor TURN del mediador |
+
+## Las especificaciones de Almena
+
+En inglés, tal como están en sus repositorios:
+
+- [Almena Mediator](/integrate/protocols/mediator/): el perfil de DIDComm v2.0
+  del mediador y lo que añade: mediación, recogida, push, credenciales TURN.
+- [Almena Wallet](/integrate/protocols/wallet/): lo que los wallets se dicen
+  entre sí sobre DIDComm: llamadas.

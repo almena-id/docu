@@ -1,0 +1,54 @@
+---
+title: Integrar con Almena
+description: Qué pueden hacer tus aplicaciones con Almena, y por qué puerta.
+---
+
+import Flow from '@docs/Flow.astro';
+
+Almena está abierto a tus sistemas en cada paso que una persona da en los
+portales. Todo lo que hace el registry está en su API, y la API decide: los
+portales no comprueban nada que ella no vuelva a comprobar.
+
+## Qué puedes conectar
+
+<Flow
+	label="Qué puede hacer una integración"
+	steps={[
+		{ icon: 'terminal', title: 'Automatizar', text: 'Todo el registry, desde scripts o CI: la API o la CLI almena.' },
+		{ icon: 'layers', title: 'Recibir', text: 'Las solicitudes a tus emisores, en la cola propia de tu back office.' },
+		{ icon: 'badge-check', title: 'Emitir', text: 'Decide y entrega credenciales desde tus sistemas.' },
+		{ icon: 'scan', title: 'Verificar', text: 'Pide credenciales a un wallet por QR y recíbelas comprobadas.' },
+	]}
+/>
+
+## Las puertas
+
+| Puerta | Dónde | Para |
+| --- | --- | --- |
+| **API REST** | `https://api.almena.id/api/v1` | Todo: cuentas, emisores, verificadores, formularios, solicitudes, verificaciones |
+| **CLI `almena`** | macOS, Linux, Windows | Lo mismo, desde un terminal o un pipeline |
+| **Colas** | AMQP, una por emisor y verificador | Lo que les llega, en cuanto llega |
+| **MCP** | `/mcp` de la API | Asistentes de IA que trabajan con el registry |
+| **Agente** | `https://agent.almena.id`, A2A 1.0 | Otros agentes que preguntan por Almena |
+
+## Los estándares que habla
+
+Almena usa estándares abiertos, así que cualquier wallet o verificador que los
+hable funciona con él:
+
+- **Credenciales**: SD-JWT VC (`dc+sd-jwt`), con divulgación selectiva: el
+  titular enseña solo los datos que se piden.
+- **Pedir credenciales**: OpenID for Verifiable Presentations, con consultas
+  DCQL.
+- **Entrar con un wallet**: Self-Issued OpenID Provider v2.
+- **Identidades**: `did:webvh` para organizaciones y servicios, `did:peer` y
+  `did:key` para wallets.
+- **Retirar credenciales**: IETF Token Status List.
+- **Mensajes entre wallets**: DIDComm Messaging v2.0, a través de un mediador.
+
+## Lo siguiente
+
+- [Inicio rápido](/es/integrate/quick-start/): tu primera llamada en unos minutos.
+- [Protocolos](/es/integrate/protocols/): qué estándar en cada paso, y las especificaciones propias de Almena.
+- Referencia de la [API](/reference/api/) y de la [CLI](/reference/cli/).
+- [Errores](/es/reference/errors/): cada código con el que la API rechaza algo.

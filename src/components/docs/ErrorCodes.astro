@@ -1,0 +1,125 @@
+---
+// Every code the API refuses with, generated from its OpenAPI document
+// (src/data/openapi.json, `task refs`): what each means is the API's own
+// `x-refusals` (its refusals.py), grouped by the HTTP status its responses
+// give it, with the operations that may answer it; then why a presented
+// credential is not believed (`x-presentation-problems`). A refusal's body is
+// `{"detail": "<code>"}`. The meanings are the API's words, in English.
+import openapi from '../../data/openapi.json';
+
+interface Props {
+	/** The page's words for each status, the table's headings and the rest. */
+	statuses: Record<string, string>;
+	headings: { code: string; meaning: string; where: string };
+	/** The group of codes no response lists with a status. */
+	other: string;
+	problems: { title: string; lead: string; code: string; meaning: string };
+}
+const { statuses, headings, other, problems } = Astro.props;
+
+type Operation = { responses?: Record<string, { description?: string }> };
+const refusals = openapi['x-refusals'] as Record<string, string>;
+const presentation = openapi['x-presentation-problems'] as Record<string, string>;
+
+// Where each code is answered, and with which statuses.
+const where = new Map<string, Set<string>>();
+const statusOf = new Map<string, Set<string>>();
+for (const [path, operations] of Object.entries(openapi.paths as Record<string, Record<string, Operation>>))
+	for (const [method, operation] of Object.entries(operations))
+		for (const [status, response] of Object.entries(operation.responses ?? {})) {
+			if (!/^[45]\d\d$/.test(status)) continue;
+			for (const [, code] of (response.description ?? '').matchAll(/`([a-z][a-z0-9]*(?:_[a-z0-9]+)+)`/g)) {
+				if (!(code in refusals)) continue;
+				(where.get(code) ?? where.set(code, new Set()).get(code)!).add(`${method.toUpperCase()} ${path}`);
+				(statusOf.get(code) ?? statusOf.set(code, new Set()).get(code)!).add(status);
+			}
+		}
+const groups = new Map<string, string[]>();
+for (const code of Object.keys(refusals).sort()) {
+	const status = [...(statusOf.get(code) ?? [])].sort()[0] ?? 'other';
+	(groups.get(status) ?? groups.set(status, []).get(status)!).push(code);
+}
+const ordered = [...groups.entries()].sort(([a], [b]) => (a === 'other' ? 1 : b === 'other' ? -1 : Number(a) - Number(b)));
+// A meaning's `code` spans, as code.
+const words = (text: string) => text.replace(/`([^`]+)`/g, '<code>$1</code>');
+---
+
+<p class="version not-content">Almena Registry API {openapi.info.version}</p>
+{
+	ordered.map(([status, codes]) => (
+		<>
+			<h2 id={`status-${status}`}>{status === 'other' ? other : `${status} · ${statuses[status] ?? ''}`}</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>{headings.code}</th>
+						<th>{headings.meaning}</th>
+						<th>{headings.where}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{codes.map((code) => {
+						const found = [...(where.get(code) ?? [])];
+						return (
+							<tr id={code}>
+								<td>
+									<code>{code}</code>
+								</td>
+								<td set:html={words(refusals[code])} />
+								<td class="where">
+									{found.slice(0, 3).map((operation) => (
+										<code>{operation}</code>
+									))}
+									{found.length > 3 && <span>+{found.length - 3}</span>}
+									{found.length === 0 && '—'}
+								</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		</>
+	))
+}
+
+<h2 id="presentation-problems">{problems.title}</h2>
+<p>{problems.lead}</p>
+<table>
+	<thead>
+		<tr>
+			<th>{problems.code}</th>
+			<th>{problems.meaning}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			Object.entries(presentation).map(([code, meaning]) => (
+				<tr id={`problem-${code}`}>
+					<td>
+						<code>{code}</code>
+					</td>
+					<td>{meaning}</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>
+
+<style>
+	.version {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+	.where {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		font-size: var(--sl-text-xs);
+	}
+	.where code {
+		overflow-wrap: anywhere;
+	}
+	td:first-child code {
+		white-space: nowrap;
+	}
+</style>

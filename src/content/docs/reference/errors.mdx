@@ -1,0 +1,35 @@
+---
+title: Errors
+description: Every code the Almena API refuses with, by HTTP status.
+tableOfContents: false
+---
+
+import ErrorCodes from '@docs/ErrorCodes.astro';
+
+When the API refuses a request, its body names why in one code:
+
+```json
+{ "detail": "category_in_use" }
+```
+
+Act on the code, not on the status alone: the same status has many reasons.
+This page is generated from the API's OpenAPI document: what each code means is the API's own words.
+
+<ErrorCodes
+	headings={{ code: 'Code', meaning: 'What it means', where: 'Answered by' }}
+	other="Also refused with"
+	problems={{ title: 'Presentation problems', lead: 'Why a verification does not believe a presented credential: each problem is given per credential in the verdict, not as a refusal.', code: 'Problem', meaning: 'What it means' }}
+	statuses={{
+		'400': 'The request is malformed',
+		'401': 'Not signed in',
+		'403': 'Not allowed',
+		'404': 'Not found',
+		'409': 'Not in this state',
+		'410': 'Gone',
+		'413': 'Too large',
+		'422': 'Not valid',
+		'429': 'Too many requests',
+		'502': 'A service behind failed',
+		'503': 'Unavailable for now',
+	}}
+/>

@@ -1,0 +1,86 @@
+---
+// The Lucide icons the documentation's diagrams and cards use, by name,
+// inline at build time (nothing reaches the reader as script). Any other
+// attribute (x, y, class, size) goes to the icon's <svg>.
+import Activity from '@lucide/astro/icons/activity';
+import BadgeCheck from '@lucide/astro/icons/badge-check';
+import Ban from '@lucide/astro/icons/ban';
+import BookOpen from '@lucide/astro/icons/book-open';
+import Bot from '@lucide/astro/icons/bot';
+import Building from '@lucide/astro/icons/building';
+import Check from '@lucide/astro/icons/check';
+import CircleQuestionMark from '@lucide/astro/icons/circle-question-mark';
+import Code from '@lucide/astro/icons/code';
+import Download from '@lucide/astro/icons/download';
+import FileText from '@lucide/astro/icons/file-text';
+import Globe from '@lucide/astro/icons/globe';
+import KeyRound from '@lucide/astro/icons/key-round';
+import Landmark from '@lucide/astro/icons/landmark';
+import Layers from '@lucide/astro/icons/layers';
+import Lightbulb from '@lucide/astro/icons/lightbulb';
+import MessageCircle from '@lucide/astro/icons/message-circle';
+import Plug from '@lucide/astro/icons/plug';
+import Puzzle from '@lucide/astro/icons/puzzle';
+import QrCode from '@lucide/astro/icons/qr-code';
+import RadioTower from '@lucide/astro/icons/radio-tower';
+import RefreshCw from '@lucide/astro/icons/refresh-cw';
+import ScanLine from '@lucide/astro/icons/scan-line';
+import Search from '@lucide/astro/icons/search';
+import Send from '@lucide/astro/icons/send';
+import Server from '@lucide/astro/icons/server';
+import ShieldCheck from '@lucide/astro/icons/shield-check';
+import Smartphone from '@lucide/astro/icons/smartphone';
+import Terminal from '@lucide/astro/icons/terminal';
+import User from '@lucide/astro/icons/user';
+import Users from '@lucide/astro/icons/users';
+import Wallet from '@lucide/astro/icons/wallet';
+import Wrench from '@lucide/astro/icons/wrench';
+
+const icons = {
+	activity: Activity,
+	'badge-check': BadgeCheck,
+	ban: Ban,
+	'book-open': BookOpen,
+	bot: Bot,
+	building: Building,
+	check: Check,
+	question: CircleQuestionMark,
+	code: Code,
+	download: Download,
+	'file-text': FileText,
+	globe: Globe,
+	key: KeyRound,
+	landmark: Landmark,
+	layers: Layers,
+	lightbulb: Lightbulb,
+	message: MessageCircle,
+	plug: Plug,
+	puzzle: Puzzle,
+	qr: QrCode,
+	'radio-tower': RadioTower,
+	refresh: RefreshCw,
+	scan: ScanLine,
+	search: Search,
+	send: Send,
+	server: Server,
+	'shield-check': ShieldCheck,
+	smartphone: Smartphone,
+	terminal: Terminal,
+	user: User,
+	users: Users,
+	wallet: Wallet,
+	wrench: Wrench,
+} as const;
+
+export type IconName = keyof typeof icons;
+
+interface Props {
+	name: IconName;
+	[attribute: string]: unknown;
+}
+
+const { name, ...rest } = Astro.props;
+const Lucide = icons[name];
+---
+
+<Lucide aria-hidden="true" {...rest} />

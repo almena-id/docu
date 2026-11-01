@@ -19,3 +19,6 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# the demo API and its sessions (task screenshots)
+.demo/

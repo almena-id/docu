@@ -1,0 +1,44 @@
+---
+title: Build Almena
+description: For whoever works on the platform itself — how the code is organised and what every change keeps.
+---
+
+import Paths from '@docs/Paths.astro';
+
+Almena ID is a set of repositories, one per project, under
+[github.com/almena-id](https://github.com/almena-id), checked out side by side
+in one workspace. Each is built, tested and released on its own.
+
+<Paths
+	paths={[
+		{
+			icon: 'layers',
+			who: 'Start here',
+			title: 'Architecture',
+			text: 'Every project, what it does and how they talk to each other.',
+			href: '/build/architecture/',
+		},
+	]}
+/>
+
+## What every change keeps
+
+- **Each project's `AGENTS.md` is its law.** It says what the project is, how
+  it is laid out and every rule its code follows. Read it before changing
+  anything there, and keep it true in the same change.
+- **Everything is written in English**: code, comments, documentation,
+  commits. What people read in the interfaces is translated — English is the
+  source, Spanish the first translation — never written into the code.
+- **`task check` passes.** Every project runs its checks with
+  [Task](https://taskfile.dev): `task --list` shows the rest.
+- **The API decides.** A rule a portal checks for the person's sake — a
+  required field, a length, what a state allows — is enforced again by the
+  API, with a test, in the same change.
+- **Text never leaves its box**, in any language, from a 320px phone up.
+
+## Running it on your machine
+
+The [`develop`](https://github.com/almena-id/develop) repository runs the whole
+platform on one machine, behind one Caddy with a wildcard certificate, each
+subdomain routed to its project. Its README walks through the hosts file, the
+certificate and starting each project.

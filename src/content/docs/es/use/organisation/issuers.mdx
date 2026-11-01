@@ -1,0 +1,63 @@
+---
+title: Crear un emisor
+description: Crea la parte de tu organización que da credenciales, y ofrécelas en el catálogo.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Un **emisor** es la parte de tu organización que da credenciales: la
+secretaría académica de una universidad, la secretaría de un club. Su nombre
+es lo que las personas leen en las credenciales que da.
+
+## Créalo
+
+Abre **Emisores** en el menú lateral.
+
+<Screenshot name="registry-issuers" alt="La lista de emisores, con el botón Crear." />
+
+Tus emisores aparecen en la lista <Mark n={2} />, cada uno marcado según si
+está publicado y si su identidad está firmada. Pulsa **Crear** <Mark n={1} />.
+
+<Screenshot name="registry-issuer-new" alt="El formulario para crear un emisor: nombre, descripción y mediador." />
+
+<Steps>
+
+1. Su **nombre** <Mark n={1} />, tal como lo leerán las personas.
+
+2. Una **descripción** <Mark n={2} />: una línea sobre lo que da. El globo del
+   campo te deja escribirla en cada uno de tus idiomas.
+
+3. El **mediador** <Mark n={3} />: deja el que se ofrece salvo que te hayan
+   dicho otra cosa.
+
+4. Pulsa **Crear** <Mark n={4} />.
+
+</Steps>
+
+## Ofrece credenciales
+
+Abre el emisor que creaste y su pestaña **Credenciales**. Marca las
+credenciales que da y, para cada una, el **formulario** que rellenan las
+personas para pedirla (si no tienes ninguno, créalo antes en **Formularios**).
+
+## Firma y publica
+
+Antes de aparecer en el catálogo, dos cosas:
+
+<Steps>
+
+1. **Firma su identidad.** Pulsa **Firmar** en el emisor: aparece un código, y
+   quien firma por tu organización lo escanea con su wallet. Esto es lo que
+   permite a cualquiera comprobar las credenciales que da.
+
+2. **Publícalo.** Un administrador activa **Publicar**. A partir de ahí está
+   en el catálogo y las personas pueden pedir.
+
+</Steps>
+
+<Aside type="tip">
+¿No sabes qué falta? **Pendiente**, en el resumen, lo enumera en orden y dice
+qué hay que hacer antes.
+</Aside>

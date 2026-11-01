@@ -1,41 +1,56 @@
 ---
-title: Bienvenido a Starlight
-description: Empieza a construir tu sitio de documentación con Starlight.
-template: splash # Quita o comenta esta línea para mostrar la barra lateral en esta página.
+title: Almena Docs
+description: Cómo usar Almena ID, conectar tus sistemas con él y ayudar a construirlo.
+template: splash
 hero:
-  tagline: ¡Enhorabuena por crear un nuevo proyecto de Starlight!
-  image:
-    file: ../../../assets/houston.webp
+  title: Tus credenciales, en tus manos
+  tagline: Almena ID permite a las organizaciones dar a las personas credenciales digitales —un título, un carné de socio, un certificado de empleo— que cada persona guarda en su propio wallet y enseña cuando lo necesita. Cualquiera puede comprobar que son auténticas.
   actions:
-    - text: Guía de ejemplo
-      link: /es/guides/example/
+    - text: Cómo funciona
+      link: /es/concepts/
       icon: right-arrow
-    - text: Lee la documentación de Starlight
-      link: https://starlight.astro.build/es/
-      icon: external
+    - text: Empezar
+      link: /es/use/
       variant: minimal
+# Drawn beside the hero's text (src/components/Hero.astro).
+trust:
+  label: Una organización da una credencial a una persona; la persona la guarda en su wallet y la enseña; quien la ve comprueba que es auténtica.
+  issuer: { title: Una organización, text: "una universidad, un club, un ayuntamiento" }
+  holder: { title: Tú, text: con el wallet de Almena }
+  verifier: { title: Quien te la pide, text: "una empresa, una puerta, una web" }
+  gives: te da una credencial
+  shows: tú la enseñas
+  checks: comprueban que es auténtica
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import Paths from '@docs/Paths.astro';
 
-## Próximos pasos
+## ¿Por dónde quieres empezar?
 
-<CardGrid stagger>
-	<Card title="Actualiza el contenido" icon="pencil">
-		Edita `src/content/docs/es/index.mdx` para ver cómo cambia esta página.
-	</Card>
-	<Card title="Cambia el diseño de la página" icon="document">
-		Borra `template: splash` en `src/content/docs/es/index.mdx` para mostrar
-		la barra lateral en esta página.
-	</Card>
-	<Card title="Añade contenido nuevo" icon="add-document">
-		Añade ficheros Markdown o MDX a `src/content/docs/es` para crear páginas
-		nuevas.
-	</Card>
-	<Card title="Configura tu sitio" icon="setting">
-		Edita el `sidebar` y el resto de la configuración en `astro.config.mjs`.
-	</Card>
-	<Card title="Lee la documentación" icon="open-book">
-		Aprende más en [la documentación de Starlight](https://starlight.astro.build/es/).
-	</Card>
-</CardGrid>
+<Paths
+	paths={[
+		{
+			icon: 'user',
+			who: 'Para todos',
+			title: 'Usar Almena',
+			text: 'Consigue el wallet y tus credenciales, o gestiona tu organización en el registry: paso a paso y con imágenes.',
+			href: '/es/use/',
+		},
+		{
+			icon: 'puzzle',
+			who: 'Para integradores',
+			title: 'Integrar',
+			text: 'Emite y verifica credenciales desde tus propias aplicaciones, con la API, la línea de comandos y los estándares abiertos que habla Almena.',
+			href: '/es/integrate/',
+		},
+		{
+			icon: 'wrench',
+			who: 'Para desarrolladores',
+			title: 'Construir',
+			text: 'Cómo está hecha la plataforma, cómo arrancarla en tu equipo y cómo contribuir.',
+			href: '/es/build/',
+		},
+	]}
+/>
+
+¿Todo esto es nuevo para ti? Empieza por [cómo funciona Almena](/es/concepts/): cinco minutos, sin palabras técnicas.

@@ -1,0 +1,54 @@
+---
+title: Integrate with Almena
+description: What your applications can do with Almena, and through which door.
+---
+
+import Flow from '@docs/Flow.astro';
+
+Almena is open to your systems at every step a person goes through in the
+portals. Everything the registry does is in its API, and the API decides:
+the portals check nothing it does not check again.
+
+## What you can connect
+
+<Flow
+	label="What an integration can do"
+	steps={[
+		{ icon: 'terminal', title: 'Automate', text: 'Everything in the registry, from scripts or CI: the API or the almena CLI.' },
+		{ icon: 'layers', title: 'Receive', text: "Applications to your issuers, in your back office's own queue." },
+		{ icon: 'badge-check', title: 'Issue', text: 'Decide and give credentials from your systems.' },
+		{ icon: 'scan', title: 'Verify', text: 'Ask a wallet for credentials by QR and get them checked.' },
+	]}
+/>
+
+## The doors
+
+| Door | Where | For |
+| --- | --- | --- |
+| **REST API** | `https://api.almena.id/api/v1` | Everything: accounts, issuers, verifiers, forms, applications, verifications |
+| **`almena` CLI** | macOS, Linux, Windows | The same, from a terminal or a pipeline |
+| **Queues** | AMQP, one per issuer and verifier | What arrives for them, as it arrives |
+| **MCP** | the API's `/mcp` | AI assistants working with the registry |
+| **Agent** | `https://agent.almena.id`, A2A 1.0 | Other agents asking about Almena |
+
+## The standards it speaks
+
+Almena uses open standards, so any wallet or verifier that speaks them works
+with it:
+
+- **Credentials**: SD-JWT VC (`dc+sd-jwt`), with selective disclosure — a
+  holder shows only the claims asked for.
+- **Asking for credentials**: OpenID for Verifiable Presentations, with DCQL
+  queries.
+- **Signing in with a wallet**: Self-Issued OpenID Provider v2.
+- **Identities**: `did:webvh` for organisations and services, `did:peer` and
+  `did:key` for wallets.
+- **Withdrawing credentials**: IETF Token Status List.
+- **Messages between wallets**: DIDComm Messaging v2.0, through a mediator.
+
+## Next
+
+- [Quick start](/integrate/quick-start/): your first call in a few minutes.
+- [Protocols](/integrate/protocols/): which standard at each step, and Almena's own specifications.
+- [API](/reference/api/) and [CLI](/reference/cli/) reference.
+- [Errors](/reference/errors/): every code the API refuses with.

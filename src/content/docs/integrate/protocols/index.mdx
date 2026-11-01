@@ -1,0 +1,65 @@
+---
+title: Protocols
+description: Which open standard Almena speaks at each step, and its own specifications.
+sidebar: { order: 0, label: Overview }
+---
+
+import Flow from '@docs/Flow.astro';
+
+Almena speaks open standards wherever one exists, so any wallet, issuer or
+verifier that implements them can take part. Where it adds something of its
+own, the addition is specified and published here.
+
+<Flow
+	label="The protocols at each step of a credential"
+	steps={[
+		{ icon: 'key', title: 'Sign in', text: 'SIOPv2: the wallet answers with a signed id_token.' },
+		{ icon: 'file-text', title: 'Apply', text: 'OpenID4VP + DCQL to present credentials the form asks for.' },
+		{ icon: 'badge-check', title: 'Issue', text: 'SD-JWT VC, signed by the issuer from its wallet.' },
+		{ icon: 'scan', title: 'Verify', text: 'OpenID4VP, with a key-binding JWT per credential.' },
+		{ icon: 'refresh', title: 'Withdraw', text: 'IETF Token Status List, signed by the issuer.' },
+	]}
+/>
+
+## Between a wallet and the registry
+
+The registry's portals show a QR code with an `almena://` link; the wallet
+reads the request from the identity domain (`almena.id`) and answers there.
+
+| Purpose | Standard | What travels |
+| --- | --- | --- |
+| Sign in, link a wallet, pair with an issuer | [Self-Issued OpenID Provider v2](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html), `direct_post` | An `id_token` (JWS, `EdDSA`) for the request's `nonce`, by a key derived per registry, or per issuer |
+| Present credentials | [OpenID for Verifiable Presentations](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html), DCQL queries | A `vp_token`: SD-JWT VCs with only the asked disclosures, each with a `kb+jwt` |
+| Sign an identity's log entry | [`did:webvh`](https://identity.foundation/didwebvh/) + Data Integrity `eddsa-jcs-2022` | A proof over the canonical (JCS) entry |
+| Sign a credential or a status list | JWS (`EdDSA`) | The issuer's signature over what the sheet showed |
+
+## Credentials and their status
+
+| Topic | Standard |
+| --- | --- |
+| Format | [SD-JWT-based Verifiable Credentials](https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/) (`dc+sd-jwt`), with SD-JWT VC Type Metadata at `https://almena.id/.well-known/vct/…` |
+| Claims' schemas | JSON Schema 2020-12, at `https://almena.id/schemas/…` |
+| Revocation and suspension | [IETF Token Status List](https://datatracker.ietf.org/doc/draft-ietf-oauth-status-list/) |
+| Organisations' identities | [`did:webvh` 1.0](https://identity.foundation/didwebvh/), resolved from `almena.id` |
+| Wallets' identities | `did:peer:2` (relationships, the invitation card), `did:key` (pairing, signing in) |
+
+## Between wallets
+
+Wallets talk only through mediators, over
+[DIDComm Messaging v2.0](https://identity.foundation/didcomm-messaging/spec/v2.0/):
+end-to-end encrypted envelopes the mediator queues and relays without being
+able to read them.
+
+| Protocol | Use |
+| --- | --- |
+| Coordinate Mediation 3.0, Routing 2.0, Message Pickup 3.0 (live mode) | A wallet's mailbox at its mediator |
+| Trust Ping 2.0, Out-of-Band 2.0 | Opening a relationship from an invitation |
+| Basic Message 2.0, User Profile 1.0 | Text, and each side's name |
+| Almena calls 1.0, Almena TURN 1.0 | Voice and video calls, relayed through the mediator's TURN server |
+
+## Almena's specifications
+
+- [Almena Mediator](/integrate/protocols/mediator/) — the mediator's profile
+  of DIDComm v2.0 and what it adds: mediation, pickup, push, TURN credentials.
+- [Almena Wallet](/integrate/protocols/wallet/) — what wallets say to each
+  other on top of DIDComm: calls.

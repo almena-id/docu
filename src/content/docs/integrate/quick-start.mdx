@@ -1,0 +1,72 @@
+---
+title: Quick start
+description: An API token, the almena CLI and your first call to the API.
+---
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+You need an account in the [registry](https://registry.almena.id) ([how to
+sign in](/use/organisation/sign-in/)).
+
+<Steps>
+
+1. **Make an API token.** In the registry, open your **Profile** (the menu
+   under your initial, top right) and, under **API tokens**, press **Create
+   token**: give it a name and how many days it lasts (1 to 365). Copy the
+   token now — it is shown once. It acts as you until it expires or you
+   revoke it.
+
+2. **Install the CLI.**
+
+   <Tabs>
+   <TabItem label="Homebrew">
+   ```bash
+   brew install almena-id/tap/almena
+   ```
+   </TabItem>
+   <TabItem label="winget">
+   ```powershell
+   winget install AlmenaID.Almena
+   ```
+   </TabItem>
+   <TabItem label="Scoop">
+   ```powershell
+   scoop bucket add almena https://github.com/almena-id/scoop-bucket
+   scoop install almena/almena
+   ```
+   </TabItem>
+   </Tabs>
+
+3. **Try it.** With the token in `ALMENA_TOKEN`, the CLI needs no sign-in:
+
+   ```bash
+   export ALMENA_TOKEN=almena_…
+   almena tenant list
+   almena tenant activity --days 7
+   ```
+
+   On your own machine you can sign in instead: `almena auth login` (a code by
+   email) or `almena auth login --wallet` (a QR for your wallet).
+
+4. **Call the API.** The same token is a bearer token:
+
+   ```bash
+   curl -H "Authorization: Bearer $ALMENA_TOKEN" \
+     https://api.almena.id/api/v1/tenants
+   ```
+
+</Steps>
+
+## When something is refused
+
+A refusal comes with an HTTP status and a code in its body:
+
+```json
+{ "detail": "subscription_required" }
+```
+
+The code says why, in a word your program can act on. Every code, what it
+means and which operations answer it is in the [errors
+reference](/reference/errors/). The CLI exits with `3` when you are not signed
+in or not allowed, `4` when something is not found, `1` for any other
+failure.

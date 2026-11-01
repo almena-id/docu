@@ -1,0 +1,51 @@
+---
+title: Revisar solicitudes
+description: Mira lo que enviaron las personas, acéptalo o recházalo, y entrega la credencial.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+Todas las solicitudes a tus emisores llegan a **Solicitudes**, en el menú
+lateral.
+
+<Screenshot name="registry-applications" alt="La lista de solicitudes, de la más reciente a la más antigua, cada una con su estado." />
+
+Cada línea es una solicitud <Mark n={1} />: la credencial pedida, quién la
+envió, cuándo y cómo está. Abre una.
+
+## Decide
+
+<Screenshot name="registry-application" alt="Una solicitud: la credencial pedida, la firma del titular, las respuestas y la decisión." />
+
+<Steps>
+
+1. Arriba, la credencial pedida, tal como se verá.
+
+2. Comprueba la línea verde: **firmada por el titular**. Significa que las
+   respuestas son exactamente las que envió el wallet de esa persona.
+
+3. Lee las **respuestas**.
+
+4. Si quieres, deja una **nota** para la persona <Mark n={1} />: la verá con
+   tu decisión.
+
+5. Pulsa **Rechazar** <Mark n={2} /> o **Aceptar** <Mark n={3} />.
+
+</Steps>
+
+## Entrega la credencial
+
+Una vez aceptada, la misma página muestra lo que dirá la credencial, relleno
+a partir de las respuestas. Revísalo, corrige lo que haga falta, elige hasta
+cuándo vale y pulsa **Continuar para firmar**: aparece un código para que lo
+escanee con su wallet quien firma por el emisor —la persona indicada en su
+pestaña **Firma**—. Una vez firmada, la persona que la pidió se la lleva desde
+el catálogo a su wallet.
+
+## Suspender o revocar
+
+En la página de una credencial que diste, quien firma por el emisor puede
+**Suspenderla** (un tiempo), **Rehabilitarla** o **Revocarla** (para siempre).
+Cada cambio se firma desde el wallet, igual que la credencial.

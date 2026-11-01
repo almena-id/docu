@@ -1,0 +1,44 @@
+---
+title: Enseñar una credencial
+description: "Alguien te pide ver una credencial: qué ves en el wallet y qué recibe."
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+En una puerta, en una web, en una oficina: quien te pide ver una credencial
+te enseña un código en su pantalla.
+
+<Flow
+	label="Enseñar una credencial"
+	steps={[
+		{ icon: 'qr', title: 'Te enseñan un código', text: 'En su pantalla, o como un enlace en tu móvil.' },
+		{ icon: 'scan', title: 'Lo escaneas', text: 'Desde la pestaña Escanear QR del wallet.' },
+		{ icon: 'shield-check', title: 'Tú decides', text: 'El wallet dice quién pide y exactamente qué saldría.' },
+		{ icon: 'badge-check', title: 'La comprueban', text: 'En un segundo: auténtica, de su emisor, todavía válida.' },
+	]}
+/>
+
+<Steps>
+
+1. Abre el wallet y la pestaña **Escanear QR**, y apunta la cámara al código.
+
+2. El wallet te dice quién pide y para qué <Mark n={1} />: la credencial que
+   saldría y, de ella, solo los datos que han pedido.
+
+   <Screenshot phone name="wallet-verify" alt="El wallet pregunta si presentar una credencial de afiliación a Campus Access, con los dos datos que saldrían." />
+
+3. Si es quien esperas, pulsa **Presentar** <Mark n={2} />. Si no,
+   **Cancelar**: no se envía nada.
+
+</Steps>
+
+Quien lo pidió ve en su pantalla que la credencial es auténtica, quién la
+emitió y que sigue valiendo, y solo los datos que pidió.
+
+<Aside type="tip" title="Acepta solo lo que has empezado tú">
+Acepta solo cuando estés delante de quien nombra el wallet y esperes que te lo
+pida. Un código que no esperabas puede venir de cualquiera.
+</Aside>

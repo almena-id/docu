@@ -1,0 +1,63 @@
+---
+title: Set up an issuer
+description: Create the part of your organisation that gives credentials, and offer them in the catalog.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+An **issuer** is the part of your organisation that gives credentials: a
+university's academic office, a club's secretary. Its name is what people
+read on the credentials it gives.
+
+## Create it
+
+Open **Issuers** in the side menu.
+
+<Screenshot name="registry-issuers" alt="The list of issuers, with the Create button." />
+
+Your issuers are listed <Mark n={2} />, each tagged with whether it is
+published and whether its identity is signed. Press **Create** <Mark n={1} />.
+
+<Screenshot name="registry-issuer-new" alt="The form to create an issuer: name, description and mediator." />
+
+<Steps>
+
+1. Its **name** <Mark n={1} />, as people will read it.
+
+2. A **description** <Mark n={2} />: one line on what it gives. The globe in
+   the box lets you write it in each of your languages.
+
+3. The **mediator** <Mark n={3} />: leave the one offered unless you were told
+   otherwise.
+
+4. Press **Create** <Mark n={4} />.
+
+</Steps>
+
+## Offer credentials
+
+Open the issuer you created and its **Credentials** tab. Tick the credentials
+it gives and, for each, the **form** people fill in to ask for it (make one
+first under **Forms** if you have none).
+
+## Sign and publish
+
+Before it appears in the catalog, two things:
+
+<Steps>
+
+1. **Sign its identity.** Press **Sign** on the issuer: a code appears, and
+   whoever signs for your organisation scans it with their wallet. This is
+   what lets anyone check the credentials it gives.
+
+2. **Publish it.** An administrator turns on **Publish**. From then on it is
+   in the catalog, and people can apply.
+
+</Steps>
+
+<Aside type="tip">
+Not sure what is left? **Awaiting you**, on the overview, lists it in order,
+and says what has to be done first.
+</Aside>

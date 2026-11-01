@@ -1,0 +1,72 @@
+---
+title: Inicio rápido
+description: Un token de API, la CLI almena y tu primera llamada a la API.
+---
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+Necesitas una cuenta en el [registry](https://registry.almena.id) ([cómo
+entrar](/es/use/organisation/sign-in/)).
+
+<Steps>
+
+1. **Crea un token de API.** En el registry, abre tu **Perfil** (el menú bajo
+   tu inicial, arriba a la derecha) y, en **Tokens de API**, pulsa **Crear
+   token**: ponle un nombre y cuántos días dura (de 1 a 365). Cópialo en ese
+   momento: solo se enseña una vez. Actúa como tú hasta que caduca o lo
+   revocas.
+
+2. **Instala la CLI.**
+
+   <Tabs>
+   <TabItem label="Homebrew">
+   ```bash
+   brew install almena-id/tap/almena
+   ```
+   </TabItem>
+   <TabItem label="winget">
+   ```powershell
+   winget install AlmenaID.Almena
+   ```
+   </TabItem>
+   <TabItem label="Scoop">
+   ```powershell
+   scoop bucket add almena https://github.com/almena-id/scoop-bucket
+   scoop install almena/almena
+   ```
+   </TabItem>
+   </Tabs>
+
+3. **Pruébala.** Con el token en `ALMENA_TOKEN`, la CLI no necesita entrar:
+
+   ```bash
+   export ALMENA_TOKEN=almena_…
+   almena tenant list
+   almena tenant activity --days 7
+   ```
+
+   En tu propio equipo también puedes entrar: `almena auth login` (un código
+   por correo) o `almena auth login --wallet` (un QR para tu wallet).
+
+4. **Llama a la API.** El mismo token es un bearer token:
+
+   ```bash
+   curl -H "Authorization: Bearer $ALMENA_TOKEN" \
+     https://api.almena.id/api/v1/tenants
+   ```
+
+</Steps>
+
+## Cuando algo se rechaza
+
+Un rechazo trae un estado HTTP y un código en el cuerpo:
+
+```json
+{ "detail": "subscription_required" }
+```
+
+El código dice por qué, en una palabra con la que tu programa puede actuar.
+Cada código, qué significa y qué operaciones lo devuelven está en la
+[referencia de errores](/es/reference/errors/). La CLI sale con `3` si no has
+entrado o no tienes permiso, `4` si algo no existe y `1` ante cualquier otro
+fallo.

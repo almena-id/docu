@@ -1,0 +1,48 @@
+---
+title: Your organisation
+description: What an organisation does in the Almena registry, and a tour of its home screen.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+
+The [registry](https://registry.almena.id) is where your organisation gives
+credentials. There you set up who gives them, what people fill in to ask for
+them, and you review what arrives.
+
+<Flow
+	label="What an organisation does in the registry"
+	steps={[
+		{ icon: 'user', title: 'Sign in', text: 'With your Almena wallet, or with your email.' },
+		{ icon: 'building', title: 'Set up an issuer', text: 'The part of your organisation that gives credentials.' },
+		{ icon: 'file-text', title: 'Offer', text: 'Choose what it gives and the form people fill in.' },
+		{ icon: 'check', title: 'Decide', text: 'Review each application, accept or reject it.' },
+		{ icon: 'badge-check', title: 'Give', text: 'Sign the credential from your wallet.' },
+	]}
+/>
+
+## Your home screen
+
+When you sign in, the registry opens on the **Overview**: what waits for you
+and how your organisation is doing.
+
+<Screenshot name="registry-overview" alt="The registry's overview: the side menu, the account selector, what awaits you and the activity chart." />
+
+- <Mark n={1} /> **The side menu** takes you everywhere: applications, issuers,
+  forms, settings.
+- <Mark n={2} /> **The account** you are working in. If you belong to more
+  than one organisation, change it here.
+- <Mark n={3} /> **Awaiting you**: what is waiting to be signed, published or
+  given, in the order to do it. Each line takes you where it is done.
+- <Mark n={4} /> **Activity**: how many applications arrived, how many
+  credentials you gave and how many were checked, day by day.
+
+Further down, **Account health** lists what your organisation still needs
+to set up, with a link to each.
+
+## Guides
+
+- [Sign in](/use/organisation/sign-in/)
+- [Set up an issuer](/use/organisation/issuers/)
+- [Review applications](/use/organisation/applications/)

@@ -58,6 +58,29 @@ tasks:
     cmds:
       - pnpm astro sync
 
+  refs:
+    desc: Regenerate what is generated — the API reference from a ../api checkout, the CLI's from ../almena (built here), the protocols from ../mediator and ../wallet
+    deps: [install]
+    cmds:
+      - uv run --project ../api python scripts/openapi.py
+      - node scripts/api-reference.mjs
+      - cargo build --manifest-path ../almena/Cargo.toml --quiet
+      - node scripts/cli-reference.mjs
+      - node scripts/protocols.mjs
+
+  demo:
+    desc: Serve the real API on SQLite with a demo account, for the screenshots (a ../api checkout; port 8766, sessions in .demo/)
+    cmds:
+      - PYTHONPATH=../api uv run --project ../api python scripts/demo_api.py .demo
+
+  screenshots:
+    desc: Retake every screenshot, in every language and theme — registry and catalog served against `task demo` (REGISTRY_URL, CATALOG_URL), the wallet's interface from `pnpm dev` in ../wallet (WALLET_URL)
+    deps: [install]
+    cmds:
+      - pnpm exec playwright install chromium
+      - node scripts/screenshots.mjs
+      - node scripts/wallet-screenshots.mjs
+
   check:
     desc: Everything that must pass before finishing a change (production build)
     cmds:

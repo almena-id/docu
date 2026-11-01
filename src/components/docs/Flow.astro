@@ -1,0 +1,100 @@
+---
+// Steps in order, each with its icon, a short title and a line: side by side
+// on a wide screen, one under the other on a phone.
+import Icon, { type IconName } from './Icon.astro';
+
+interface Step {
+	icon: IconName;
+	title: string;
+	text: string;
+	/** Something that may happen, not every time: drawn dimmer. */
+	maybe?: boolean;
+}
+interface Props {
+	label: string;
+	steps: Step[];
+}
+const { label, steps } = Astro.props;
+---
+
+<ol class="flow not-content" aria-label={label}>
+	{
+		steps.map(({ icon, title, text, maybe }, index) => (
+			<li class:list={{ maybe }}>
+				<span class="badge">
+					<Icon name={icon} size={26} />
+					<span class="number">{index + 1}</span>
+				</span>
+				<strong>{title}</strong>
+				<span class="text">{text}</span>
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	.flow {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+		gap: 1.25rem 1rem;
+		margin-block: 1.75rem;
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		position: relative;
+		display: grid;
+		justify-items: center;
+		align-content: start;
+		gap: 0.35rem;
+		padding: 1rem 0.75rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.9rem;
+		background: var(--sl-color-gray-7, var(--sl-color-black));
+		text-align: center;
+		overflow-wrap: break-word;
+	}
+	li.maybe {
+		border-style: dashed;
+	}
+	.badge {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 3.4rem;
+		height: 3.4rem;
+		margin-bottom: 0.25rem;
+		border-radius: 50%;
+		background: var(--sl-color-accent-low);
+		color: var(--sl-color-text-accent);
+	}
+	.maybe .badge {
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-gray-2);
+	}
+	.number {
+		position: absolute;
+		top: -0.2rem;
+		right: -0.35rem;
+		display: grid;
+		place-items: center;
+		width: 1.4rem;
+		height: 1.4rem;
+		border-radius: 50%;
+		background: var(--sl-color-accent);
+		color: #1a1300;
+		font-size: 0.75rem;
+		font-weight: 700;
+	}
+	strong {
+		color: var(--sl-color-white);
+		font-family: var(--font-brand, sans-serif);
+		font-size: var(--sl-text-lg);
+		line-height: 1.25;
+	}
+	.text {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+		line-height: 1.45;
+	}
+</style>

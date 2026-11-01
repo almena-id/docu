@@ -1,0 +1,96 @@
+---
+title: Ask for a credential
+description: Find a credential in the catalog, apply for it with your wallet and receive it.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import Screens from '@docs/Screens.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+You need the Almena wallet set up on your phone ([how](/use/wallet/)) and a
+browser — on your computer, or on the phone itself.
+
+## 1. Find the credential
+
+Open [catalog.almena.id](https://catalog.almena.id). It lists every credential
+you can ask for and who gives each one.
+
+<Screenshot name="catalog-home" alt="The catalog's home: a search box, the categories and the credentials on offer, each as a card." />
+
+<Steps>
+
+1. Type what you are looking for in the search box <Mark n={1} />, for example
+   "degree" or the name of the organisation.
+
+2. Or narrow the list by category <Mark n={2} />: education, work, membership…
+
+3. Open the credential you want <Mark n={3} />.
+
+</Steps>
+
+## 2. Start the application
+
+The credential's page says who gives it, what it says about you and what you
+will be asked for.
+
+<Screenshot name="catalog-offer" alt="A credential's page in the catalog, with the Start button." />
+
+Press **Start** <Mark n={1} />.
+
+## 3. Pair your wallet
+
+The page shows the steps of your application and a code.
+
+<Screenshot name="catalog-apply" alt="The first step of an application: a QR code to scan with the wallet." />
+
+<Steps>
+
+1. The bar at the top <Mark n={1} /> shows where you are: pair the wallet,
+   fill in, sign and send, receive.
+
+2. Open the wallet and scan the code <Mark n={2} />. If you are on the phone
+   that has the wallet, press **Open in the wallet** <Mark n={3} /> instead.
+
+3. The wallet shows who you are applying to <Mark n={4} />. Check the name
+   and press **Start** <Mark n={5} />.
+
+   <Screenshot phone from={4} name="wallet-pair" alt="The wallet asks to start an application to Nova Academic Office for an academic qualification." />
+
+</Steps>
+
+The page moves on by itself once your wallet answers.
+
+## 4. Fill in and send
+
+<Steps>
+
+1. Fill in the form. If the organisation asks for a credential you already
+   have, press **Present from my wallet**: those fields come filled in and
+   verified, and you do not type them.
+
+2. Press **Continue**. A second code appears: scan it. Your wallet shows
+   everything you are sending <Mark n={1} /> — read it; if it is right, press
+   **Sign and send** <Mark n={2} />.
+
+   <Screenshot phone name="wallet-submit" alt="The wallet shows every answer of the application before signing and sending it." />
+
+</Steps>
+
+<Aside type="note" title="Keep this page">
+Your application lives in this browser. An application not sent within a
+day is removed, so fill it in in one go.
+</Aside>
+
+## 5. Receive it
+
+The organisation reviews your application and accepts or rejects it; the
+page tells you which. Once it gives you the credential, the page shows a last
+code under **Take it into your wallet**: scan it with the same wallet you
+applied with — only that one can take it.
+
+<Screenshot phone name="wallet-receive" alt="The wallet offers to keep the credential from Nova Academic Office." />
+
+The wallet shows the credential <Mark n={1} />: press **Keep it**
+<Mark n={2} />. That's it: it is in your wallet, on **Home**. See [your
+credentials](/use/wallet/credentials/).

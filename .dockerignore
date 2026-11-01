@@ -10,3 +10,4 @@ pnpm-debug.log*
 Dockerfile
 compose.yml
 Taskfile.yml
+.demo

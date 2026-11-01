@@ -1,0 +1,90 @@
+---
+title: Tu wallet
+description: Qué es el wallet de Almena y cómo configurarlo.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import Screens from '@docs/Screens.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+El wallet de Almena es una aplicación para tu móvil o tu ordenador. Guarda tus
+credenciales y las enseña, solo cuando tú lo dices. Funciona en iPhone y
+Android, y en ordenadores Windows, Mac y Linux.
+
+<Flow
+	label="Qué hace el wallet"
+	steps={[
+		{ icon: 'download', title: 'Guardar', text: 'Tus credenciales, en tu dispositivo, bajo llave.' },
+		{ icon: 'qr', title: 'Escanear', text: 'Los códigos del catálogo y de quien te pide algo.' },
+		{ icon: 'shield-check', title: 'Enseñar', text: 'Solo lo que se pide, y solo si aceptas.' },
+		{ icon: 'message', title: 'Hablar', text: 'Mensajes y llamadas con tus contactos, cifrados de punta a punta.' },
+	]}
+/>
+
+## Configurarlo
+
+<Screens>
+	<Screenshot phone name="wallet-welcome" alt="La bienvenida del wallet: crear una identidad, o recuperarla con una frase." />
+	<Screenshot phone from={3} name="wallet-phrase" alt="Las doce palabras de la frase de recuperación, numeradas, con la opción de 12 o 24 palabras." />
+</Screens>
+
+<Steps>
+
+1. Abre el wallet y pulsa **Crear una identidad** <Mark n={1} />. Si ya tenías
+   una y anotaste sus palabras, pulsa **Ya tengo una frase** <Mark n={2} />.
+
+2. El wallet te enseña tus **palabras de recuperación** <Mark n={4} />: doce
+   palabras, numeradas. Con doce basta; arriba puedes elegir veinticuatro
+   <Mark n={3} />.
+
+3. Escríbelas en papel, en orden. Marca que las tienes y pulsa **Continuar**.
+
+4. El wallet te pide algunas de las palabras, para comprobar que las anotaste
+   bien.
+
+5. Elige un **PIN**. Si tu móvil lo permite, también podrás abrir el wallet con
+   tu cara o tu huella.
+
+</Steps>
+
+<Aside type="caution" title="Tus palabras de recuperación son tu wallet">
+Nadie puede devolvértelas: ni Almena ni nadie. Quien las tiene, tiene tu
+wallet. No las escribas nunca en una web ni se las mandes a nadie: Almena
+nunca te las pedirá.
+</Aside>
+
+## Cada vez que lo abres
+
+<Screens>
+	<Screenshot phone name="wallet-lock" alt="El wallet bloqueado pide el PIN con un teclado." />
+	<Screenshot phone from={3} name="wallet-home" alt="El inicio del wallet: cada credencial como una tarjeta, con las pestañas abajo." />
+</Screens>
+
+El wallet se abre bloqueado: escribe tu PIN en el teclado <Mark n={2} />; los
+puntos <Mark n={1} /> se rellenan al escribir. Vuelve a bloquearse solo tras
+unos minutos sin usarlo.
+
+Después ves **Tu wallet**: cada credencial que tienes, como una tarjeta
+<Mark n={3} /> con su estado —**Válida**, **Suspendida**, **Revocada**—. La
+flecha circular <Mark n={4} /> las vuelve a comprobar todas. **Escanear QR**
+<Mark n={5} /> abre la cámara, para los códigos que te enseñan el catálogo y
+los demás.
+
+## Una copia de lo que las palabras no recuperan
+
+<Screenshot phone name="wallet-backup" alt="Perfil, Copia de seguridad: guardar una copia, o restaurarla." />
+
+Las palabras de recuperación devuelven tu identidad, pero no lo que recibiste
+con ella: tus credenciales, tus contactos y tus conversaciones. En **Perfil →
+Copia de seguridad**, **Guardar una copia** <Mark n={1} /> lo guarda todo en un
+único archivo cifrado que solo tus palabras abren. Guárdalo en otro sitio que
+no sea tu móvil. En un dispositivo nuevo, después de escribir tus palabras,
+**Elegir una copia** <Mark n={2} /> lo recupera todo.
+
+## Lo siguiente
+
+- [Pedir una credencial](/es/use/wallet/apply/)
+- [Tus credenciales](/es/use/wallet/credentials/)
+- [Enseñar una credencial](/es/use/wallet/show/)

@@ -1,0 +1,211 @@
+---
+// How Almena works in one picture: an organisation gives a person a
+// credential, the person keeps it in the wallet and shows it, and whoever
+// sees it checks it with the organisation that gave it. Drawn wide on a
+// computer and one above the other on a phone; the words come from the page,
+// in its language.
+import Icon, { type IconName } from './Icon.astro';
+
+interface Party {
+	title: string;
+	text: string;
+}
+interface Props {
+	/** What the whole picture says, for whoever cannot see it. */
+	label: string;
+	issuer: Party;
+	holder: Party;
+	verifier: Party;
+	gives: string;
+	shows: string;
+	checks: string;
+	/** Without its frame: beside a hero's text. */
+	bare?: boolean;
+}
+const { label, issuer, holder, verifier, gives, shows, checks, bare = false } = Astro.props;
+
+// `above`: the words go over the circle, clear of the arrows leaving it.
+type Node = { x: number; y: number; icon: IconName; party: Party; lit?: boolean; above?: boolean };
+const R = 46;
+const wide: Node[] = [
+	{ x: 380, y: 136, icon: 'building', party: issuer, above: true },
+	{ x: 130, y: 360, icon: 'wallet', party: holder, lit: true },
+	{ x: 630, y: 360, icon: 'shield-check', party: verifier },
+];
+const tall: Node[] = [
+	{ x: 200, y: 126, icon: 'building', party: issuer, above: true },
+	{ x: 200, y: 360, icon: 'wallet', party: holder, lit: true },
+	{ x: 200, y: 600, icon: 'shield-check', party: verifier },
+];
+---
+
+<figure class:list={['trust not-content', { bare }]} role="img" aria-label={label}>
+	{
+		// Each box is wider than its drawing: room on both sides for the
+		// longest words (some languages run long).
+		[
+			{ nodes: wide, box: '-80 0 920 480', variant: 'wide' },
+			{ nodes: tall, box: '-30 0 460 720', variant: 'tall' },
+		].map(({ nodes, box, variant }) => (
+			<svg class={variant} viewBox={box} aria-hidden="true">
+				<defs>
+					<marker
+						id={`arrow-${variant}`}
+						viewBox="0 0 10 10"
+						refX="8"
+						refY="5"
+						markerWidth="7"
+						markerHeight="7"
+						orient="auto-start-reverse"
+					>
+						<path d="M0,0 L10,5 L0,10 z" class="head" />
+					</marker>
+					<marker
+						id={`check-${variant}`}
+						viewBox="0 0 10 10"
+						refX="8"
+						refY="5"
+						markerWidth="7"
+						markerHeight="7"
+						orient="auto-start-reverse"
+					>
+						<path d="M0,0 L10,5 L0,10 z" class="head-dim" />
+					</marker>
+				</defs>
+
+				{variant === 'wide' ? (
+					<>
+						<line class="flow" x1="343" y1="164" x2="170" y2="322" marker-end="url(#arrow-wide)" />
+						<text class="edge" x="238" y="236" text-anchor="end">
+							<tspan class="step">1</tspan> {gives}
+						</text>
+						<line class="flow" x1="186" y1="360" x2="570" y2="360" marker-end="url(#arrow-wide)" />
+						<text class="edge" x="380" y="346" text-anchor="middle">
+							<tspan class="step">2</tspan> {shows}
+						</text>
+						<line class="trust-line" x1="590" y1="322" x2="417" y2="164" marker-end="url(#check-wide)" />
+						<text class="edge" x="522" y="236" text-anchor="start">
+							<tspan class="step">3</tspan> {checks}
+						</text>
+					</>
+				) : (
+					<>
+						<line class="flow" x1="200" y1="182" x2="200" y2="306" marker-end="url(#arrow-tall)" />
+						<text class="edge" x="216" y="250">
+							<tspan class="step">1</tspan> {gives}
+						</text>
+						<line class="flow" x1="200" y1="472" x2="200" y2="546" marker-end="url(#arrow-tall)" />
+						<text class="edge" x="216" y="515">
+							<tspan class="step">2</tspan> {shows}
+						</text>
+						<path
+							class="trust-line"
+							d="M 150 600 C 24 600, 24 126, 146 126"
+							fill="none"
+							marker-end="url(#check-tall)"
+						/>
+						<text class="edge" x="34" y="363" transform="rotate(-90 34 363)" text-anchor="middle">
+							<tspan class="step">3</tspan> {checks}
+						</text>
+					</>
+				)}
+
+				{nodes.map(({ x, y, icon, party, lit, above }) => (
+					<g>
+						<circle class:list={['node', { lit }]} cx={x} cy={y} r={R} />
+						<Icon name={icon} x={x - 22} y={y - 22} size={44} class:list={['glyph', { lit }]} />
+						<text class="title" x={x} y={above ? y - R - 40 : y + R + 30} text-anchor="middle">
+							{party.title}
+						</text>
+						<text class="text" x={x} y={above ? y - R - 16 : y + R + 54} text-anchor="middle">
+							{party.text}
+						</text>
+					</g>
+				))}
+			</svg>
+		))
+	}
+</figure>
+
+<style>
+	.trust {
+		margin-block: 2rem;
+		padding: 1.25rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 1rem;
+		background: var(--sl-color-gray-7, var(--sl-color-black));
+	}
+	.trust.bare {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: none;
+	}
+	svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-width: 52rem;
+		margin-inline: auto;
+		font-family: var(--font-sans, sans-serif);
+	}
+	.tall {
+		display: none;
+		max-width: 24rem;
+	}
+	@media (max-width: 40rem) {
+		.wide {
+			display: none;
+		}
+		.tall {
+			display: block;
+		}
+	}
+	.node {
+		fill: var(--sl-color-gray-6);
+		stroke: var(--sl-color-gray-4);
+		stroke-width: 2;
+	}
+	.node.lit {
+		fill: var(--sl-color-accent-low);
+		stroke: var(--sl-color-accent);
+		stroke-width: 3;
+	}
+	.glyph {
+		color: var(--sl-color-gray-2);
+	}
+	.glyph.lit {
+		color: var(--sl-color-text-accent);
+	}
+	.title {
+		fill: var(--sl-color-white);
+		font: 600 22px var(--font-brand, sans-serif);
+	}
+	.text {
+		fill: var(--sl-color-gray-3);
+		font-size: 17px;
+	}
+	.flow {
+		stroke: var(--sl-color-accent);
+		stroke-width: 3;
+	}
+	.trust-line {
+		stroke: var(--sl-color-gray-3);
+		stroke-width: 2;
+		stroke-dasharray: 7 7;
+	}
+	.head {
+		fill: var(--sl-color-accent);
+	}
+	.head-dim {
+		fill: var(--sl-color-gray-3);
+	}
+	.edge {
+		fill: var(--sl-color-gray-2);
+		font-size: 17px;
+	}
+	.step {
+		fill: var(--sl-color-text-accent);
+		font-weight: 700;
+	}
+</style>

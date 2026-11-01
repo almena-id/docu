@@ -1,0 +1,51 @@
+---
+title: Review applications
+description: See what people sent, accept or reject it, and give the credential.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+Every application to your issuers arrives under **Applications**, in the
+side menu.
+
+<Screenshot name="registry-applications" alt="The list of applications, newest first, each with its status." />
+
+Each line is one application <Mark n={1} />: the credential asked for, who
+sent it, when and how it stands. Open one.
+
+## Decide
+
+<Screenshot name="registry-application" alt="An application: the credential asked for, the holder's signature, the answers and the decision." />
+
+<Steps>
+
+1. At the top, the credential asked for, as it will look.
+
+2. Check the green line: **signed by the holder**. It means the answers are
+   exactly what the person's wallet sent.
+
+3. Read the **answers**.
+
+4. If you want, leave a **note** for the person <Mark n={1} />: they will see
+   it with your decision.
+
+5. Press **Reject** <Mark n={2} /> or **Accept** <Mark n={3} />.
+
+</Steps>
+
+## Give the credential
+
+Once accepted, the same page shows what the credential will say, filled in
+from the answers. Check it, correct anything, choose until when it holds, and
+press **Continue to sign**: a code appears for the issuer's signer — the
+person named in the issuer's **Signing** tab — to scan with their wallet.
+Once signed, the person who applied takes it from the catalog into their
+wallet.
+
+## Suspend or revoke
+
+On the page of a credential you gave, whoever signs for the issuer can
+**Suspend** it (for a while), **Reinstate** it, or **Revoke** it (for good).
+Each change is signed from the wallet, like the credential itself.

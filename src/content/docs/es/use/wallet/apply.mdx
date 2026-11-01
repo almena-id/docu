@@ -1,0 +1,97 @@
+---
+title: Pedir una credencial
+description: Encuentra una credencial en el catálogo, solicítala con tu wallet y recíbela.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import Screens from '@docs/Screens.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Necesitas el wallet de Almena configurado en tu móvil ([cómo](/es/use/wallet/))
+y un navegador, en tu ordenador o en el propio móvil.
+
+## 1. Encuentra la credencial
+
+Abre [catalog.almena.id](https://catalog.almena.id). Muestra cada credencial
+que puedes pedir y quién da cada una.
+
+<Screenshot name="catalog-home" alt="La portada del catálogo: un buscador, las categorías y las credenciales que se ofrecen, cada una como una tarjeta." />
+
+<Steps>
+
+1. Escribe lo que buscas en el buscador <Mark n={1} />, por ejemplo «título»
+   o el nombre de la organización.
+
+2. O acota la lista por categoría <Mark n={2} />: formación, trabajo,
+   afiliación…
+
+3. Abre la credencial que quieres <Mark n={3} />.
+
+</Steps>
+
+## 2. Empieza la solicitud
+
+La página de la credencial dice quién la da, qué dice de ti y qué te van a
+pedir.
+
+<Screenshot name="catalog-offer" alt="La página de una credencial en el catálogo, con el botón Empezar." />
+
+Pulsa **Empezar** <Mark n={1} />.
+
+## 3. Vincula tu wallet
+
+La página muestra los pasos de tu solicitud y un código.
+
+<Screenshot name="catalog-apply" alt="El primer paso de una solicitud: un código QR para escanear con el wallet." />
+
+<Steps>
+
+1. La barra de arriba <Mark n={1} /> te dice dónde estás: vincular el wallet,
+   rellenar, firmar y enviar, recibir.
+
+2. Abre el wallet y escanea el código <Mark n={2} />. Si estás en el móvil que
+   tiene el wallet, pulsa **Abrir en el wallet** <Mark n={3} />.
+
+3. El wallet te dice a quién estás enviando la solicitud <Mark n={4} />.
+   Comprueba el nombre y pulsa **Empezar** <Mark n={5} />.
+
+   <Screenshot phone from={4} name="wallet-pair" alt="El wallet pide empezar una solicitud a Nova Academic Office para un título académico." />
+
+</Steps>
+
+La página avanza sola en cuanto tu wallet responde.
+
+## 4. Rellena y envía
+
+<Steps>
+
+1. Rellena el formulario. Si la organización pide una credencial que ya
+   tienes, pulsa **Presentar desde mi wallet**: esos campos llegan rellenos y
+   verificados, y no tienes que escribirlos.
+
+2. Pulsa **Continuar**. Aparece un segundo código: escanéalo. Tu wallet te
+   enseña todo lo que vas a enviar <Mark n={1} />; léelo y, si está bien, pulsa
+   **Firmar y enviar** <Mark n={2} />.
+
+   <Screenshot phone name="wallet-submit" alt="El wallet muestra cada respuesta de la solicitud antes de firmarla y enviarla." />
+
+</Steps>
+
+<Aside type="note" title="No cierres esta página">
+Tu solicitud vive en este navegador. Una solicitud que no se envía en un día
+se borra, así que rellénala de una vez.
+</Aside>
+
+## 5. Recíbela
+
+La organización revisa tu solicitud y la acepta o la rechaza; la página te
+dice cuál. Cuando te da la credencial, la página muestra un último código en
+**Guárdala en tu wallet**: escanéalo con el mismo wallet con el que la pediste
+—solo ese puede llevársela—.
+
+<Screenshot phone name="wallet-receive" alt="El wallet ofrece guardar la credencial de Nova Academic Office." />
+
+El wallet te enseña la credencial <Mark n={1} />: pulsa **Guardarla**
+<Mark n={2} />. Y ya está: la tienes en tu wallet, en **Inicio**. Mira [tus
+credenciales](/es/use/wallet/credentials/).

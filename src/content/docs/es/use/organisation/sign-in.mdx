@@ -1,0 +1,53 @@
+---
+title: Entrar
+description: Entra en el registry con tu wallet de Almena o con tu correo.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Abre [registry.almena.id](https://registry.almena.id). No hay contraseñas:
+entras con tu wallet, o con un código que llega a tu correo.
+
+<Screenshot name="registry-landing" alt="La página de bienvenida del registry, con los botones para continuar con Almena u otras formas de entrar." />
+
+## Con tu wallet (recomendado)
+
+<Steps>
+
+1. Pulsa **Continuar con Almena** <Mark n={1} />.
+
+2. Aparece un código. Escanéalo con tu wallet de Almena: te dice dónde vas a
+   entrar <Mark n={3} />. Comprueba que pone **registry.almena.id** y pulsa
+   **Aceptar** <Mark n={4} />.
+
+   <Screenshot phone from={3} name="wallet-sign-in" alt="El wallet pide entrar en Almena Registry, en registry.almena.id." />
+
+</Steps>
+
+La primera vez, esto también crea tu cuenta. Entrar con el wallet importa: lo
+que firma tu organización lo firma desde el wallet de la persona responsable.
+
+## Con tu correo
+
+<Steps>
+
+1. Pulsa **Otras formas de entrar** <Mark n={2} />.
+
+   <Screenshot name="registry-login" alt="La página de entrada: un campo de correo y el botón que envía el código." />
+
+2. Escribe tu correo <Mark n={1} /> y pulsa **Enviar código** <Mark n={2} />.
+
+3. Escribe el código de seis cifras que llega a tu bandeja de entrada.
+
+</Steps>
+
+En la misma página también puedes continuar con Google, Microsoft, Apple o
+GitHub.
+
+<Aside type="tip">
+Más tarde puedes vincular otras formas de entrar —tu wallet, otro correo,
+otro proveedor— desde tu **Perfil**, en el menú bajo tu inicial, arriba a la
+derecha.
+</Aside>

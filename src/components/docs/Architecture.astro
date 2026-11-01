@@ -1,0 +1,117 @@
+---
+// The platform as layers of projects, top to bottom: what people use, the
+// services behind them, the tools around them. Each layer says how it talks
+// to the next.
+import Icon, { type IconName } from './Icon.astro';
+
+interface Project {
+	name: string;
+	icon: IconName;
+	text: string;
+	/** Where it is served, if anywhere. */
+	at?: string;
+}
+interface Layer {
+	title: string;
+	projects: Project[];
+	/** How this layer reaches the next one down. */
+	link?: string;
+}
+interface Props {
+	label: string;
+	layers: Layer[];
+}
+const { label, layers } = Astro.props;
+---
+
+<figure class="architecture not-content" aria-label={label}>
+	{
+		layers.map(({ title, projects, link }) => (
+			<>
+				<section>
+					<h3>{title}</h3>
+					<ul>
+						{projects.map(({ name, icon, text, at }) => (
+							<li>
+								<Icon name={icon} size={22} class="glyph" />
+								<span class="name">{name}</span>
+								<span class="text">{text}</span>
+								{at && <code>{at}</code>}
+							</li>
+						))}
+					</ul>
+				</section>
+				{link && (
+					<p class="link">
+						<span aria-hidden="true">↓</span> {link}
+					</p>
+				)}
+			</>
+		))
+	}
+</figure>
+
+<style>
+	.architecture {
+		display: grid;
+		gap: 0.5rem;
+		margin-block: 1.75rem;
+	}
+	section {
+		padding: 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 1rem;
+		background: var(--sl-color-gray-7, var(--sl-color-black));
+	}
+	h3 {
+		margin: 0 0 0.75rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-xs);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+	ul {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+		gap: 0.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		column-gap: 0.6rem;
+		row-gap: 0.15rem;
+		align-content: start;
+		padding: 0.75rem;
+		border-radius: 0.7rem;
+		background: var(--sl-color-gray-6);
+		overflow-wrap: break-word;
+	}
+	li :global(.glyph) {
+		grid-row: span 3;
+		color: var(--sl-color-text-accent);
+	}
+	.name {
+		color: var(--sl-color-white);
+		font-family: var(--font-mono, monospace);
+		font-weight: 600;
+	}
+	.text {
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-sm);
+		line-height: 1.45;
+	}
+	code {
+		justify-self: start;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	.link {
+		margin: 0;
+		text-align: center;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+</style>

@@ -1,0 +1,63 @@
+---
+title: Cómo funciona Almena
+description: Las credenciales digitales explicadas sin palabras técnicas.
+---
+
+import TrustTriangle from '@docs/TrustTriangle.astro';
+import Flow from '@docs/Flow.astro';
+
+Piensa en las tarjetas y papeles que llevas encima: tu título, tu carné de
+socio, una carta de tu empresa. Alguien te los dio, tú los guardas y los
+enseñas cuando te los piden. Almena hace lo mismo, con versiones digitales.
+
+## Tres partes
+
+<TrustTriangle
+	label="Una organización da una credencial a una persona; la persona la guarda en su wallet y la enseña; quien la ve comprueba que es auténtica."
+	issuer={{ title: 'La organización', text: 'da la credencial' }}
+	holder={{ title: 'Tú', text: 'la guardas en tu wallet' }}
+	verifier={{ title: 'Quien te la pide', text: 'la comprueba' }}
+	gives="te da una credencial"
+	shows="tú la enseñas"
+	checks="comprueban que es auténtica"
+/>
+
+- **La organización** —una universidad, un club, una empresa, un
+  ayuntamiento— te da una **credencial**: una tarjeta digital que dice algo de
+  ti, como «es graduada en Derecho» o «es socio desde 2024». La firma, igual
+  que sellaría un papel.
+- **Tú** la guardas en el **wallet de Almena**, una aplicación en tu móvil o
+  tu ordenador. Es tuya: nadie más tiene una copia, ni siquiera Almena.
+- **Quien te la pide** —una empresa, la puerta de un edificio, una web— te
+  pide que la enseñes. Tu wallet te dice exactamente qué se va a enseñar, y
+  nada sale sin tu permiso.
+
+Quien la pide sabe en un segundo que la credencial es auténtica, que de
+verdad la dio esa organización y que no se ha retirado. No hace falta llamar a
+la organización, y la organización no se entera de dónde la enseñaste.
+
+## Por qué es de fiar
+
+<Flow
+	label="Por qué una credencial es de fiar"
+	steps={[
+		{ icon: 'badge-check', title: 'Firmada', text: 'La organización firma cada credencial que da. Si cambia una letra, la firma deja de valer.' },
+		{ icon: 'landmark', title: 'Conocida', text: 'Almena publica quién es cada organización, así una firma lleva hasta ella.' },
+		{ icon: 'refresh', title: 'Al día', text: 'La organización puede suspender o retirar una credencial; quien la compruebe lo ve.' },
+		{ icon: 'wallet', title: 'Tuya', text: 'Solo tu wallet puede enseñarla, y solo lo que aceptes enseñar.' },
+	]}
+/>
+
+## Las piezas de Almena
+
+Estos nombres aparecen en el resto de la documentación:
+
+| Nombre | Qué es | Quién lo usa |
+| --- | --- | --- |
+| **Wallet** | La aplicación donde guardas tus credenciales y las enseñas. | Todos |
+| **Catalog** ([catalog.almena.id](https://catalog.almena.id)) | El escaparate: cada credencial que puedes pedir, y a quién. | Todos |
+| **Registry** ([registry.almena.id](https://registry.almena.id)) | Donde las organizaciones se dan de alta, reciben solicitudes y dan credenciales. | Organizaciones |
+| **Mediador** | Un buzón que guarda los mensajes de tu wallet mientras está apagado. | Nadie directamente: lo usa el wallet |
+
+Lo siguiente: [la vida de una credencial](/es/concepts/credential-life/), desde
+que la pides hasta que la enseñas.

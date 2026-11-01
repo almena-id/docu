@@ -1,0 +1,58 @@
+---
+title: Architecture
+description: The projects of Almena ID, what each does and how they connect.
+---
+
+import Architecture from '@docs/Architecture.astro';
+
+<Architecture
+	label="The projects of Almena ID in three layers"
+	layers={[
+		{
+			title: 'What people use',
+			projects: [
+				{ name: 'wallet', icon: 'smartphone', text: 'The holder’s app: keys, credentials, messages and calls. Tauri v2 + React.', at: 'iOS · Android · desktop' },
+				{ name: 'catalog', icon: 'search', text: 'Find credentials and apply for them. Next.js.', at: 'catalog.almena.id' },
+				{ name: 'registry', icon: 'building', text: 'Organisations: issuers, verifiers, forms, applications. Next.js.', at: 'registry.almena.id' },
+				{ name: 'docu', icon: 'book-open', text: 'This documentation. Astro + Starlight.', at: 'docs.almena.id' },
+				{ name: 'status', icon: 'activity', text: 'Whether every service works, probed from outside. Next.js + SQLite.', at: 'status.almena.id' },
+			],
+			link: 'HTTPS (the portals’ servers call the API); the wallet scans their QR codes',
+		},
+		{
+			title: 'Services',
+			projects: [
+				{ name: 'api', icon: 'server', text: 'The registry’s business and the identity domain: DIDs, catalogues, issuance, verification. FastAPI + PostgreSQL.', at: 'api.almena.id · almena.id' },
+				{ name: 'mediator', icon: 'radio-tower', text: 'DIDComm v2.0 mailbox for wallets, push and TURN for calls. Rust.', at: 'mediator.almena.id' },
+				{ name: 'agent', icon: 'bot', text: 'The AI agent, reached over A2A 1.0. Python.', at: 'agent.almena.id' },
+			],
+			link: 'Each issuer’s and verifier’s queue (RabbitMQ) goes to the organisation’s own back office',
+		},
+		{
+			title: 'Tools and delivery',
+			projects: [
+				{ name: 'almena', icon: 'terminal', text: 'The CLI: everything in the portals, from a terminal. Rust.' },
+				{ name: 'develop', icon: 'wrench', text: 'The whole platform on one machine, behind Caddy.' },
+				{ name: 'homebrew-tap', icon: 'download', text: 'The CLI for Homebrew.' },
+				{ name: 'scoop-bucket', icon: 'download', text: 'The CLI for Scoop.' },
+			],
+		},
+	]}
+/>
+
+## How a credential travels
+
+1. A holder opens an offer in **catalog**, whose server starts the
+   application at the **api**.
+2. The catalog shows a QR code; the **wallet** reads the request from the
+   identity domain (`almena.id`, served by the api) and answers it there.
+   Every later step — presenting, signing the submission, receiving — is
+   another request on the same channel.
+3. The application reaches the issuer in **registry** and in its queue. The
+   issuer's signer signs the credential from their **wallet**; the api keeps
+   no signing keys.
+4. Verifiers resolve the issuer's `did:webvh` from the identity domain and
+   read its status list to know whether the credential still holds.
+
+Wallets reach each other only through **mediators**, which carry messages they
+cannot read.

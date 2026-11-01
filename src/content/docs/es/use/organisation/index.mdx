@@ -1,0 +1,48 @@
+---
+title: Tu organización
+description: Qué hace una organización en el registry de Almena, y un recorrido por su pantalla de inicio.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+
+El [registry](https://registry.almena.id) es donde tu organización da
+credenciales. Ahí configuras quién las da, qué rellenan las personas para
+pedirlas, y revisas lo que llega.
+
+<Flow
+	label="Qué hace una organización en el registry"
+	steps={[
+		{ icon: 'user', title: 'Entrar', text: 'Con tu wallet de Almena, o con tu correo.' },
+		{ icon: 'building', title: 'Crear un emisor', text: 'La parte de tu organización que da credenciales.' },
+		{ icon: 'file-text', title: 'Ofrecer', text: 'Elige qué da y el formulario que rellenan las personas.' },
+		{ icon: 'check', title: 'Decidir', text: 'Revisa cada solicitud y acéptala o recházala.' },
+		{ icon: 'badge-check', title: 'Entregar', text: 'Firma la credencial desde tu wallet.' },
+	]}
+/>
+
+## Tu pantalla de inicio
+
+Al entrar, el registry abre el **Resumen**: lo que te espera y cómo va tu
+organización.
+
+<Screenshot name="registry-overview" alt="El resumen del registry: el menú lateral, el selector de cuenta, lo pendiente y la gráfica de actividad." />
+
+- <Mark n={1} /> **El menú lateral** te lleva a todas partes: solicitudes,
+  emisores, formularios, ajustes.
+- <Mark n={2} /> **La cuenta** en la que estás trabajando. Si perteneces a
+  más de una organización, cámbiala aquí.
+- <Mark n={3} /> **Pendiente**: lo que espera para firmarse, publicarse o
+  entregarse, en el orden en que se hace. Cada línea te lleva a donde se hace.
+- <Mark n={4} /> **Actividad**: cuántas solicitudes llegaron, cuántas
+  credenciales diste y cuántas se comprobaron, día a día.
+
+Más abajo, **Salud de la cuenta** enumera lo que tu organización aún tiene que
+configurar, con un enlace a cada cosa.
+
+## Guías
+
+- [Entrar](/es/use/organisation/sign-in/)
+- [Crear un emisor](/es/use/organisation/issuers/)
+- [Revisar solicitudes](/es/use/organisation/applications/)

@@ -1,0 +1,64 @@
+---
+title: How Almena works
+description: Digital credentials explained without technical words.
+---
+
+import TrustTriangle from '@docs/TrustTriangle.astro';
+import Flow from '@docs/Flow.astro';
+
+Think of the cards and papers you carry: your degree, your membership card,
+a letter from your employer. Someone gave them to you, you keep them, and you
+show them when you are asked. Almena does the same, with digital ones.
+
+## Three parties
+
+<TrustTriangle
+	label="An organisation gives a person a credential; the person keeps it in their wallet and shows it; whoever sees it checks that it is genuine."
+	issuer={{ title: 'The organisation', text: 'gives the credential' }}
+	holder={{ title: 'You', text: 'keep it in your wallet' }}
+	verifier={{ title: 'Whoever asks', text: 'checks it' }}
+	gives="gives you a credential"
+	shows="you show it"
+	checks="they check it is genuine"
+/>
+
+- **The organisation** — a university, a club, a company, a city hall —
+  gives you a **credential**: a digital card that says something about you,
+  such as "has a degree in Law" or "is a member since 2024". It signs it, the
+  way it would stamp a paper.
+- **You** keep it in the **Almena wallet**, an app on your phone or computer.
+  It is yours: nobody else holds a copy, not even Almena.
+- **Whoever asks** — an employer, the door of a building, a website — asks you
+  to show it. Your wallet tells you exactly what will be shown, and nothing
+  goes without your OK.
+
+The one who asks can tell, in a second, that the credential is genuine,
+that the organisation really gave it, and that it has not been withdrawn.
+There is no need to call the organisation, and the organisation does not
+learn where you showed it.
+
+## What makes it trustworthy
+
+<Flow
+	label="Why a credential can be trusted"
+	steps={[
+		{ icon: 'badge-check', title: 'Signed', text: 'The organisation signs every credential it gives. A changed letter breaks the signature.' },
+		{ icon: 'landmark', title: 'Known', text: 'Almena publishes who each organisation is, so a signature can be traced to it.' },
+		{ icon: 'refresh', title: 'Current', text: 'The organisation can suspend or withdraw a credential; anyone checking sees it.' },
+		{ icon: 'wallet', title: 'Yours', text: 'Only your wallet can show it, and only what you agree to show.' },
+	]}
+/>
+
+## The pieces of Almena
+
+You will meet these names in the rest of the documentation:
+
+| Name | What it is | Who uses it |
+| --- | --- | --- |
+| **Wallet** | The app where you keep your credentials and show them. | Everyone |
+| **Catalog** ([catalog.almena.id](https://catalog.almena.id)) | The shop window: every credential you can ask for, and from whom. | Everyone |
+| **Registry** ([registry.almena.id](https://registry.almena.id)) | Where organisations set themselves up, receive applications and give credentials. | Organisations |
+| **Mediator** | A mailbox that keeps messages for your wallet while it is off. | Nobody directly: the wallet uses it |
+
+Next: [the life of a credential](/concepts/credential-life/), from asking for
+it to showing it.

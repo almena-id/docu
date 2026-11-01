@@ -1,0 +1,32 @@
+---
+title: Usar Almena
+description: Guías con imágenes para quien guarda credenciales y para las organizaciones que las dan.
+---
+
+import Mark from '@docs/Mark.astro';
+import Paths from '@docs/Paths.astro';
+
+Estas guías van paso a paso, con una imagen de cada pantalla. Los números de
+las imágenes —como <Mark n={1} />— son los mismos que nombra el texto. No
+necesitas nada más que el wallet y un navegador.
+
+<Paths
+	paths={[
+		{
+			icon: 'wallet',
+			who: 'Si quieres credenciales',
+			title: 'Tu wallet',
+			text: 'Configura el wallet de Almena, pide una credencial en el catálogo y enséñala cuando te la pidan.',
+			href: '/es/use/wallet/',
+		},
+		{
+			icon: 'building',
+			who: 'Si das credenciales',
+			title: 'Tu organización',
+			text: 'Da de alta tu organización en el registry, ofrece credenciales, revisa solicitudes y entrégalas.',
+			href: '/es/use/organisation/',
+		},
+	]}
+/>
+
+¿No sabes qué es una credencial o un wallet? Lee antes [cómo funciona Almena](/es/concepts/).
