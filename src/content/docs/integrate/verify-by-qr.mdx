@@ -1,0 +1,187 @@
+---
+title: Verify by QR
+description: Ask a wallet for credentials as one of your verifiers, from your own systems, and read the verdict.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+A verifier asks a person's wallet, through a QR code, for what one of your
+forms asks to be presented; the API checks what the wallet sends and keeps
+the verdict. This is what the registry's **Verify** tab does
+([the guide for organisations](/use/organisation/verifiers/)); here is the
+same flow from your own systems — a website, a kiosk, a door controller.
+
+<Flow
+	label="Verification by QR"
+	steps={[
+		{ icon: 'server', title: 'Open a verification', text: 'Your system asks the API, as a verifier, with a form.' },
+		{ icon: 'qr', title: 'Show the code', text: 'The deep link, as a QR or a link on the phone.' },
+		{ icon: 'smartphone', title: 'The wallet reads', text: 'Who asks, what for, and the DCQL query.' },
+		{ icon: 'send', title: 'The wallet answers', text: 'A vp_token, by OpenID4VP direct_post.' },
+		{ icon: 'shield-check', title: 'The API checks', text: 'Signature, key binding, nonce, issuer, status.' },
+		{ icon: 'refresh', title: 'You read the verdict', text: 'By polling, or from the verifier’s queue.' },
+	]}
+/>
+
+## Before you start
+
+- An [API token](/integrate/quick-start/) of a member of the account.
+- A **published** verifier: its DID is shown to the wallet, so a draft cannot
+  ask (`verifier_unpublished`).
+- A [form](/use/organisation/forms/) with at least one credential to present
+  (`nothing_to_present` otherwise). Its DCQL query is what the wallet is
+  asked: `GET /tenants/{tenant}/forms/{form}/dcql` shows it.
+
+The fastest way to try it is the CLI, which opens the verification, draws
+the QR in the terminal and waits for the verdict:
+
+```bash
+almena verifier verify <verifier-id> --form <form-id>
+```
+
+## The flow
+
+<Steps>
+
+1. **Open a verification.** As a member of the account:
+
+   ```http
+   POST /api/v1/tenants/{tenant}/verifiers/{verifier}/verifications
+   Authorization: Bearer almena_…
+   Content-Type: application/json
+
+   { "form_id": "9b4e19bf-…" }
+   ```
+
+   The answer (`201`) is the verification, `pending`, with the link to show:
+
+   ```json
+   {
+     "id": "5c1d…",
+     "status": "pending",
+     "verifier": { "id": "1c76…", "name": "Campus Access", "did": "did:webvh:…:almena.id:ids:idn_…" },
+     "form": { "id": "9b4e…", "name": { "en": "Campus entry", "es": "Entrada al campus" } },
+     "expires_at": "2026-11-01T18:31:02Z",
+     "deep_link": "almena://auth?request_uri=https%3A%2F%2Falmena.id%2Fapi%2Fv1%2Fverifications%2F5c1d…%2Frequest",
+     "answered_at": null,
+     "result": null
+   }
+   ```
+
+2. **Show the code.** Draw `deep_link` as a QR code for a wallet on another
+   device, or offer it as a link on the same phone. It lasts five minutes
+   (`expires_at`); after that, open a new verification.
+
+3. **The wallet reads the request.** The Almena wallet — or any wallet that
+   speaks OpenID4VP — follows `request_uri`, on the platform's wallet channel
+   (`https://almena.id/api/v1/verifications/{id}/request`). It gets an
+   OpenID4VP request with `response_type` `vp_token`, `response_mode`
+   `direct_post`, the `client_id` (the registry portal,
+   `https://registry.almena.id`), a `nonce`, the `purpose` `verify`, the
+   verifier by name and DID, the form's name and description, its
+   `dcql_query`, and each credential's purpose. The person sees who asks and
+   exactly what would go, and decides.
+
+4. **The wallet answers.** It posts its `vp_token` to `response_uri` —
+   `…/verifications/{id}/request/response` —, form-encoded or as JSON: for
+   each DCQL query id, the presentations for it. Each SD-JWT VC carries a
+   key-binding JWT whose `aud` is the `client_id` and whose `nonce` is the
+   request's. A request is answered once.
+
+5. **The API checks it**, credential by credential: the issuer's signature,
+   the disclosures, the holder's key binding, the audience and nonce,
+   validity dates, the issuer's trust (any published issuer that grants the
+   type, or the ones the form names) and its status list (not suspended, not
+   revoked). It keeps the verdict and, if the verifier has a
+   [queue](/use/organisation/queues/), puts it there.
+
+6. **Read the verdict.** Poll until the status is no longer `pending` (the
+   portal asks every two seconds):
+
+   ```http
+   GET /api/v1/tenants/{tenant}/verifiers/{verifier}/verifications/{id}
+   ```
+
+   Answered, it carries `result`:
+
+   ```json
+   {
+     "status": "answered",
+     "answered_at": "2026-11-01T18:27:40Z",
+     "result": {
+       "verified": true,
+       "credentials": [
+         {
+           "key": "membership",
+           "presented": true,
+           "verified": true,
+           "query": "membership_sd_jwt",
+           "format": "dc+sd-jwt",
+           "issuer": "did:webvh:…:almena.id:ids:idn_…",
+           "claims": { "given_name": "Amina", "family_name": "Haddad" },
+           "fills": { "given_name": "Amina", "family_name": "Haddad" },
+           "problems": []
+         }
+       ]
+     }
+   }
+   ```
+
+   `expired` means nobody answered in time.
+
+</Steps>
+
+## Reading the verdict
+
+- `verified` is `true` when every **required** credential was presented and
+  holds, and nothing presented failed. Act on it, not on each credential
+  alone.
+- Each credential says whether it was `presented` and `verified`, which DCQL
+  `query` it answered, its `format` and `issuer`, the `claims` disclosed
+  (only those the form asks for, and only when verified) and `fills`: the
+  form's fields it fills.
+- `problems` says why one does not hold, in codes: `expired`, `revoked`,
+  `suspended`, `issuer_untrusted`, `nonce_mismatch`, `holder_binding_invalid`…
+  Every one is in the [errors reference](/reference/errors/), under
+  *Presentation problems*. A required credential the wallet did not present
+  has the problem `not_presented`.
+
+## From the queue instead of polling
+
+A verifier with a queue (made from its **Queue** tab, or `POST
+/tenants/{tenant}/verifiers/{verifier}/queue`) receives each verdict as it
+happens, an AMQP message of type `presentation.verified`:
+
+```json
+{
+  "type": "presentation.verified",
+  "at": "2026-11-01T18:27:40Z",
+  "verifier": { "id": "1c76…", "slug": "ver_…", "did": "did:webvh:…" },
+  "verification": { "id": "5c1d…", "form_id": "9b4e…", "form": "Campus entry", "answered_at": "2026-11-01T18:27:40Z" },
+  "verified": true,
+  "credentials": [ … ]
+}
+```
+
+## When it is refused
+
+| Code | Status | When |
+| --- | --- | --- |
+| `verifier_unpublished` | 409 | The verifier is a draft or its DID is not signed: publish it first. |
+| `nothing_to_present` | 409 | The form asks for no credentials. |
+| `verifier_not_found`, `form_not_found` | 404 | Not one of the account's. |
+| `verification_not_found` | 404 | No verification by that id for that verifier. |
+| `request_not_found` | 404 | The wallet followed a link to no request. |
+| `already_answered` | 409 | The wallet answered twice: only the first counts. |
+| `request_expired` | 410 | The wallet answered after the five minutes. |
+| `invalid_vp_token` | 400 | What the wallet sent cannot be read as a `vp_token`. |
+
+The [errors reference](/reference/errors/) has every code the API answers,
+and the [API reference](/reference/api/verifications/) every field.
+
+<Aside type="tip">
+To check a `vp_token` you got some other way — your own OpenID4VP request,
+with your own nonce and audience — post it to `POST
+/tenants/{tenant}/forms/{form}/verify`: the same check, the same verdict.
+</Aside>

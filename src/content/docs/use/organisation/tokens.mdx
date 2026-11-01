@@ -1,0 +1,57 @@
+---
+title: Profile and API tokens
+description: Your alias, your ways in, linking your wallet, and the tokens your scripts use.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Your **Profile** is yours, not your organisation's: open it from the menu
+under your initial, at the top right. There you set your **Alias** (the name
+others see instead of your email), your **Ways in** — your email, your Almena
+wallet, Google, Microsoft, Apple or GitHub — and your API tokens.
+
+<Aside type="tip">
+**Link Almena wallet** is how you get ready to sign for your organisation:
+a code appears, and you scan it with your wallet.
+</Aside>
+
+## API tokens
+
+An **API token** lets a program act as you: a script, a nightly job, the
+`almena` command line. Whoever connects your systems will ask you for one.
+
+<Flow
+	label="Giving a program access"
+	steps={[
+		{ icon: 'key', title: 'Create a token', text: 'A name and how many days it lasts.' },
+		{ icon: 'download', title: 'Copy it', text: 'It is shown only once.' },
+		{ icon: 'terminal', title: 'The program uses it', text: 'It acts as you until it expires.' },
+		{ icon: 'ban', title: 'Revoke it', text: 'When it is no longer needed.' },
+	]}
+/>
+
+<Screenshot name="registry-tokens" alt="The Profile, with the API tokens section: one token and the boxes to create another." />
+
+<Steps>
+
+1. Under **API tokens** <Mark n={1} />, type a **Name** <Mark n={3} /> that
+   says where it will be used ("CI", "my laptop").
+
+2. Choose the **Days valid** <Mark n={4} />, from 1 to 365.
+
+3. Press **Create token** <Mark n={5} />. The token appears **shown this
+   once**: press **Copy** and keep it where it will be used. The registry does
+   not keep it.
+
+</Steps>
+
+Your tokens are listed <Mark n={2} /> with when they expire and when they
+were last used. **Revoke** stops one at once.
+
+<Aside type="caution">
+A token acts as you in every account you belong to. Treat it like a key:
+never share it in an email or a chat, and revoke it if you are unsure.
+</Aside>

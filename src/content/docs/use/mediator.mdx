@@ -1,0 +1,105 @@
+---
+title: Choose a mediator
+description: What a mediator is, which one to use, and how to choose it in the wallet and in the registry.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import Screens from '@docs/Screens.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+A **mediator** is a mailbox on the internet. Your phone is not always on, so
+messages for you — from your contacts, from an organisation — wait there
+until your wallet picks them up. It is also the address others reach you at.
+
+A mediator cannot read what it keeps: every message is locked for you before
+it leaves, and only your wallet opens it. It does not know what is said, nor
+in a call what is heard.
+
+<Flow
+	label="How a message reaches you"
+	steps={[
+		{ icon: 'send', title: 'Someone writes', text: 'Their wallet locks the message for you alone.' },
+		{ icon: 'server', title: 'Your mediator keeps it', text: 'Without being able to open it.' },
+		{ icon: 'smartphone', title: 'Your wallet picks it up', text: 'When it is on, or straight away if it is open.' },
+		{ icon: 'message', title: 'You read it', text: 'Only your wallet can.' },
+	]}
+/>
+
+## Which one
+
+Almena runs a public mediator, **mediator.almena.id**, free for every wallet
+and organisation: it is the one offered everywhere, and the right choice
+unless someone you trust tells you otherwise — your organisation, for
+example, if it runs its own. Any mediator that speaks the same standard
+(DIDComm) works, as long as it uses a secure (HTTPS) address.
+
+Whether Almena's mediator is working right now is on the [status
+page](/use/status/).
+
+## In your wallet
+
+**Profile → Messaging**.
+
+<Screens>
+	<Screenshot phone name="wallet-mediator" alt="Connect to a mediator: the box with Almena's address already in it, and the Connect button." />
+	<Screenshot phone from={3} name="wallet-messaging" alt="Messaging: connected to mediator.almena.id, with Check for messages and Disconnect." />
+</Screens>
+
+<Steps>
+
+1. With none yet, the section says **Not connected**: press **Connect to a
+   mediator**.
+
+2. The box <Mark n={1} /> already has Almena's address. To use another one,
+   paste its invitation link or its address instead.
+
+3. Press **Connect** <Mark n={2} />.
+
+</Steps>
+
+Once connected, the section shows which one you use <Mark n={3} /> and how
+many messages are waiting. **Check for messages** <Mark n={4} /> picks them
+up now; **Disconnect** <Mark n={5} /> leaves it.
+
+A mediator can also show you a code (its own page has one, as on
+[mediator.almena.id](https://mediator.almena.id)): scan it with **Scan QR**.
+
+<Screenshot phone name="wallet-mediator-invitation" alt="Connect to a mediator: the mediator offered, the one used now, and the Accept button." />
+
+The wallet shows which mediator it is <Mark n={1} /> and the one you use now.
+Press **Accept** <Mark n={2} /> to connect.
+
+<Aside type="caution" title="Choose once">
+Your contacts reach you through the mediator you had when you met them. If
+you change it, their messages stop arriving. That is why, while you have
+contacts through your current mediator, the wallet does not let a code or a
+link change it. If a mediator says it is full, it is not taking new wallets
+for now: try later, or choose another.
+</Aside>
+
+## For your organisation
+
+In the registry, an organisation chooses a mediator in two places: for the
+whole account, and for each issuer and verifier. People's wallets reach your
+services through it.
+
+<Screenshot name="registry-tenant" alt="The account's settings: name, mediator, the languages ticked and the Save button." />
+
+<Steps>
+
+1. Open **Settings** and choose the **Mediator** <Mark n={2} />: one of your
+   own or a public one. A new account starts with Almena's; leave it unless
+   you run your own. Press **Save**.
+
+2. When you create an issuer or a verifier, its **Mediator** comes filled in
+   the same way ([Set up an issuer](/use/organisation/issuers/)).
+
+</Steps>
+
+To run your own mediator, the account needs a [verified
+domain](/use/organisation/domains/): a mediator answers on an address under
+it, such as `mediator.nova.example`. Create it under **Mediators**, sign its
+identity and publish it, like an issuer. A mediator you mark **public** is
+offered to every organisation once published.

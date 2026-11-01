@@ -94,9 +94,63 @@ async def build(sessions: async_sessionmaker) -> None:  # type: ignore[type-arg]
             await publish(client, headers, tenant, "issuers", created["id"])
             issuers[name] = created
         verifier = (
-            await client.post(f"{base}/verifiers", json={"name": "Campus Access"}, headers=headers)
+            await client.post(
+                f"{base}/verifiers",
+                json={
+                    "name": "Campus Access",
+                    "description": {
+                        "en": "The doors of the campus.",
+                        "es": "Las puertas del campus.",
+                    },
+                },
+                headers=headers,
+            )
         ).json()
+        # Signed and published: only a published verifier asks a wallet.
+        await sign(client, headers, tenant, verifier["identity"]["id"], wallet)
+        await publish(client, headers, tenant, "verifiers", verifier["id"])
         await client.post(f"{base}/verifiers", json={"name": "Library"}, headers=headers)
+        # A form that asks to be shown a credential: what Campus Access verifies.
+        entry = await client.post(
+            f"{base}/forms",
+            json={
+                "name": {"en": "Campus entry", "es": "Entrada al campus"},
+                "description": {
+                    "en": "Show your student card to come in.",
+                    "es": "Enseña tu carné de estudiante para entrar.",
+                },
+                "fields": [{"ref": "given_name"}, {"ref": "family_name"}],
+                "credentials": [
+                    {
+                        "type": "membership",
+                        "purpose": {
+                            "en": "To check you belong to Nova University",
+                            "es": "Para comprobar que perteneces a Nova University",
+                        },
+                    }
+                ],
+            },
+            headers=headers,
+        )
+        assert entry.status_code == 201, entry.text
+        # A domain waiting for its DNS record, a person invited, the academic
+        # office's queue and an API token: what the screens of each show.
+        added = await client.post(f"{base}/domains", json={"domain": "nova.example"}, headers=headers)
+        assert added.status_code == 201, added.text
+        invited = await client.post(
+            f"{base}/invitations",
+            json={"email": "grace@nova.example", "role": "member"},
+            headers=headers,
+        )
+        assert invited.status_code == 201, invited.text
+        queued = await client.post(
+            f"{base}/issuers/{issuers['Nova Academic Office']['id']}/queue", headers=headers
+        )
+        assert queued.status_code == 201, queued.text
+        made = await client.post(
+            "/api/v1/auth/me/tokens", json={"name": "CI", "expires_in_days": 90}, headers=headers
+        )
+        assert made.status_code == 201, made.text
         anchor, _ = await _sign_in(client, outbox, "anchor@example.net")
 
         # A few people apply as a holder would, from a wallet: these are the
@@ -191,6 +245,9 @@ async def build(sessions: async_sessionmaker) -> None:  # type: ignore[type-arg]
     (OUT / "demo.token").write_text(token(headers))
     (OUT / "anchor.token").write_text(token(anchor))
     (OUT / "application.id").write_text(real)
+    (OUT / "verifier.id").write_text(verifier["id"])
+    (OUT / "issuer.id").write_text(issuers["Nova Academic Office"]["id"])
+    (OUT / "form.id").write_text(entry.json()["id"])
 
 
 async def main() -> None:

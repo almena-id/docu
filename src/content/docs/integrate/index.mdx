@@ -27,9 +27,9 @@ the portals check nothing it does not check again.
 | --- | --- | --- |
 | **REST API** | `https://api.almena.id/api/v1` | Everything: accounts, issuers, verifiers, forms, applications, verifications |
 | **`almena` CLI** | macOS, Linux, Windows | The same, from a terminal or a pipeline |
-| **Queues** | AMQP, one per issuer and verifier | What arrives for them, as it arrives |
-| **MCP** | the API's `/mcp` | AI assistants working with the registry |
-| **Agent** | `https://agent.almena.id`, A2A 1.0 | Other agents asking about Almena |
+| [**Queues**](/integrate/queues/) | AMQP, one per issuer and verifier | What arrives for them, as it arrives |
+| [**MCP**](/integrate/mcp/) | the API's `/mcp` | AI assistants working with the registry |
+| [**Agent**](/integrate/agent/) | `https://agent.almena.id`, A2A 1.0 | Other agents asking about Almena and operating your account |
 
 ## The standards it speaks
 
@@ -49,6 +49,8 @@ with it:
 ## Next
 
 - [Quick start](/integrate/quick-start/): your first call in a few minutes.
+- [Verify by QR](/integrate/verify-by-qr/): ask a wallet for credentials from your own systems.
+- [Queues](/integrate/queues/), [MCP](/integrate/mcp/) and [the agent](/integrate/agent/).
 - [Protocols](/integrate/protocols/): which standard at each step, and Almena's own specifications.
 - [API](/reference/api/) and [CLI](/reference/cli/) reference.
 - [Errors](/reference/errors/): every code the API refuses with.

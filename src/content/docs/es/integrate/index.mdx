@@ -27,9 +27,9 @@ portales no comprueban nada que ella no vuelva a comprobar.
 | --- | --- | --- |
 | **API REST** | `https://api.almena.id/api/v1` | Todo: cuentas, emisores, verificadores, formularios, solicitudes, verificaciones |
 | **CLI `almena`** | macOS, Linux, Windows | Lo mismo, desde un terminal o un pipeline |
-| **Colas** | AMQP, una por emisor y verificador | Lo que les llega, en cuanto llega |
-| **MCP** | `/mcp` de la API | Asistentes de IA que trabajan con el registry |
-| **Agente** | `https://agent.almena.id`, A2A 1.0 | Otros agentes que preguntan por Almena |
+| [**Colas**](/es/integrate/queues/) | AMQP, una por emisor y verificador | Lo que les llega, en cuanto llega |
+| [**MCP**](/es/integrate/mcp/) | `/mcp` de la API | Asistentes de IA que trabajan con el registry |
+| [**Agente**](/es/integrate/agent/) | `https://agent.almena.id`, A2A 1.0 | Otros agentes que preguntan por Almena y manejan tu cuenta |
 
 ## Los estándares que habla
 
@@ -49,6 +49,8 @@ hable funciona con él:
 ## Lo siguiente
 
 - [Inicio rápido](/es/integrate/quick-start/): tu primera llamada en unos minutos.
+- [Verificar por QR](/es/integrate/verify-by-qr/): pide credenciales a un wallet desde tus propios sistemas.
+- [Colas](/es/integrate/queues/), [MCP](/es/integrate/mcp/) y [el agente](/es/integrate/agent/).
 - [Protocolos](/es/integrate/protocols/): qué estándar en cada paso, y las especificaciones propias de Almena.
 - Referencia de la [API](/reference/api/) y de la [CLI](/reference/cli/).
 - [Errores](/es/reference/errors/): cada código con el que la API rechaza algo.

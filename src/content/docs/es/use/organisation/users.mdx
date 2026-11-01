@@ -1,0 +1,66 @@
+---
+title: Usuarios
+description: Invita a las personas que trabajan en la cuenta de tu organización y elige qué pueden hacer.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Varias personas pueden trabajar en la misma cuenta. Cada una es
+**Administrador** o **Miembro**:
+
+- **Miembro**: trabaja con emisores, verificadores, formularios y
+  solicitudes.
+- **Administrador**: lo mismo, y además añade y gestiona usuarios, publica y
+  cambia los ajustes de la cuenta.
+
+<Flow
+	label="Invitar a alguien"
+	steps={[
+		{ icon: 'users', title: 'Añadir usuario', text: 'Su correo y su rol.' },
+		{ icon: 'send', title: 'Le llega un correo', text: 'La invitación, de Almena.' },
+		{ icon: 'user', title: 'Entra', text: 'Con esa misma dirección.' },
+		{ icon: 'check', title: 'Ya está dentro', text: 'La cuenta aparece en su lista.' },
+	]}
+/>
+
+## La lista
+
+Abre **Usuarios**, en el menú lateral bajo **Cuenta**.
+
+<Screenshot name="registry-users" alt="Los usuarios de la cuenta: una administradora con wallet vinculado y un miembro invitado." />
+
+Aparecen todos los de la cuenta, con su rol y si tienen un wallet vinculado.
+**Añadir usuario** <Mark n={1} /> invita a alguien. Quien está invitado y aún
+no ha entrado aparece como **Invitado** <Mark n={2} />.
+
+El menú al final de cada línea <Mark n={3} /> permite a un administrador
+**Hacer admin** o **Hacer miembro**, **Quitar de la cuenta** o, en una
+invitación, **Anular la invitación**. En tu propia línea ofrece **Salir de la
+cuenta**. Cada cosa se pregunta una vez más antes de hacerse.
+
+## Invita a alguien
+
+<Screenshot name="registry-user-new" alt="La pantalla para añadir un usuario: correo y rol." />
+
+<Steps>
+
+1. Pulsa **Añadir usuario** en la lista.
+
+2. Escribe su **Correo electrónico** <Mark n={1} /> y elige su **Rol**
+   <Mark n={2} />.
+
+3. Pulsa **Enviar invitación** <Mark n={3} />.
+
+</Steps>
+
+Le llega un correo. Entra en la cuenta la próxima vez que inicie sesión en el
+registry con esa dirección, sin más pasos.
+
+<Aside type="note">
+No se puede quitar al último administrador, ni a quien firma por la cuenta:
+elige antes a otra persona para firmar, en
+[Firma](/es/use/organisation/settings/).
+</Aside>

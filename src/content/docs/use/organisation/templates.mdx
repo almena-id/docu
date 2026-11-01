@@ -1,0 +1,74 @@
+---
+title: Templates
+description: Fields, credential types, value lists and categories — what forms and credentials are made of.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+Under **Templates**, in the side menu, beside [Forms](/use/organisation/forms/),
+are the pieces forms and credentials are built from. Almena keeps one
+catalogue of them for everybody, so that a "date of birth" means the same in
+every organisation and every wallet.
+
+| Screen | What it holds | Who changes it |
+| --- | --- | --- |
+| **Fields** | The questions a form can ask | Almena's: read only. Your own: with a subscription |
+| **Credential types** | The kinds of credential issuers give | Almena's: read only. Your own: with a subscription |
+| **Value lists** | Lists of codes some fields pick from | The trust anchor only |
+| **Field categories**, **Credential categories** | What the catalogue is sorted under | The trust anchor only |
+
+The **trust anchor** is Almena's own account, which keeps the shared
+catalogue. If you are not it, you only see the first two screens.
+
+## Fields
+
+<Screenshot name="registry-fields" alt="The Fields screen: your own fields first, then Almena's, with a search box." />
+
+- <Mark n={1} /> **Your fields**: fields of your own, for something Almena's
+  catalogue lacks. Only your organisation sees and uses them. Making them
+  comes with a [subscription](/use/organisation/billing/); without one the
+  box says so.
+- <Mark n={2} /> **Almena's fields**: the same for every organisation, named
+  after recognised standards. Press one to see its details: its type, its
+  allowed values, its limits.
+- <Mark n={3} /> Type here to find one by name, key or tag.
+
+## Credential types
+
+<Screenshot name="registry-credential-types" alt="The Credential types screen: your own types first, then Almena's drawn as cards." />
+
+- <Mark n={1} /> **Your credential types**: credentials of your own, which
+  your issuers give and your forms ask for. They also come with a
+  subscription.
+- <Mark n={2} /> **Almena's credential types**, drawn as cards: identity,
+  contact, education, work, membership… Open one to see what it says (its
+  claims) and how it is named in each standard format.
+
+An issuer gives the types ticked in its **Credentials** tab
+([Set up an issuer](/use/organisation/issuers/)).
+
+## Value lists (trust anchor only)
+
+<Screenshot name="registry-value-lists" alt="The Value lists screen of the trust anchor: countries, languages, sexes, document types, education levels, file formats." />
+
+The lists of codes that fields with a fixed set of answers pick from:
+countries, languages, file formats… **Create value list** <Mark n={1} /> adds
+one; press a list <Mark n={2} /> to change its codes and their names in every
+language. While a field uses a list, codes can be added but never removed.
+
+## Categories (trust anchor only)
+
+<Screenshot name="registry-categories" alt="The Field categories screen: Person, Contact, Documents, Education and work, Membership, Files." />
+
+What fields (**Field categories**) and credential types (**Credential
+categories**) are sorted under, each with its name in every language and an
+icon. **Create category** <Mark n={1} /> adds one; press one <Mark n={2} /> to
+rename it or change its icon. One with something filed under it cannot be
+deleted.
+
+<Aside type="note">
+Whatever the trust anchor changes here, every organisation sees: it is the
+shared catalogue. What you make of your own, only you see.
+</Aside>

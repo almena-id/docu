@@ -1,0 +1,61 @@
+---
+title: Dominios
+description: Demuestra que la dirección web de tu organización es tuya.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Vincular el dominio de tu organización —`nova.example`— permite que otros
+vean que la cuenta es de verdad tuya, y te deja tener un mediador bajo él.
+Se demuestra añadiendo una línea, un **registro TXT**, al DNS del dominio:
+solo puede hacerlo quien controla el dominio.
+
+<Flow
+	label="Verificar un dominio"
+	steps={[
+		{ icon: 'globe', title: 'Añade el dominio', text: 'En Dominios, un administrador.' },
+		{ icon: 'file-text', title: 'Copia el registro', text: 'Un registro TXT: su nombre y su valor.' },
+		{ icon: 'server', title: 'Publícalo en el DNS', text: 'Donde se gestione tu dominio.' },
+		{ icon: 'check', title: 'Comprueba', text: 'Encontrado: el dominio queda verificado.' },
+	]}
+/>
+
+## Añádelo
+
+Abre **Dominios**, en el menú lateral bajo **Confianza**, y pulsa **Añadir**.
+
+<Screenshot name="registry-domain-new" alt="La pantalla para vincular un dominio: la caja del dominio y el botón Añadir." />
+
+Escribe el dominio <Mark n={1} /> y pulsa **Añadir** <Mark n={2} />.
+
+## Demuéstralo
+
+<Screenshot name="registry-domains" alt="Un dominio aún sin verificar, abierto para enseñar su registro DNS: tipo TXT, su nombre y su valor, y el botón Comprobar." />
+
+<Steps>
+
+1. Pulsa el dominio en la lista para abrirlo. En **Registro DNS**
+   <Mark n={2} /> están el **Tipo** (TXT), el **Nombre** y el **Valor**, cada
+   uno con un botón para copiarlo.
+
+2. En el sitio donde se gestiona tu dominio (el panel DNS de tu proveedor, o
+   quien te lo lleve), añade un registro con exactamente ese tipo, nombre y
+   valor.
+
+3. De vuelta aquí, pulsa **Comprobar** <Mark n={3} />. Cuando se encuentra el
+   registro, el dominio pasa a **Verificado**. Si aún no se encuentra, espera
+   unos minutos —el DNS tarda— y vuelve a pulsar **Comprobar**.
+
+</Steps>
+
+Un dominio verificado entra en la identidad de tu organización, que entonces
+pide volver a firmarse ([Pendientes](/es/use/organisation/pending/) lo dice).
+**Añadir** <Mark n={1} /> vincula otro dominio; **Quitar** desvincula uno.
+
+<Aside type="tip">
+Deja el registro en su sitio: si desaparece, la siguiente comprobación saca
+el dominio de tu identidad.
+</Aside>

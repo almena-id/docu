@@ -1,0 +1,124 @@
+---
+title: The agent
+description: Ask the Almena agent, from your own agent, over A2A 1.0 — with a registry token on every call.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+The **Almena agent**, at `https://agent.almena.id`, is an AI agent (it answers
+with Claude) that other agents reach over the **Agent2Agent (A2A)** protocol,
+version 1.0. It explains Almena, and it operates the caller's account in the
+registry: with your registry token it gets the registry's
+[MCP tools](/integrate/mcp/) and acts as your account — no more.
+
+<Flow
+	label="A message to the agent"
+	steps={[
+		{ icon: 'key', title: 'Your token', text: 'A registry API token, on every call.' },
+		{ icon: 'shield-check', title: 'It checks it', text: 'With the API: whose account it is.' },
+		{ icon: 'bot', title: 'It answers', text: 'Using the registry’s tools as that account.' },
+		{ icon: 'send', title: 'It streams', text: 'The reply into a task that is yours alone.' },
+	]}
+/>
+
+## The endpoints
+
+| Method | Path | |
+| --- | --- | --- |
+| `GET` | `/.well-known/agent-card.json` | The agent card: name, skills, capabilities, endpoints and the required security scheme. Public. |
+| `POST` | `/a2a/jsonrpc` | The JSON-RPC 2.0 binding: `SendMessage`, `SendStreamingMessage`, `GetTask`, `ListTasks`, `CancelTask`, `SubscribeToTask`… |
+| any | `/a2a/rest/…` | The HTTP+JSON binding: `POST /message:send`, `POST /message:stream`, `GET /tasks/{id}`… |
+
+Every request to the bindings carries `A2A-Version: 1.0`.
+
+Its card lists two skills: **Almena ID assistant** (questions about Almena:
+identities, issuers, verifiers, mediators, the registry) and **Almena
+registry operator** (setting up and reading the caller's tenants, and
+preparing the wallet requests their signers approve).
+
+## Authentication
+
+**Every call to the bindings needs a registry API token**:
+`Authorization: Bearer almena_…`, made in the registry
+([API tokens](/use/organisation/tokens/)) or with `almena token create`. Only
+the agent card and the plain pages (`/`, `/health`) are public; the card
+declares the token as its required scheme.
+
+The agent asks the API whose token it is (the signed-in account,
+`GET /api/v1/auth/me`) and remembers the answer for a minute. Without a token
+the API accepts, the model never runs. A revoked token keeps talking for at
+most that minute, without the registry's tools.
+
+| Status | When | JSON-RPC `code` / REST `status` |
+| --- | --- | --- |
+| `401` with `WWW-Authenticate: Bearer` | No token, or one the API refuses | `-32000` / `UNAUTHENTICATED` |
+| `429` with `Retry-After` | Too many calls from one account, or too many refused tokens from one address, in the window | `-32603` / `RESOURCE_EXHAUSTED` |
+| `503` with `Retry-After` | The API cannot check a token not yet remembered | `-32603` / `UNAVAILABLE` |
+
+<Aside type="note" title="Limits">
+Calls are counted **per account**, in a window of a minute: 30 calls by
+default. Refused tokens are counted per client address: after 10 in the
+window, that address waits the window out. Honour `Retry-After`.
+</Aside>
+
+## Tasks and conversations are per account
+
+The account is the caller, and what it starts is its own:
+
+- **Tasks**: `GetTask`, `ListTasks`, `CancelTask` and `SubscribeToTask` see
+  only the caller's. Another account's task is *not found*, as if it did not
+  exist.
+- **Conversations**: messages sharing a `contextId` are one conversation; the
+  agent sees the turns before. A context stays with the account that started
+  it: another account continuing it is **rejected**, since its history holds
+  what the registry told the first.
+- Both live in the agent's memory: a restart loses them. An idle conversation
+  is dropped after an hour, and so is a finished task nobody read for an
+  hour. A dropped one is not found; a message to a dropped context starts
+  afresh.
+
+## Send a message
+
+<Steps>
+
+1. Read the card, to know the endpoints:
+
+   ```bash
+   curl -s https://agent.almena.id/.well-known/agent-card.json
+   ```
+
+2. Send a message with your token:
+
+   ```bash
+   curl -s https://agent.almena.id/a2a/rest/message:send \
+     -H "A2A-Version: 1.0" -H "Authorization: Bearer $ALMENA_TOKEN" \
+     -H "Content-Type: application/json" \
+     -d '{"message": {"messageId": "1", "role": "ROLE_USER",
+          "parts": [{"text": "What does my tenant still need?"}]}}'
+   ```
+
+3. The answer is a task. Its reply is one text artifact, `response`
+   (streamed chunk by chunk with `message:stream` / `SendStreamingMessage`).
+   To carry on the conversation, send the next message with the task's
+   `contextId`.
+
+</Steps>
+
+A task ends:
+
+- `COMPLETED`, with the reply;
+- `REJECTED` when the message has no text, the model declines it, the
+  conversation is full or belongs to another account, or the registry's MCP
+  endpoint refuses the token;
+- `FAILED` when the model cannot be reached (the cause stays in the agent's
+  log).
+
+<Aside type="caution" title="It never signs">
+Like the [MCP tools](/integrate/mcp/) it uses, the agent cannot delete,
+publish or decide, and what ends in a signature (an identity, a credential, a
+status change) comes back as a wallet request: whoever signs for the account
+approves it in their own Almena wallet.
+</Aside>
+
+The CLI talks to the agent too: [`almena agent`](/reference/cli/agent/).

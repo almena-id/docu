@@ -3,6 +3,7 @@ title: Pedir una credencial
 description: Encuentra una credencial en el catálogo, solicítala con tu wallet y recíbela.
 ---
 
+import Flow from '@docs/Flow.astro';
 import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import Screens from '@docs/Screens.astro';
@@ -10,6 +11,18 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 
 Necesitas el wallet de Almena configurado en tu móvil ([cómo](/es/use/wallet/))
 y un navegador, en tu ordenador o en el propio móvil.
+
+<Flow
+	label="Pedir una credencial"
+	steps={[
+		{ icon: 'search', title: 'Encuéntrala', text: 'En el catálogo, por nombre, organización o categoría.' },
+		{ icon: 'qr', title: 'Vincula tu wallet', text: 'Escanea el primer código para empezar.' },
+		{ icon: 'file-text', title: 'Rellena y envía', text: 'Tu wallet firma lo que envías.' },
+		{ icon: 'building', title: 'Deciden', text: 'La organización la revisa y te la da.' },
+		{ icon: 'download', title: 'Guárdala', text: 'Escanea el último código: va a tu wallet.' },
+	]}
+/>
+
 
 ## 1. Encuentra la credencial
 
@@ -29,6 +42,35 @@ que puedes pedir y quién da cada una.
 3. Abre la credencial que quieres <Mark n={3} />.
 
 </Steps>
+
+### Buscar
+
+La lista cambia mientras escribes, un momento después de la última tecla.
+
+<Screenshot name="catalog-search" alt="El catálogo buscando Academic: los dos servicios encontrados, el recuento y el botón para borrar la búsqueda." />
+
+- El buscador <Mark n={1} /> encuentra una palabra en el nombre de la
+  credencial, en el de la organización o en el de la categoría. La cruz
+  <Mark n={2} /> la borra, y **Quitar filtros** borra a la vez la búsqueda y la
+  categoría.
+- Lo encontrado <Mark n={3} /> aparece en tarjetas, cada una con quién la da
+  <Mark n={4} />. Si nada coincide, la página dice **Ningún servicio
+  coincide**: prueba con otras palabras u otra categoría.
+
+### Quién la da
+
+Pulsa el nombre de la organización en una tarjeta, o en la página de una
+credencial, para ver quién es y todo lo que da.
+
+<Screenshot name="catalog-issuer" alt="La página de un emisor en el catálogo: sus iniciales y su nombre, su descripción, su identidad y los servicios que ofrece." />
+
+- Arriba, su nombre <Mark n={1} /> y a qué se dedica, y desde cuándo está en
+  el catálogo.
+- La línea larga de debajo es su identidad en internet, la misma que llevan
+  sus credenciales. El botón de al lado <Mark n={2} /> la copia, para quien
+  quiera comprobarla.
+- **Servicios** <Mark n={3} />: cada credencial que da. Abre una <Mark n={4} />
+  o pulsa **Solicitar** debajo.
 
 ## 2. Empieza la solicitud
 
@@ -78,10 +120,24 @@ La página avanza sola en cuanto tu wallet responde.
 
 </Steps>
 
-<Aside type="note" title="No cierres esta página">
-Tu solicitud vive en este navegador. Una solicitud que no se envía en un día
-se borra, así que rellénala de una vez.
+<Aside type="note" title="No cambies de navegador">
+Tu solicitud vive en este navegador: no hay ninguna cuenta en la que entrar.
+Una solicitud que no se envía en un día se borra, así que rellénala de una
+vez.
 </Aside>
+
+### Vuelve a una solicitud
+
+¿Cerraste la página? **Mis solicitudes**, arriba a la derecha del catálogo
+<Mark n={1} />, muestra las solicitudes empezadas en este navegador que siguen
+abiertas en él.
+
+<Screenshot name="catalog-applications" alt="Mis solicitudes: una solicitud a Nova Academic Office de un título académico, aún sin enviar, con el botón Abrir." />
+
+Cada una <Mark n={2} /> dice a quién la pediste, qué y cómo está (**Empezada**,
+**En curso**, **Enviada**, **Aceptada**, **No aceptada**, **Emitida**). **Abrir** <Mark n={3} /> te lleva de
+vuelta a donde la dejaste; por ejemplo, para llevarte la credencial cuando te
+la den. Otro navegador, u otro dispositivo, no las ve.
 
 ## 5. Recíbela
 

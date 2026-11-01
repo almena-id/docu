@@ -1,0 +1,138 @@
+---
+title: Ajustes
+description: Tu nombre y tu foto, el color y el modo del wallet, las notificaciones, el PIN, el bloqueo y cerrar la sesión.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Todo lo que puedes cambiar está en la última pestaña del wallet, **Perfil**: tu
+foto y tu nombre arriba, y debajo una línea por sección.
+
+<Screenshot phone name="wallet-profile" alt="La pestaña Perfil: la foto y el nombre, y la lista de secciones: Perfil, Apariencia, Mensajería, Copia de seguridad, Seguridad." />
+
+- El cuadrado de arriba a la derecha <Mark n={1} /> enseña **tu invitación**,
+  el código que alguien escanea para empezar a hablar contigo ([Mensajes y
+  llamadas](/es/use/wallet/messages/)).
+- Las secciones <Mark n={2} />: **Perfil**, **Apariencia**, **Mensajería**,
+  **Copia de seguridad** y **Seguridad** —y, en un ordenador,
+  **Notificaciones**—. Pulsa una para abrirla; la flecha de arriba te devuelve.
+
+## Tu nombre y tu foto
+
+**Perfil → Perfil**.
+
+<Screenshot phone name="wallet-profile-name" alt="La sección Perfil: la foto con su botón de cámara, Cambiar foto, y el campo Tu nombre con Guardar y enviar." />
+
+<Steps>
+
+1. Pulsa la foto <Mark n={1} />, o **Cambiar foto** <Mark n={2} />, para
+   elegir una. **Quitar foto** aparece cuando ya hay una.
+
+2. Escribe el nombre que verán tus contactos <Mark n={3} /> y pulsa **Guardar
+   y enviar** <Mark n={4} />. Cada contacto lo recibe solo por la dirección con
+   la que te conoce.
+
+</Steps>
+
+Las organizaciones no ven este nombre: solo ven lo que dice una credencial, y
+solo cuando la enseñas.
+
+## Color y modo
+
+**Perfil → Apariencia**.
+
+<Screenshot phone name="wallet-appearance" alt="Apariencia: ocho colores en fila, el naranja marcado, y el modo: Sistema, Oscuro, Claro." />
+
+- **Color de identidad** <Mark n={1} />: el color que viste el wallet —naranja
+  (el que trae), azul, rojo, amarillo, verde, cian, magenta o verde azulado—.
+  Cambia en el acto.
+- **Modo** <Mark n={2} />: **Claro**, **Oscuro**, o **Sistema** para seguir a
+  tu dispositivo.
+
+<Aside type="note" title="El idioma">
+El wallet habla el idioma de tu dispositivo: no tiene un selector propio.
+Hoy habla español e inglés; en cualquier otro idioma habla inglés. Para
+cambiarlo, cambia el idioma de tu móvil o de tu ordenador.
+</Aside>
+
+## Notificaciones (en un ordenador)
+
+**Perfil → Notificaciones**, solo en Windows, Mac y Linux: a un móvil lo
+despierta un aviso que nunca dice quién escribe ni qué.
+
+<Screenshot phone name="wallet-notifications" alt="Notificaciones: Cuando llega un mensaje, con tres opciones: Todo, Quién lo envía, Nada identificable." />
+
+En **Cuando llega un mensaje** <Mark n={1} />, elige cuánto dice la
+notificación del ordenador mientras el wallet no está delante: **Todo** (quién
+y qué), **Quién lo envía** o **Nada identificable**. El ordenador guarda lo que
+muestran las notificaciones en su propio historial, fuera del wallet.
+
+## Mensajería y copia de seguridad
+
+**Perfil → Mensajería** es donde esperan tus mensajes: mira [Elegir un
+mediador](/es/use/mediator/). **Perfil → Copia de seguridad** guarda y
+recupera lo que tus palabras de recuperación no devuelven: mira [Tu
+wallet](/es/use/wallet/#una-copia-de-lo-que-las-palabras-no-recuperan).
+
+## Seguridad
+
+**Perfil → Seguridad**.
+
+<Screenshot phone name="wallet-security" alt="Seguridad: la línea del PIN con sus dígitos, el interruptor de Biometría, Bloquear tras 1, 5 o 10 minutos, dónde se guarda la identidad y el botón Cerrar la sesión." />
+
+- **PIN** <Mark n={1} />: cuántos dígitos tiene. Púlsalo para cambiarlo
+  (abajo).
+- **Biometría** <Mark n={2} />: abre el wallet con tu cara o tu huella además
+  de con el PIN. Activarla pide el PIN una vez. Si el dispositivo no puede, la
+  línea dice **No disponible en este dispositivo**.
+- **Bloquear tras** <Mark n={3} />: 1, 5 o 10 minutos sin usarlo, y el wallet
+  se bloquea solo.
+- **Guardada en**: dónde guarda este dispositivo tu identidad. Aquí no hay
+  nada que hacer.
+- **Cerrar la sesión** <Mark n={4} />: mira más abajo.
+
+En un iPhone configurado sin PIN, el wallet se abre con **Face ID o el código
+del iPhone** y no hay PIN que cambiar. En un ordenador hay además **Abrir al
+iniciar sesión**: el wallet arranca con el ordenador, minimizado y bloqueado.
+
+## Cambiar el PIN
+
+<Flow
+	label="Cambiar el PIN"
+	steps={[
+		{ icon: 'key', title: 'Tu PIN actual', text: 'Para que nadie que encuentre el wallet abierto pueda cambiarlo.' },
+		{ icon: 'wrench', title: 'Elige uno nuevo', text: 'Con tantos dígitos como el que tienes.' },
+		{ icon: 'check', title: 'Escríbelo otra vez', text: 'Para que un despiste no te deje fuera.' },
+	]}
+/>
+
+<Screenshot phone name="wallet-pin-change" alt="Tu PIN actual: los puntos vacíos y el teclado." />
+
+Pulsa **PIN** en **Seguridad**. Escribe tu PIN actual en el teclado
+<Mark n={2} />; los puntos <Mark n={1} /> se rellenan al escribir. Después
+elige el nuevo y escríbelo otra vez. Solo cambian los dígitos: tu identidad,
+tus credenciales y tus conversaciones siguen como estaban.
+
+<Aside type="caution" title="Los intentos se cuentan">
+Tras demasiados PIN equivocados, el wallet quita la identidad de este
+dispositivo, y solo tus palabras de recuperación la devuelven. Cuando quedan
+tres intentos o menos, la pantalla de bloqueo dice cuántos.
+</Aside>
+
+## Cerrar la sesión
+
+<Screenshot phone name="wallet-sign-out" alt="Cerrar la sesión: lo que se va con ella, la pregunta ¿Tienes tu frase delante?, el deslizador y Seguir con la sesión abierta." />
+
+Cerrar la sesión quita tu identidad de este dispositivo <Mark n={1} />, y tus
+conversaciones con ella. Lee la pantalla: no hay ningún soporte que pueda
+deshacerlo. El deslizador <Mark n={2} /> se activa tras unos segundos;
+llévalo hasta el final para cerrar la sesión. **Seguir con la sesión
+abierta** <Mark n={3} /> te devuelve.
+
+Tus palabras de recuperación son la única vuelta atrás, en este dispositivo o
+en otro. Sin ellas, la identidad se pierde para siempre. Haz antes una [copia
+de seguridad](/es/use/wallet/#una-copia-de-lo-que-las-palabras-no-recuperan)
+si también quieres recuperar tus credenciales y conversaciones.

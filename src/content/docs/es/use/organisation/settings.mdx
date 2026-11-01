@@ -1,0 +1,69 @@
+---
+title: Ajustes y firma
+description: El nombre, el mediador y los idiomas de tu organización, y quién firma por ella.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+En el registry tu organización es una **cuenta**. Sus datos están en
+**Ajustes**, en el menú lateral bajo **Cuenta**. Solo los administradores los
+cambian; los miembros pueden leerlos.
+
+## Nombre, mediador e idiomas
+
+<Screenshot name="registry-tenant" alt="Los ajustes de la cuenta: nombre, mediador, los idiomas marcados y el botón Guardar." />
+
+<Steps>
+
+1. **Nombre** <Mark n={1} />: tu organización tal como la leerán las personas.
+
+2. **Mediador** <Mark n={2} />: el servicio por el que los wallets llegan a
+   tu organización. Deja el de Almena salvo que te digan otra cosa; puedes
+   elegir uno tuyo u otro público.
+
+3. **Idiomas** <Mark n={3} />: los idiomas en los que trabaja tu
+   organización, al menos uno. Tus formularios, campos y descripciones se
+   escriben en ellos; el globo de cada caja de texto abre una línea por
+   idioma.
+
+4. Pulsa **Guardar** <Mark n={4} />.
+
+</Steps>
+
+La pestaña **JSON** enseña el documento de identidad de tu organización, para
+quien conecta sistemas.
+
+## Quién firma
+
+Algunas cosas que hace tu organización se firman desde un wallet: su
+identidad, las identidades de sus emisores y verificadores, las credenciales
+que da. **Firma**, en el menú lateral bajo **Confianza**, dice quién lo hace.
+
+<Screenshot name="registry-signing" alt="La pantalla Firma: a la izquierda el flujo de firma elegido, a la derecha cómo funciona." />
+
+<Steps>
+
+1. Elige el **Flujo de firma** <Mark n={1} />:
+   - **Un administrador cualquiera**: firma cualquier administrador con un
+     wallet vinculado. Nadie bloquea, pero cualquier administrador publica
+     sin que otro lo vea.
+   - **Un usuario concreto**: firma solo el miembro que elijas. Una sola
+     persona responde de lo que se publica, pero si no está no se publica
+     nada.
+
+2. **Cómo funciona** <Mark n={2} /> dibuja el flujo elegido, con lo que gana
+   y lo que cuesta.
+
+3. Pulsa **Guardar** <Mark n={3} />.
+
+</Steps>
+
+<Aside type="caution">
+Quien firma necesita un wallet de Almena vinculado a su perfil. Hasta que lo
+vincule, no puede firmar.
+</Aside>
+
+Cada emisor y cada verificador tiene además su propia pestaña **Firma**: el
+miembro que firma sus credenciales y sus cambios de estado.

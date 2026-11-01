@@ -1,0 +1,111 @@
+---
+title: MCP
+description: Give an AI assistant the registry's operations as tools, through the API's MCP endpoint and a registry token.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+The API is also a **Model Context Protocol** server: an AI assistant that
+speaks MCP (Claude, an IDE, your own agent) gets the registry's operations as
+tools and acts as the account whose token it holds — listing what waits,
+creating a form, reading an application, asking for a signature.
+
+<Flow
+	label="A tool call"
+	steps={[
+		{ icon: 'bot', title: 'The assistant calls', text: 'A tool, with its arguments, and your token.' },
+		{ icon: 'server', title: 'The API routes it', text: 'To the REST operation the tool is.' },
+		{ icon: 'shield-check', title: 'Checked as any call', text: 'Token, membership, role, validation.' },
+		{ icon: 'send', title: 'It answers', text: 'The route’s answer, as the tool’s result.' },
+	]}
+/>
+
+## The endpoint
+
+| | |
+| --- | --- |
+| **URL** | `https://api.almena.id/mcp` |
+| **Transport** | Streamable HTTP, **stateless**: every message is one JSON-RPC request, `POST`ed and answered as JSON. No SSE stream, no session (`GET` and `DELETE` answer `405`). |
+| **Protocol versions** | `2025-11-25` (answered when yours is unknown), `2025-06-18`, `2025-03-26`; an `MCP-Protocol-Version` header with another is `400` |
+| **Methods** | `initialize`, `ping`, `tools/list`, `tools/call`; notifications are acknowledged with `202` |
+| **Authentication** | `Authorization: Bearer almena_…` on every request: the same token as the API |
+
+Use an **API token** of the account (made under **Profile** in the registry,
+[API tokens](/use/organisation/tokens/), or with `almena token create`). The
+tools act as that token's account: they see and do only what it may, and a
+refused token is refused like any API call. A browser may only call from the
+portals' own origins (`403 origin_not_allowed` otherwise).
+
+## Connect a client
+
+<Steps>
+
+1. Make an API token for the person or the system the assistant works for.
+   Give it the shortest life that will do.
+
+2. Add the server to your client as a remote (HTTP) MCP server with that
+   header. For example, in a client that reads a JSON configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "almena": {
+         "type": "http",
+         "url": "https://api.almena.id/mcp",
+         "headers": { "Authorization": "Bearer almena_…" }
+       }
+     }
+   }
+   ```
+
+3. Ask. The server's instructions tell the assistant to start with
+   `list_tenants`: almost every tool takes a `tenant_id`.
+
+</Steps>
+
+Without a client, the same with `curl`:
+
+```bash
+curl -s https://api.almena.id/mcp \
+  -H "Authorization: Bearer $ALMENA_TOKEN" -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+       "params": {"name": "list_pending", "arguments": {"tenant_id": "…"}}}'
+```
+
+## The tools
+
+Each tool is one route of the [REST API](/reference/api/): its input is the
+route's path and query parameters, and its JSON body as `body`; its result is
+the route's answer, as text and, for an object, as `structuredContent`. An
+error is the API's own (`isError`, with the HTTP status and the code, such as
+`mediator_not_found`; see [Errors](/reference/errors/)). `tools/list` gives
+each one's schema, built from the API's OpenAPI document, with hints:
+read-only for reads, destructive for `PUT` and `PATCH`.
+
+| Area | Tools |
+| --- | --- |
+| The account | `get_me`, `list_tenants`, `get_tenant`, `update_tenant`, `get_tenant_health`, `get_tenant_activity`, `list_members`, `invite_member`, `change_member_role`, `get_subscription` |
+| Domains | `list_domains`, `add_domain`, `check_domain` |
+| Issuers, verifiers, mediators | `list_issuers`, `get_issuer`, `create_issuer`, `update_issuer`, the same for `verifier` and `mediator`, `list_mediator_choices` |
+| Identities and signing | `list_identities`, `get_identity`, `create_identity`, `rename_identity`, `list_pending`, `sign_identity`, `get_signing`, `set_signing` |
+| Queues | `get_queue` |
+| Verifying | `open_verification`, `get_verification`, `verify_presentations` |
+| The public catalog | `list_published`, `list_offers`, `list_offer_categories`, `get_issuer_offers`, `get_field_catalogue`, `get_credential_catalogue` |
+| Fields, types, forms | `list_custom_fields`, `create_custom_field`, `update_custom_field`, `list_value_domains`, `create_value_domain`, `update_value_domain`, `list_categories`, `create_category`, `update_category`, `list_credential_types`, `create_credential_type`, `update_credential_type`, `list_forms`, `get_form`, `create_form`, `update_form`, `get_form_schema`, `get_form_dcql` |
+| Issuing | `get_issuer_credential_types`, `set_issuer_credential_types`, `list_applications`, `get_application`, `get_issuance_proposal`, `save_issuance_draft`, `request_issuance_signature`, `list_status_lists`, `sign_status_list`, `set_credential_status` |
+| The trust anchor | `list_accounts`, `get_account`, `set_account_subscription` |
+
+<Aside type="caution" title="What is not a tool">
+Only reads and operations a person can still stop are tools. Deleting
+anything, publishing and unpublishing, deciding applications, queue
+passwords, and the account's own ways in (sign-in methods, tokens, the
+linked wallet) are left to the portal and the CLI. And nothing is ever
+signed by the assistant: `sign_identity`, `request_issuance_signature`,
+`sign_status_list` and `set_credential_status` only make a **wallet request**
+— the assistant shows its `deep_link` to whoever signs for the account, who
+approves it, or not, in their Almena wallet.
+</Aside>
+
+The [Almena agent](/integrate/agent/) is one such client: it uses these tools
+with the token of whoever talks to it.

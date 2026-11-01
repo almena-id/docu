@@ -34,7 +34,7 @@ Read from the environment or `.env`; [.env.example](.env.example) explains it.
 |---|---|
 | `GET /` | The documentation |
 | `GET /health` | Liveness, used by the Docker health check |
-| `GET /.well-known/security.txt` | Where to report a vulnerability ([RFC 9116](https://www.rfc-editor.org/rfc/rfc9116)): this repository's private advisories; written at build time, `Expires` a year ahead less a day |
+| `GET /.well-known/security.txt` | Where to report a vulnerability ([RFC 9116](https://www.rfc-editor.org/rfc/rfc9116)): this repository's private advisories; written at build time, `Expires` 180 days ahead (CI rebuilds on every merge; rebuild at least every few months otherwise) |
 
 ## Layout
 

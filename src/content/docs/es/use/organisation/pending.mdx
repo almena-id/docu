@@ -1,0 +1,52 @@
+---
+title: Lo que te espera
+description: La lista de Pendientes, la actividad de tu organización y su salud, en el resumen.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+El resumen te dice de un vistazo qué te espera, qué han hecho tus emisores y
+verificadores y qué le falta aún por configurar a tu organización.
+
+## Pendientes
+
+**Pendientes**, en el menú lateral bajo **Actividad**, enumera todo lo que
+espera a firmarse, publicarse o entregarse, en el orden en que hay que
+hacerlo. El resumen enseña las cinco primeras cosas en **Pendiente**.
+
+<Screenshot name="registry-pending" alt="La lista de Pendientes: una identidad por firmar, un verificador aún en borrador y credenciales por emitir." />
+
+- <Mark n={1} /> Cada línea es una cosa: su nombre (púlsalo para abrirla),
+  qué es y por qué espera — **Pendiente de firma**, **Borrador**, **Por
+  emitir**…
+- <Mark n={2} /> Si te toca a ti, el botón para hacerlo: **Firmar**,
+  **Publicar** o **Emitir**.
+- <Mark n={3} /> Si antes tiene que pasar otra cosa, la línea dice cuál —por
+  ejemplo **Su emisor no tiene firmante.**— y te lleva allí.
+
+<Aside type="tip">
+Se firma desde tu wallet de Almena. Si la lista dice **Vincula tu wallet de
+Almena para firmar.**, vincúlalo antes desde tu
+[perfil](/es/use/organisation/tokens/).
+</Aside>
+
+## Actividad y salud
+
+Más abajo en el resumen:
+
+<Screenshot name="registry-overview-more" alt="La gráfica de actividad del resumen, sus recuadros, y la salud de la cuenta con lo que falta por configurar." />
+
+- <Mark n={1} /> **Actividad**: solicitudes enviadas, credenciales emitidas y
+  credenciales comprobadas, día a día. Elige **7 días**, **30 días** o
+  **90 días**. Un punto rojo sobre un día indica que algo se rechazó o falló.
+- <Mark n={2} /> Los recuadros bajo la gráfica: las **Solicitudes en espera**
+  de decisión, las **Aceptadas, por emitir**, las credenciales que emitiste
+  (válidas, suspendidas, revocadas) y las comprobaciones de tus
+  verificadores. Pulsa un recuadro para ir a la lista que hay detrás.
+- <Mark n={3} /> **Salud de la cuenta**: lo que tu organización necesita para
+  funcionar del todo —un nombre, un mediador, alguien que firme—, con una
+  marca cuando está hecho y el porcentaje completado.
+- <Mark n={4} /> Junto a lo que falta, **Configurar** te lleva a donde se
+  hace, y una línea explica por qué importa.

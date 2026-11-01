@@ -1,7 +1,23 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightLinksValidator from 'starlight-links-validator';
 import starlightSidebarTopics from 'starlight-sidebar-topics';
+import openapi from './src/data/openapi.json' with { type: 'json' };
+
+// The errors page's anchors are made by a component (ErrorCodes.astro), which
+// the link checker cannot read: one per refusal code, per presentation problem
+// and per HTTP status. A link to one of them is good; to anything else there,
+// the checker still judges it.
+const errorAnchors = new Set([
+	...Object.keys(openapi['x-refusals']),
+	...Object.keys(openapi['x-presentation-problems']).map((code) => `problem-${code}`),
+	'presentation-problems',
+]);
+const isErrorAnchor = (/** @type {string} */ link) => {
+	const found = /^(?:\/es)?\/reference\/errors\/#(.+)$/.exec(link);
+	return !!found && (errorAnchors.has(found[1]) || /^status-(\d{3}|other)$/.test(found[1]));
+};
 
 // https://astro.build/config
 export default defineConfig({
@@ -62,10 +78,14 @@ export default defineConfig({
 				SiteTitle: './src/components/SiteTitle.astro',
 				PageFrame: './src/components/PageFrame.astro',
 			},
-			// Five topics, each with its own sidebar (starlight-sidebar-topics): the
+			// The links checked when building (starlight-links-validator), then five
+			// topics, each with its own sidebar (starlight-sidebar-topics): the
 			// shared concepts, a door per audience — using Almena, integrating
 			// with it, building it — and the generated reference.
 			plugins: [
+				// Every internal link and its #fragment must lead to a page that
+				// exists, or the build fails.
+				starlightLinksValidator({ exclude: ({ link }) => isErrorAnchor(link) }),
 				starlightSidebarTopics(
 					[
 						{
@@ -83,7 +103,14 @@ export default defineConfig({
 								{
 									label: 'Your wallet',
 									translations: { es: 'Tu wallet' },
-									items: ['use/wallet', 'use/wallet/apply', 'use/wallet/credentials', 'use/wallet/show'],
+									items: [
+										'use/wallet',
+										'use/wallet/apply',
+										'use/wallet/credentials',
+										'use/wallet/show',
+										'use/wallet/messages',
+										'use/wallet/settings',
+									],
 								},
 								{
 									label: 'Your organisation',
@@ -91,9 +118,48 @@ export default defineConfig({
 									items: [
 										'use/organisation',
 										'use/organisation/sign-in',
-										'use/organisation/issuers',
-										'use/organisation/applications',
+										'use/organisation/pending',
+										{
+											label: 'Give credentials',
+											translations: { es: 'Emitir credenciales' },
+											items: [
+												'use/organisation/issuers',
+												'use/organisation/forms',
+												'use/organisation/applications',
+											],
+										},
+										{
+											label: 'Check credentials',
+											translations: { es: 'Comprobar credenciales' },
+											items: ['use/organisation/verifiers'],
+										},
+										{
+											label: 'Publish and connect',
+											translations: { es: 'Publicar y conectar' },
+											items: ['use/organisation/publish', 'use/organisation/queues'],
+										},
+										{
+											label: 'Templates',
+											translations: { es: 'Plantillas' },
+											items: ['use/organisation/templates'],
+										},
+										{
+											label: 'Your account',
+											translations: { es: 'Tu cuenta' },
+											items: [
+												'use/organisation/settings',
+												'use/organisation/domains',
+												'use/organisation/users',
+												'use/organisation/billing',
+												'use/organisation/tokens',
+											],
+										},
 									],
+								},
+								{
+									label: 'Good to know',
+									translations: { es: 'Conviene saber' },
+									items: ['use/mediator', 'use/status'],
 								},
 							],
 						},
@@ -104,6 +170,10 @@ export default defineConfig({
 							items: [
 								'integrate',
 								'integrate/quick-start',
+								'integrate/verify-by-qr',
+								'integrate/queues',
+								'integrate/mcp',
+								'integrate/agent',
 								{
 									label: 'Protocols',
 									translations: { es: 'Protocolos' },

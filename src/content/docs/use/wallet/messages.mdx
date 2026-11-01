@@ -1,0 +1,127 @@
+---
+title: Messages and calls
+description: Add a contact with an invitation, write to them, and call them with voice or video.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+The wallet is also a private messenger: you write to and call the people you
+choose, and only the two of you can read or hear what is said. Nobody gets
+your phone number or your email: a contact knows you by an address made for
+the two of you alone.
+
+<Flow
+	label="Talking with someone"
+	steps={[
+		{ icon: 'server', title: 'Have a mediator', text: 'Where your messages wait. Almena’s is offered.' },
+		{ icon: 'qr', title: 'Share your invitation', text: 'A code they scan, or a link you send.' },
+		{ icon: 'check', title: 'They accept it', text: 'And you appear in each other’s contacts.' },
+		{ icon: 'message', title: 'Write and call', text: 'Messages, voice and video, end to end.' },
+	]}
+/>
+
+You need a **mediator** first: the mailbox that holds your messages while
+your device is off. The wallet offers Almena's; see [Choose a
+mediator](/use/mediator/).
+
+## Add a contact
+
+### Show your invitation
+
+On **Profile**, press the square at the top right.
+
+<Screenshot phone name="wallet-invite" alt="Your invitation: a QR code, and the Copy the link button." />
+
+Whoever scans this code <Mark n={1} /> with their Almena wallet can start a
+conversation with you. If they are not in front of you, **Copy the link**
+<Mark n={2} /> and send it to them any way you like. Each person who accepts
+gets an address of their own, so nobody can tell who else you talk to.
+
+### Accept someone's invitation
+
+Scan their code with **Scan QR**, or open the link they sent you on the
+device that has the wallet.
+
+<Screenshot phone name="wallet-contact-invitation" alt="Contact invitation: Somebody wants to start a conversation with you, with the fingerprint and the Accept button." />
+
+The wallet shows a **Contact invitation** <Mark n={1} />. The
+**Fingerprint** is a short code of the other person's card: if you want to be
+sure, ask them to read theirs aloud. Press **Accept** <Mark n={2} />, or
+**Cancel**.
+
+Until they answer, their line says **Waiting for them to answer**, and you
+can write once they do.
+
+## Your conversations
+
+The **Messages** tab lists them, the most recent first.
+
+<Screenshot phone name="wallet-messages" alt="Messages: Ana Torres with two unread, Marco Rossi, and a contact still waiting to answer." />
+
+- Each line <Mark n={1} /> is a contact: the latest message, when, and how
+  many you have not read.
+- The round arrow <Mark n={2} /> checks for new messages now. They also arrive
+  by themselves while the wallet is open.
+- **+** <Mark n={3} /> opens **New conversation**.
+
+To delete a conversation, swipe its line to the left (on a computer, right
+click it) and press **Delete**. The contact stays; only what was said goes.
+
+<Screenshot phone name="wallet-new-conversation" alt="New conversation: Search the directory, and the list of contacts, each with since when." />
+
+**New conversation** lists your **Contacts** <Mark n={2} />, each with since
+when you know each other, or **Waiting for them to answer** <Mark n={3} />.
+Press one to write. **Search the directory** <Mark n={1} /> is not available
+yet: for now, share an invitation.
+
+## Write
+
+<Screenshot phone name="wallet-conversation" alt="A conversation with Ana Torres: her name at the top with the call buttons, the messages, and the box to write." />
+
+<Steps>
+
+1. Type in the **Message** box <Mark n={4} /> and press **Send**. Your
+   messages <Mark n={3} /> are on the right, in your colour.
+
+2. A message that could not go says **Not sent. Try again**: press it to
+   send it again.
+
+3. Press the name at the top <Mark n={1} /> to see the contact.
+
+</Steps>
+
+## Call
+
+In a conversation, the telephone <Mark n={2} /> makes a voice call and the
+camera beside it a video call. The wallet asks for the microphone and the
+camera the first time.
+
+<Screenshot phone name="wallet-call" alt="An incoming video call from Ana Torres, with the Decline and Accept buttons." />
+
+When someone calls you, the wallet shows who <Mark n={1} /> and whether it is
+a voice or a video call. Press **Decline** <Mark n={2} /> or **Accept**
+<Mark n={3} />. During the call you can mute the microphone, turn the camera
+off and **Hang up**. If the wallet is locked, unlock it to answer.
+
+The call goes through your mediator's relay, so the other person never
+learns where your device is. If your mediator does not relay calls, the
+wallet says **Your mediator does not relay calls, so none can be made.**
+
+## A contact
+
+<Screenshot phone name="wallet-contact" alt="A contact: their name, fingerprint and since when, and Your name for them with the Save button." />
+
+- **Contact** <Mark n={1} />: the name they gave themselves, the
+  **Fingerprint** and since when you know each other.
+- **Your name for them** <Mark n={2} />: a name only you see, on this device,
+  shown instead of theirs. **Save** <Mark n={3} />; **Use their name** takes it
+  away.
+
+<Aside type="caution" title="Your conversations live on your device">
+Messages are kept only on this device, encrypted for your identity. Signing
+out deletes them, and your recovery words do not bring them back: a
+[backup](/use/wallet/#a-copy-of-what-the-words-do-not-bring-back) does.
+</Aside>

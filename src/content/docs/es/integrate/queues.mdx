@@ -1,0 +1,129 @@
+---
+title: Colas
+description: Lee lo que le pasa a un emisor o a un verificador, en cuanto pasa, desde su propia cola AMQP.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Cada emisor y cada verificador puede tener una **cola** propia en el broker de
+mensajes de Almena (RabbitMQ): la plataforma deja en ella lo que le pasa a ese
+emisor o verificador, y tu back office la lee por AMQP. La cola de un emisor
+se entera de sus solicitudes y de las credenciales que dio; la de un
+verificador, de sus verificaciones por QR. La parte del portal está en
+[Colas](/es/use/organisation/queues/), en las guías.
+
+<Flow
+	label="Una cola"
+	steps={[
+		{ icon: 'layers', title: 'Créala', text: 'Un administrador, desde el portal, la API o la CLI.' },
+		{ icon: 'key', title: 'Guarda la contraseña', text: 'Se enseña una vez, para un usuario que solo puede leer.' },
+		{ icon: 'send', title: 'Pasan cosas', text: 'La plataforma publica cada una como un mensaje JSON.' },
+		{ icon: 'server', title: 'Tu sistema consume', text: 'Por AMQP, a su ritmo.' },
+	]}
+/>
+
+## La cola y su usuario
+
+| | |
+| --- | --- |
+| **Cola** | `subject.{slug}`: el slug del emisor o verificador, p. ej. `subject.iss_aq0qu6r38c8g`. Duradera. |
+| **Usuario** | `{slug}`: el mismo slug. Puede **leer** esa cola y nada más: ninguna otra cola, ni configurar, ni publicar. |
+| **Contraseña** | La genera la API y se enseña **una vez**, al crear la cola o al rotarla. La guarda el broker; el registry no. |
+| **Dirección** | `amqps://broker.almena.id:5671` (TLS) |
+| **Virtual host** | `almena` |
+
+Tanto un emisor o verificador en borrador como uno publicado pueden tener una.
+Cada cola tiene su propio usuario, así que un sistema distinto puede atender a
+cada emisor o verificador y ninguno puede leer la de otro.
+
+## Créala
+
+<Steps>
+
+1. Como **administrador** de la cuenta, desde la pestaña **Cola** del emisor
+   o verificador en el registry, o:
+
+   ```bash
+   almena issuer queue create <issuer-id>      # o: almena verifier queue create <id>
+   ```
+
+   ```http
+   POST /api/v1/tenants/{tenant}/{issuers|verifiers}/{id}/queue
+   ```
+
+   La respuesta (`201`) trae `queue`, `user`, `amqp_url`, `vhost`,
+   `created_at` y la `password`, esta única vez. Una segunda se rechaza (`409
+   queue_exists`); si no se llega al broker, `503 broker_unavailable`.
+
+2. Pon esos datos en la configuración de tu consumidor y consume
+   `subject.{slug}`. Sirve cualquier cliente AMQP 0-9-1; confirma (ack) cada
+   mensaje cuando lo hayas tratado.
+
+</Steps>
+
+- **Verla**: `GET …/queue` (cualquier miembro; `almena … queue get`): `queue`
+  es `null` mientras no hay ninguna. Sin contraseña.
+- **Perdiste la contraseña**: `POST …/queue/access` (administradores;
+  `almena … queue rotate`) le da al usuario una nueva; la anterior deja de
+  funcionar.
+- **Borrarla**: `DELETE …/queue` (administradores; `almena … queue delete`)
+  quita la cola, cada mensaje que quede en ella y su usuario.
+
+## Los mensajes
+
+Cada mensaje es JSON, persistente, publicado en el exchange por defecto con el
+nombre de la cola como clave de enrutado. Su propiedad AMQP `type` es igual a
+su campo `type`, su `content_type` es `application/json` y su `message_id` un
+UUID nuevo: úsalo para descartar un mensaje entregado dos veces. Todo mensaje
+lleva `type` y `at` (cuándo se publicó, ISO 8601).
+
+### La cola de un emisor
+
+Cada uno nombra el `issuer` (`id`, `slug`, `did`) y la `application` (`id`,
+`slug`, `status`, `credential_type`, `form_id`, `holder_did`,
+`submitted_at`).
+
+| `type` | Cuándo | Además lleva |
+| --- | --- | --- |
+| `application.submitted` | Un titular firmó y envió una solicitud | `content` (lo que firmó), su `digest` y su `signature`, `presented` (las credenciales presentadas) y `files`: cada uno con sus metadatos y la `url` desde la que lo sirve la API; un token de API de la cuenta lo descarga |
+| `application.decided` | Se aceptó o se rechazó | `decided_at`, `note` |
+| `application.issued` | Se emitió la credencial | `issued_at`, `valid_until` |
+| `credential.status` | Una credencial emitida se suspendió, se rehabilitó o se revocó | `credential_status`, `changed_at` |
+
+```json
+{
+  "type": "application.decided",
+  "at": "2026-11-01T10:12:04.511Z",
+  "issuer": { "id": "8f0c…", "slug": "iss_aq0qu6r38c8g", "did": "did:webvh:…" },
+  "application": {
+    "id": "551e85c7-…",
+    "slug": "app_qr3mhsydo2le",
+    "status": "accepted",
+    "credential_type": "academic_degree",
+    "form_id": "9b4e19bf-…",
+    "holder_did": "did:key:z6Mk…",
+    "submitted_at": "2026-11-01T09:58:40.002Z"
+  },
+  "decided_at": "2026-11-01T10:12:04.498Z",
+  "note": "Bienvenida a Nova University."
+}
+```
+
+### La cola de un verificador
+
+| `type` | Cuándo | Lleva |
+| --- | --- | --- |
+| `presentation.verified` | Un wallet respondió a una de sus verificaciones por QR | `verifier` (`id`, `slug`, `did`); `verification` (`id`, `form_id`, `form`, `answered_at`); y el veredicto: `verified`, y `credentials`, cada una con su `key`, si se presentó (`presented`) y se verificó (`verified`), su `format`, `issuer`, `claims`, los campos del formulario que rellena (`fills`) y sus `problems` |
+
+Es el mismo veredicto que da `GET …/verifications/{id}`: mira [Verificar por
+QR](/es/integrate/verify-by-qr/). Qué significa cada problema está en la
+[referencia de errores](/es/reference/errors/).
+
+<Aside type="note" title="Nunca una condición">
+Publicar nunca detiene nada. Sin cola no se envía nada; si el broker no acepta
+un mensaje, lo que pasó se mantiene (la solicitud sigue decidida, el veredicto
+sigue guardado) y el fallo va al registro de la API. Así que trata la cola
+como un aviso, y la API como el registro: al arrancar, o tras un hueco, lee
+el estado de la API.
+</Aside>

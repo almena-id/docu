@@ -3,6 +3,7 @@ title: Set up an issuer
 description: Create the part of your organisation that gives credentials, and offer them in the catalog.
 ---
 
+import Flow from '@docs/Flow.astro';
 import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import { Aside, Steps } from '@astrojs/starlight/components';
@@ -10,6 +11,17 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 An **issuer** is the part of your organisation that gives credentials: a
 university's academic office, a club's secretary. Its name is what people
 read on the credentials it gives.
+
+<Flow
+	label="Setting up an issuer"
+	steps={[
+		{ icon: 'building', title: 'Create it', text: 'A name, a line about it and a mediator.' },
+		{ icon: 'file-text', title: 'Offer credentials', text: 'Each with the form people fill in to ask for it.' },
+		{ icon: 'key', title: 'Sign its identity', text: 'From the wallet of whoever signs for you.' },
+		{ icon: 'globe', title: 'Publish it', text: 'It appears in the catalog, and people can apply.' },
+	]}
+/>
+
 
 ## Create it
 

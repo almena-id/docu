@@ -3,12 +3,24 @@ title: Entrar
 description: Entra en el registry con tu wallet de Almena o con tu correo.
 ---
 
+import Flow from '@docs/Flow.astro';
 import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import { Aside, Steps } from '@astrojs/starlight/components';
 
 Abre [registry.almena.id](https://registry.almena.id). No hay contraseñas:
 entras con tu wallet, o con un código que llega a tu correo.
+
+<Flow
+	label="Entrar con el wallet"
+	steps={[
+		{ icon: 'globe', title: 'Abre el registry', text: 'Y pulsa Continuar con Almena.' },
+		{ icon: 'qr', title: 'Aparece un código', text: 'En la pantalla, para tu wallet.' },
+		{ icon: 'scan', title: 'Escanéalo', text: 'El wallet te dice dónde vas a entrar.' },
+		{ icon: 'check', title: 'Acepta', text: 'Ya estás dentro. Sin contraseña, nada que recordar.' },
+	]}
+/>
+
 
 <Screenshot name="registry-landing" alt="La página de bienvenida del registry, con los botones para continuar con Almena u otras formas de entrar." />
 

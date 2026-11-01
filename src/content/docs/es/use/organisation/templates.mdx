@@ -1,0 +1,74 @@
+---
+title: Plantillas
+description: "Campos, tipos de credencial, listas de valores y categorías: de qué están hechos los formularios y las credenciales."
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+En **Plantillas**, en el menú lateral, junto a
+[Formularios](/es/use/organisation/forms/), están las piezas con las que se
+hacen los formularios y las credenciales. Almena guarda un único catálogo de
+ellas para todos, para que una «fecha de nacimiento» signifique lo mismo en
+cada organización y en cada wallet.
+
+| Pantalla | Qué tiene | Quién la cambia |
+| --- | --- | --- |
+| **Campos** | Las preguntas que puede hacer un formulario | Los de Almena: solo lectura. Los tuyos: con una suscripción |
+| **Tipos de credencial** | Las clases de credencial que dan los emisores | Los de Almena: solo lectura. Los tuyos: con una suscripción |
+| **Listas de valores** | Listas de códigos de las que eligen algunos campos | Solo el ancla de confianza |
+| **Categorías de campos**, **Categorías de credenciales** | Bajo qué se ordena el catálogo | Solo el ancla de confianza |
+
+El **ancla de confianza** es la cuenta propia de Almena, que guarda el
+catálogo común. Si no eres ella, solo ves las dos primeras pantallas.
+
+## Campos
+
+<Screenshot name="registry-fields" alt="La pantalla Campos: primero tus campos, después los de Almena, con un buscador." />
+
+- <Mark n={1} /> **Tus campos**: campos propios, para algo que el catálogo de
+  Almena no tiene. Solo los ve y usa tu organización. Crearlos viene con una
+  [suscripción](/es/use/organisation/billing/); sin ella, el recuadro lo dice.
+- <Mark n={2} /> **Campos de Almena**: los mismos para todas las
+  organizaciones, con el nombre de estándares reconocidos. Pulsa uno para ver
+  sus detalles: su tipo, sus valores admitidos, sus límites.
+- <Mark n={3} /> Escribe aquí para buscar uno por nombre, clave o etiqueta.
+
+## Tipos de credencial
+
+<Screenshot name="registry-credential-types" alt="La pantalla Tipos de credencial: primero tus tipos, después los de Almena dibujados como tarjetas." />
+
+- <Mark n={1} /> **Tus tipos de credencial**: credenciales propias, que dan
+  tus emisores y piden tus formularios. También vienen con una suscripción.
+- <Mark n={2} /> **Tipos de credencial de Almena**, dibujados como tarjetas:
+  identidad, contacto, educación, trabajo, afiliación… Abre uno para ver lo
+  que dice (sus afirmaciones) y cómo se llama en cada formato estándar.
+
+Un emisor da los tipos marcados en su pestaña **Credenciales**
+([Crear un emisor](/es/use/organisation/issuers/)).
+
+## Listas de valores (solo el ancla de confianza)
+
+<Screenshot name="registry-value-lists" alt="La pantalla Listas de valores del ancla de confianza: países, idiomas, sexos, tipos de documento, niveles de estudios, formatos de fichero." />
+
+Las listas de códigos de las que eligen los campos con un conjunto fijo de
+respuestas: países, idiomas, formatos de fichero… **Crear lista de valores**
+<Mark n={1} /> añade una; pulsa una lista <Mark n={2} /> para cambiar sus
+códigos y sus nombres en cada idioma. Mientras un campo use una lista, se le
+pueden añadir códigos pero nunca quitarlos.
+
+## Categorías (solo el ancla de confianza)
+
+<Screenshot name="registry-categories" alt="La pantalla Categorías de campos: Persona, Contacto, Documentos, Educación y trabajo, Afiliación, Ficheros." />
+
+Bajo qué se ordenan los campos (**Categorías de campos**) y los tipos de
+credencial (**Categorías de credenciales**), cada una con su nombre en cada
+idioma y un icono. **Crear categoría** <Mark n={1} /> añade una; pulsa una
+<Mark n={2} /> para cambiarle el nombre o el icono. Una que tenga algo
+ordenado bajo ella no se puede borrar.
+
+<Aside type="note">
+Lo que el ancla de confianza cambie aquí lo ven todas las organizaciones: es
+el catálogo común. Lo que hagas tú de lo tuyo, solo lo ves tú.
+</Aside>

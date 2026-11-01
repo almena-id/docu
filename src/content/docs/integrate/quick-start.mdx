@@ -3,6 +3,8 @@ title: Quick start
 description: An API token, the almena CLI and your first call to the API.
 ---
 
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
 You need an account in the [registry](https://registry.almena.id) ([how to
@@ -15,6 +17,12 @@ sign in](/use/organisation/sign-in/)).
    token**: give it a name and how many days it lasts (1 to 365). Copy the
    token now — it is shown once. It acts as you until it expires or you
    revoke it.
+
+   <Screenshot name="registry-tokens" alt="The registry's Profile, with the API tokens section: the name, the days valid and the Create token button." />
+
+   The section <Mark n={1} /> lists your tokens <Mark n={2} />; type the
+   **Name** <Mark n={3} /> and the **Days valid** <Mark n={4} />, then
+   **Create token** <Mark n={5} />.
 
 2. **Install the CLI.**
 

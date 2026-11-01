@@ -1,0 +1,59 @@
+---
+title: Perfil y tokens de API
+description: Tu alias, tus formas de entrar, vincular tu wallet y los tokens que usan tus scripts.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Tu **Perfil** es tuyo, no de tu organización: ábrelo desde el menú bajo tu
+inicial, arriba a la derecha. Ahí pones tu **Alias** (el nombre que ven los
+demás en lugar de tu correo), tus **Formas de entrar** —tu correo, tu wallet
+de Almena, Google, Microsoft, Apple o GitHub— y tus tokens de API.
+
+<Aside type="tip">
+Vincular tu **wallet de Almena** es lo que te prepara para firmar por tu
+organización: aparece un código y lo escaneas con tu wallet.
+</Aside>
+
+## Tokens de API
+
+Un **token de API** deja a un programa actuar como tú: un script, una tarea
+nocturna, la línea de comandos `almena`. Quien conecte tus sistemas te pedirá
+uno.
+
+<Flow
+	label="Dar acceso a un programa"
+	steps={[
+		{ icon: 'key', title: 'Crea un token', text: 'Un nombre y cuántos días dura.' },
+		{ icon: 'download', title: 'Cópialo', text: 'Solo se enseña una vez.' },
+		{ icon: 'terminal', title: 'El programa lo usa', text: 'Actúa como tú hasta que caduca.' },
+		{ icon: 'ban', title: 'Revócalo', text: 'Cuando ya no haga falta.' },
+	]}
+/>
+
+<Screenshot name="registry-tokens" alt="El Perfil, con la sección Tokens de API: un token y las cajas para crear otro." />
+
+<Steps>
+
+1. En **Tokens de API** <Mark n={1} />, escribe un **Nombre** <Mark n={3} />
+   que diga dónde se usará («CI», «mi portátil»).
+
+2. Elige los **Días de validez** <Mark n={4} />, de 1 a 365.
+
+3. Pulsa **Crear token** <Mark n={5} />. El token aparece **solo esta vez**:
+   pulsa **Copiar** y guárdalo donde se vaya a usar. El registry no lo
+   guarda.
+
+</Steps>
+
+Tus tokens aparecen en la lista <Mark n={2} /> con cuándo caducan y cuándo se
+usaron por última vez. **Revocar** detiene uno al momento.
+
+<Aside type="caution">
+Un token actúa como tú en todas las cuentas a las que perteneces. Trátalo
+como una llave: no lo compartas nunca por correo ni por chat, y revócalo si
+tienes dudas.
+</Aside>

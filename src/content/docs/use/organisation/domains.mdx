@@ -1,0 +1,61 @@
+---
+title: Domains
+description: Prove that your organisation owns its web address.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Linking your organisation's domain — `nova.example` — lets others see that
+the account is really yours, and lets you run a mediator under it. You prove
+it by adding one line, a **TXT record**, to the domain's DNS: only whoever
+controls the domain can.
+
+<Flow
+	label="Verifying a domain"
+	steps={[
+		{ icon: 'globe', title: 'Add the domain', text: 'Under Domains, by an administrator.' },
+		{ icon: 'file-text', title: 'Copy the record', text: 'A TXT record: its name and value.' },
+		{ icon: 'server', title: 'Publish it in DNS', text: 'Where your domain is managed.' },
+		{ icon: 'check', title: 'Check', text: 'Found: the domain is verified.' },
+	]}
+/>
+
+## Add it
+
+Open **Domains**, in the side menu under **Trust**, and press **Add**.
+
+<Screenshot name="registry-domain-new" alt="The screen to link a domain: the domain box and the Add button." />
+
+Type the domain <Mark n={1} /> and press **Add** <Mark n={2} />.
+
+## Prove it
+
+<Screenshot name="registry-domains" alt="A domain not verified yet, opened to show its DNS record: type TXT, its name and value, and the Check button." />
+
+<Steps>
+
+1. Press the domain in the list to open it. Under **DNS record** <Mark n={2} />
+   are the **Type** (TXT), the **Name** and the **Value**, each with a button
+   to copy it.
+
+2. In the place where your domain is managed (your provider's DNS panel, or
+   whoever runs it for you), add a record with exactly that type, name and
+   value.
+
+3. Back here, press **Check** <Mark n={3} />. When the record is found, the
+   domain shows **Verified**. If it is not found yet, wait a few minutes —
+   DNS takes a while — and press **Check** again.
+
+</Steps>
+
+A verified domain goes into your organisation's identity, which then asks to
+be signed again ([Pending](/use/organisation/pending/) says so). **Add**
+<Mark n={1} /> links another domain; **Remove** unlinks one.
+
+<Aside type="tip">
+Leave the record in place: if it disappears, the next check takes the domain
+out of your identity.
+</Aside>

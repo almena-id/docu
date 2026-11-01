@@ -1,0 +1,49 @@
+---
+title: Publicar
+description: Qué hace publicar un emisor, un verificador o un mediador, y cómo se hace.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Los emisores, verificadores y mediadores empiezan como **Borrador**: solo los
+ve tu organización. **Publicar** uno lo hace público: cualquiera puede
+consultar su identidad (su DID), los emisores aparecen en el catálogo y los
+verificadores pueden pedir credenciales a los wallets.
+
+<Flow
+	label="De borrador a publicado"
+	steps={[
+		{ icon: 'key', title: 'Firma la identidad de la cuenta', text: 'Una vez, para toda la organización.' },
+		{ icon: 'key', title: 'Firma su identidad', text: 'Desde el wallet de quien firma.' },
+		{ icon: 'globe', title: 'Publicar', text: 'Lo activa un administrador.' },
+		{ icon: 'check', title: 'Público', text: 'En el catálogo, o pudiendo pedir a los wallets.' },
+	]}
+/>
+
+<Screenshot name="registry-verifier" alt="La página de un elemento: el botón de publicar junto a su nombre, al lado del de eliminar." />
+
+<Steps>
+
+1. **Primero, firmar.** La identidad de tu organización y la del elemento
+   tienen que estar firmadas, desde el wallet de quien firma por tu
+   organización. Hasta entonces, publicar dice **Firma primero su
+   identidad.** o **Firma primero la identidad de la cuenta.**
+   [Pendientes](/es/use/organisation/pending/) enumera lo que hay que firmar,
+   en orden.
+
+2. **Publicar.** Un administrador pulsa el botón del ojo junto al nombre
+   <Mark n={2} />: **Publicar**. No hay nada que escanear: es un interruptor.
+
+</Steps>
+
+El mismo botón, **Retirar**, lo deshace: el elemento sigue ahí, pero sale del
+catálogo y deja de pedir a los wallets. Su **Estado**, en la pestaña
+**Resumen**, dice **Publicado** o **Borrador**, y las listas marcan cada uno.
+
+<Aside type="caution">
+**Eliminar** <Mark n={3} /> no es lo mismo que retirar: su identidad deja de
+funcionar para siempre, y no se puede deshacer.
+</Aside>

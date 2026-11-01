@@ -179,7 +179,199 @@ const shots = [
     },
     marks: [{ sel: ".card .button", nth: 0 }, { sel: ".card .button", nth: 1 }],
   },
+  {
+    name: "wallet-profile",
+    scene: { vault: "locked" },
+    act: profile(),
+    marks: [{ sel: ".screen__header .icon-button" }, { sel: ".menu", at: "start" }],
+  },
+  {
+    name: "wallet-profile-name",
+    scene: { vault: "locked" },
+    act: profile(0),
+    marks: [{ sel: ".avatar-button" }, { sel: ".profile-header__action", nth: 0 }, { sel: ".field__input", at: "start" }, { sel: ".button--primary" }],
+  },
+  {
+    name: "wallet-appearance",
+    scene: { vault: "locked" },
+    act: profile(1),
+    marks: [{ sel: ".swatches", at: "start" }, { sel: ".segmented", at: "start" }],
+  },
+  {
+    name: "wallet-notifications",
+    // Only a computer has this section: a phone is woken by a push that says nothing.
+    scene: { vault: "locked", platform: "desktop" },
+    act: profile(2),
+    marks: [{ sel: ".options", at: "start" }],
+  },
+  {
+    name: "wallet-security",
+    scene: { vault: "locked" },
+    height: 1000,
+    act: profile(4),
+    marks: [
+      { sel: ".card .row", nth: 0, at: "start" },
+      { sel: ".card .row", nth: 1, at: "start" },
+      { sel: ".segmented", at: "start" },
+      { sel: ".card .button", nth: -1 },
+    ],
+  },
+  {
+    name: "wallet-pin-change",
+    scene: { vault: "locked" },
+    act: async (page) => {
+      await profile(4)(page);
+      await page.locator(".card .row").first().click();
+      await page.locator(".pin__keys").waitFor();
+    },
+    marks: [{ sel: ".pin__dots" }, { sel: ".pin__keys", at: "start" }],
+  },
+  {
+    name: "wallet-sign-out",
+    scene: { vault: "locked" },
+    act: async (page) => {
+      await profile(4)(page);
+      await page.locator(".card .button").last().click();
+      await page.locator(".consequences").waitFor();
+      // The slide opens after a few seconds of reading.
+      await page.locator(".slide:not(.slide--closed)").waitFor({ timeout: 20000 });
+    },
+    marks: [{ sel: ".consequences", at: "start" }, { sel: ".slide", at: "start" }, { sel: ".button-row .button" }],
+  },
+  {
+    name: "wallet-messaging",
+    scene: { vault: "locked" },
+    act: profile(2),
+    marks: [{ sel: ".detail-list", at: "start" }, { sel: ".card .button", nth: 0 }, { sel: ".card .button", nth: 1 }],
+  },
+  {
+    name: "wallet-mediator",
+    scene: { vault: "locked", mediator: "none" },
+    act: async (page) => {
+      await profile(2)(page);
+      await page.locator(".card .button--primary").click();
+      await page.locator(".field__input").waitFor();
+    },
+    marks: [{ sel: ".field__input", at: "start" }, { sel: ".button--primary" }],
+  },
+  {
+    name: "wallet-invite",
+    scene: { vault: "locked" },
+    act: async (page) => {
+      await profile()(page);
+      await page.locator(".screen__header .icon-button").click();
+      await page.locator(".qr-plate:not(.qr-plate--waiting)").waitFor();
+    },
+    marks: [{ sel: ".qr-plate", at: "start" }, { sel: ".button--icon" }],
+  },
+  {
+    name: "wallet-contact-invitation",
+    scene: {
+      vault: "locked",
+      link: "almena://invite?_oob=eyJ0eXBlIjoiZGVtbyJ9",
+      kind: "contact",
+      details: { kind: "contact", fingerprint: "9D40 7A1B E6C3", contact: null, own: false },
+    },
+    act: sheet,
+    marks: [{ sel: ".sheet__details", at: "start" }, { sel: ".sheet .button--primary" }],
+  },
+  {
+    name: "wallet-mediator-invitation",
+    scene: {
+      vault: "locked",
+      mediator: "none",
+      link: "almena://mediate?_oob=eyJ0eXBlIjoiZGVtbyJ9",
+      kind: "mediator",
+      details: { kind: "mediator", mediator: "mediator.example.org", current: null, contacts: 0 },
+    },
+    act: sheet,
+    marks: [{ sel: ".sheet__details", at: "start" }, { sel: ".sheet .button--primary" }],
+  },
+  {
+    name: "wallet-messages",
+    scene: { vault: "locked" },
+    act: messages,
+    marks: [
+      { sel: ".message-row", nth: 0, at: "start" },
+      { sel: ".screen__header .icon-button", nth: 0 },
+      { sel: ".screen__header .icon-button", nth: 1 },
+    ],
+  },
+  {
+    name: "wallet-new-conversation",
+    scene: { vault: "locked" },
+    act: async (page) => {
+      await messages(page);
+      await page.locator(".screen__header .icon-button").nth(1).click();
+      await page.locator(".card .row").first().waitFor();
+    },
+    marks: [{ sel: "form.card", at: "start" }, { sel: ".card .row", nth: 0, at: "start" }, { sel: ".card .row", nth: 2, at: "start" }],
+  },
+  {
+    name: "wallet-conversation",
+    scene: { vault: "locked" },
+    act: conversation,
+    marks: [
+      { sel: ".conversation__who" },
+      { sel: ".screen__header .icon-button", nth: 0 },
+      { sel: ".bubble--mine", at: "start" },
+      { sel: ".composer", at: "start" },
+    ],
+  },
+  {
+    name: "wallet-contact",
+    scene: { vault: "locked" },
+    act: async (page) => {
+      await conversation(page);
+      await page.locator(".conversation__who").click();
+      await page.locator(".detail-list").waitFor();
+    },
+    marks: [{ sel: ".detail-list", at: "start" }, { sel: ".field__input", at: "start" }, { sel: ".button--primary" }],
+  },
+  {
+    name: "wallet-call",
+    scene: { vault: "locked" },
+    act: async (page) => {
+      await unlock(page);
+      await page.evaluate(() =>
+        window.__MOCK_EMIT__("call-signal", {
+          contact: "c-ana",
+          call: "call-demo",
+          signal: { kind: "offer", media: "video", sdp: "v=0" },
+        }),
+      );
+      await page.locator(".call__button--accept").waitFor();
+    },
+    marks: [{ sel: ".call__name", at: "start" }, { sel: ".call__button--end" }, { sel: ".call__button--accept" }],
+  },
 ];
+
+/** The Profile tab, and the section `index` of its menu (on a phone: profile,
+ * appearance, messaging, backup, security; a computer adds notifications
+ * third). */
+function profile(index) {
+  return async (page) => {
+    await unlock(page);
+    await page.locator(".tab-bar__tab").nth(3).click();
+    await page.locator(".menu__item").first().waitFor();
+    if (index !== undefined) {
+      await page.locator(".menu__item").nth(index).click();
+      await page.locator(".screen__header--compact").waitFor();
+    }
+  };
+}
+
+async function messages(page) {
+  await unlock(page);
+  await page.locator(".tab-bar__tab").nth(1).click();
+  await page.locator(".message-row").first().waitFor();
+}
+
+async function conversation(page) {
+  await messages(page);
+  await page.locator(".message-row").first().click();
+  await page.locator(".bubble").first().waitFor();
+}
 
 async function place(page, viewport, { sel, nth = 0, at = "center" }) {
   const box = await page.locator(sel).nth(nth).boundingBox();
@@ -193,11 +385,13 @@ async function place(page, viewport, { sel, nth = 0, at = "center" }) {
   return { x: pct(x, viewport.width), y: pct(y, viewport.height) };
 }
 
+// SHOTS=a,b retakes only those (while working on them); none, every one.
+const only = process.env.SHOTS?.split(",");
 const marks = JSON.parse(await readFile(MARKS, "utf8").catch(() => "{}"));
 const browser = await chromium.launch();
 for (const lang of LANGS)
   for (const theme of THEMES)
-    for (const shot of shots) {
+    for (const shot of only ? shots.filter((item) => only.includes(item.name)) : shots) {
       const viewport = { ...VIEWPORT, height: shot.height ?? VIEWPORT.height };
       const context = await browser.newContext({ viewport, deviceScaleFactor: 2, locale: lang, colorScheme: theme });
       const page = await context.newPage();

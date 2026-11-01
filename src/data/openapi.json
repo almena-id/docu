@@ -1371,6 +1371,9 @@
      "400": {
       "description": "`invalid_token`, `invalid_did`, `invalid_proof`, `not_an_update_key`, `not_your_key`"
      },
+     "403": {
+      "description": "`not_the_issuers_signer`: no longer the issuer's signer"
+     },
      "404": {
       "description": "`request_not_found`"
      },
@@ -1379,6 +1382,9 @@
      },
      "410": {
       "description": "`request_expired`"
+     },
+     "413": {
+      "description": "`body_too_large`"
      },
      "422": {
       "description": "Validation Error",
@@ -4099,7 +4105,7 @@
       "description": "`application_not_paired`, `application_closed`"
      },
      "413": {
-      "description": "`file_too_large` (10 MB)"
+      "description": "`file_too_large`: past 10 MiB, the limit sent beside it as max_bytes"
      },
      "422": {
       "description": "`file_field_unknown`, `file_type_invalid`, `file_empty`"
@@ -4439,6 +4445,9 @@
      },
      "410": {
       "description": "`request_expired`"
+     },
+     "413": {
+      "description": "`body_too_large`"
      },
      "422": {
       "description": "Validation Error",
@@ -7936,6 +7945,9 @@
      "410": {
       "description": "`request_expired`"
      },
+     "413": {
+      "description": "`body_too_large`"
+     },
      "422": {
       "description": "Validation Error",
       "content": {
@@ -9859,7 +9871,11 @@
        "signing_flow",
        "domain",
        "identity",
-       "mediator"
+       "mediator",
+       "signers",
+       "status_lists",
+       "queues",
+       "published"
       ],
       "title": "Check"
      },
@@ -9880,7 +9896,8 @@
          "unpublished",
          "unchosen",
          "no_signer",
-         "no_wallet"
+         "no_wallet",
+         "stale"
         ]
        },
        {
@@ -9900,6 +9917,23 @@
        }
       ],
       "title": "Item"
+     },
+     "item_kind": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "identity",
+         "mediator",
+         "issuer",
+         "verifier"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Item Kind"
      }
     },
     "type": "object",
@@ -12047,13 +12081,19 @@
      "secret": {
       "type": "string",
       "title": "Secret"
+     },
+     "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Expires At"
      }
     },
     "type": "object",
     "required": [
      "id",
      "slug",
-     "secret"
+     "secret",
+     "expires_at"
     ],
     "title": "Started"
    },
@@ -13206,6 +13246,7 @@
   "request_not_found": "There is no wallet request by that id.",
   "request_expired": "The wallet request has expired: start again.",
   "already_answered": "The wallet request has been answered already.",
+  "body_too_large": "The request's body is larger than this endpoint takes (a wallet's answer, or anything past the API's limit): `max_bytes` says how large it may be.",
   "invalid_token": "The wallet's token is not a valid JWS, or not for this request.",
   "invalid_did": "The DID the wallet answers with cannot be read.",
   "invalid_didcomm": "The `didcomm` DID the wallet pairs with is not a `did:peer:2` it can be written to.",
@@ -13305,7 +13346,7 @@
   "request_form_invalid": "Not one of the account's forms, or not for a type the issuer grants.",
   "offer_not_found": "The issuer does not offer that credential type.",
   "application_not_found": "There is no application by that id, or not with this secret.",
-  "application_expired": "The application was not sent within a day: it is gone.",
+  "application_expired": "The application was not sent within a day, or it was sent and its latest step is older than `REGISTRY_APPLICATION_HOLDER_DAYS`: it can no longer be opened.",
   "application_gone": "The application is gone or no longer accepted, so the signed credential is not issued.",
   "application_not_paired": "Pair a wallet with the application first.",
   "application_closed": "The application has been sent already.",
@@ -13318,7 +13359,7 @@
   "invalid_vp_token": "The presentation (`vp_token`) cannot be read.",
   "file_field_unknown": "The form asks for no file by that key.",
   "file_empty": "The file is empty.",
-  "file_too_large": "The file is larger than the form allows.",
+  "file_too_large": "The file is larger than the form allows: `max_bytes` says how large it may be.",
   "file_type_invalid": "The form does not accept that kind of file.",
   "file_not_found": "The application has no file by that key.",
   "already_received": "The credential has been taken already.",

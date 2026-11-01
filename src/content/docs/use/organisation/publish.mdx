@@ -1,0 +1,48 @@
+---
+title: Publish
+description: What publishing an issuer, a verifier or a mediator does, and how to do it.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Issuers, verifiers and mediators start as a **Draft**: only your organisation
+sees them. **Publishing** one makes it public: its identity (its DID) can be
+looked up by anyone, issuers appear in the catalog, and verifiers may ask
+wallets for credentials.
+
+<Flow
+	label="From draft to published"
+	steps={[
+		{ icon: 'key', title: "Sign the account's identity", text: 'Once, for the whole organisation.' },
+		{ icon: 'key', title: 'Sign its identity', text: "From the signer's wallet." },
+		{ icon: 'globe', title: 'Publish', text: 'An administrator turns it on.' },
+		{ icon: 'check', title: 'Public', text: 'In the catalog, or able to ask wallets.' },
+	]}
+/>
+
+<Screenshot name="registry-verifier" alt="An item's page: the publish button beside its name, next to the delete button." />
+
+<Steps>
+
+1. **Sign first.** Your organisation's identity and the item's own must be
+   signed, from the wallet of whoever signs for your organisation. Until
+   then, publishing says **Sign its identity first.** or **Sign the account's
+   identity first.** [Pending](/use/organisation/pending/) lists what to sign,
+   in order.
+
+2. **Publish.** An administrator presses the eye button beside the name
+   <Mark n={2} /> — **Publish**. Nothing to scan: it is a switch.
+
+</Steps>
+
+The same button, **Unpublish**, takes it back: the item stays, but leaves the
+catalog and stops asking wallets. Its **Status** on the **Summary** tab says
+**Published** or **Draft**, and the lists tag each one.
+
+<Aside type="caution">
+**Delete** <Mark n={3} /> is not the same as unpublishing: its identity stops
+working for good, and it cannot be undone.
+</Aside>

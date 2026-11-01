@@ -1,0 +1,96 @@
+---
+title: Is Almena working?
+description: The status page at status.almena.id — what each state means, the last 90 days, incidents, and how to follow them.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+Something does not work — the catalog does not open, a code does not
+answer? Before anything else, open
+[status.almena.id](https://status.almena.id). It says whether each part of
+Almena works right now, and how each has done over the last 90 days. It is in
+English only, and always dark.
+
+It runs on its own, away from the rest of Almena, so it stays up and tells
+you when the rest is down.
+
+<Flow
+	label="How the status page knows"
+	steps={[
+		{ icon: 'radio-tower', title: 'It checks', text: 'Every service, every minute, from outside.' },
+		{ icon: 'activity', title: 'It judges', text: 'A good answer, a slow one, or none.' },
+		{ icon: 'globe', title: 'It shows', text: 'Now, and each of the last 90 days.' },
+		{ icon: 'send', title: 'It tells', text: 'Outages and incidents, in its feed.' },
+	]}
+/>
+
+<Screenshot name="status-home" alt="The status page: the filters by type, the overall state in a coloured band, and each service with its 90 days." />
+
+- The band <Mark n={1} /> is the whole network in one line, and when it was
+  last updated.
+- The filters <Mark n={2} /> show only one kind of service: **Identity**,
+  **Mediators**, **APIs**, **Agents**, **Portals**, or **Third-party
+  services** — what Almena relies on from others, such as its sign-in
+  providers. **All** shows everything.
+- Each service <Mark n={3} />: its name, who runs it, its address, its state
+  now, and a bar per day for the last 90 days with the share of time it
+  worked. Point at a day (or tap it) for its figures.
+
+## What the states mean
+
+For the whole network, in the band:
+
+| The band says | What it means |
+| --- | --- |
+| **All systems operational** | Everything answers as it should. |
+| **Degraded performance** | Something answers, but slowly. It works; it may take longer. |
+| **Partial outage** | Some services do not answer. What you need may still work. |
+| **Major outage** | Nothing answers. Try again later. |
+| **Maintenance in progress** | Planned work, announced beforehand. |
+| **Status not known yet** | The page has only just started checking. |
+
+For each service:
+
+| The service says | What it means |
+| --- | --- |
+| **Operational** | It answers, in good time. |
+| **Degraded** | It answers, but takes more than two seconds, or says it is not at its best. |
+| **Partial outage** | An incident says part of it does not work. |
+| **Outage** | It failed twice in a row, or an incident says it is down. |
+| **Maintenance** | Planned work on it, now. |
+| **No data** | No recent check: the page cannot say. |
+
+Each day's bar is green when the service always answered, yellow when it was
+slow, orange for a short outage (less than 5% of the day), red for a longer
+one, blue for planned maintenance and grey when there is no data.
+
+## Incidents and maintenance
+
+When something goes wrong, or work is planned, the people who run Almena
+write it on the page: **Ongoing** at the top while it lasts, **Scheduled
+maintenance** before it starts, **Past incidents** below. Each one says which
+services it affects and how it went, step by step: **Investigating**,
+**Identified**, **Monitoring**, **Resolved** — or **Scheduled**, **In
+progress**, **Completed** for maintenance. **Incident history** lists every
+one of the last 90 days.
+
+## Follow it
+
+You do not need to keep the page open:
+
+- **Atom** (at the foot of the page, or
+  [status.almena.id/feed.xml](https://status.almena.id/feed.xml)): a feed of
+  the incidents, the maintenance and every outage the checks saw, over the
+  last 90 days. Add it to any feed reader, or to a chat channel that reads
+  feeds, and you are told as it happens.
+- **JSON** (`/api/status.json`): the same as the page, for a program.
+
+<Aside type="tip" title="Everything green, and still not working?">
+The page checks Almena from outside. If it says everything works and you
+still cannot get through, the problem may be on your side: your connection,
+your browser, or your wallet's [mediator](/use/mediator/) if it is not
+Almena's.
+</Aside>

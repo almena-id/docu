@@ -1,0 +1,99 @@
+---
+title: Formularios
+description: Lo que las personas rellenan para pedir una credencial, y lo que un verificador les pide enseñar.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Un **formulario** es la lista de lo que le pides a una persona. El mismo
+formulario sirve en dos sitios:
+
+- **Para dar una credencial**: lo que alguien rellena al solicitarla en el
+  catálogo.
+- **Para comprobar una credencial**: lo que un
+  [verificador](/es/use/organisation/verifiers/) pide a un wallet que enseñe.
+
+Un formulario tiene **campos** —cosas que la persona escribe o elige, como un
+nombre o una fecha— y **credenciales a presentar** —credenciales que ya tiene
+en su wallet y enseña en lugar de escribir—.
+
+<Flow
+	label="Hacer un formulario"
+	steps={[
+		{ icon: 'file-text', title: 'Ponle nombre', text: 'Un nombre y una línea sobre para qué sirve.' },
+		{ icon: 'search', title: 'Añade campos', text: 'Elegidos del catálogo de Almena, en orden.' },
+		{ icon: 'badge-check', title: 'Pide credenciales', text: 'Si quieres que enseñen una desde su wallet.' },
+		{ icon: 'check', title: 'Crear', text: 'Úsalo en un emisor o en un verificador.' },
+	]}
+/>
+
+## Tus formularios
+
+Abre **Formularios** en el menú lateral, bajo **Plantillas**.
+
+<Screenshot name="registry-forms" alt="La lista de formularios, cada uno con cuántos campos y credenciales pide." />
+
+Pulsa **Crear** <Mark n={1} /> para hacer uno nuevo. Cada línea
+<Mark n={2} /> es un formulario; púlsala para ver sus campos y credenciales,
+y ábrelo para editarlo.
+
+## Hacer o cambiar uno
+
+**Crear** abre un formulario vacío; **Editar**, en un formulario abierto, la
+misma pantalla ya rellena.
+
+<Screenshot name="registry-form-edit" alt="Un formulario en edición: su nombre y descripción, sus campos y la credencial que pide enseñar." />
+
+<Steps>
+
+1. Su **Nombre** <Mark n={1} /> y, si quieres, una **Descripción**
+   <Mark n={2} />: para qué sirve y qué hay que tener a mano. El globo de
+   cada caja te deja escribirlo en cada uno de tus idiomas.
+
+2. **Campos** <Mark n={3} />: pulsa **Añadir campo** y busca en el catálogo
+   (nombre, fecha de nacimiento, correo…). En cada uno marca **Obligatorio** o
+   no, añade una línea de **Ayuda** si ayuda y, en **Restringir**, limita lo
+   que se acepta: un texto más corto, un rango de fechas, solo algunos
+   valores. Las flechas cambian el orden.
+
+3. **Credenciales a presentar** <Mark n={4} />: pulsa **Añadir credencial**
+   y elige el tipo de credencial, por ejemplo un carné de socio. Escribe la
+   **Finalidad** que enseñará el wallet («Para comprobar que perteneces a Nova
+   University»), marca los **Claims** —los datos de ella que quieres ver;
+   solo se comparten esos— y elige **De confianza si la emite**: cualquier
+   emisor publicado en Almena, o solo los que elijas.
+
+4. Pulsa **Crear** (o **Guardar cambios**) abajo del todo.
+
+</Steps>
+
+Una credencial rellena los campos del formulario que se llaman igual: si el
+formulario pide el nombre y un carné de socio que lo lleva, el nombre sale
+del carné, ya comprobado.
+
+<Aside type="caution" title="Formularios en uso">
+Cuando un emisor ofrece un formulario o alguien lo ha respondido, está **en
+uso**: puedes añadir campos y credenciales opcionales y cambiar sus textos,
+pero no quitar nada ni hacerlo más estricto, y no se puede borrar.
+</Aside>
+
+## DCQL y JSON Schema
+
+Un formulario abierto tiene tres pestañas. No las necesitas para usar Almena;
+son para quien conecta otros sistemas.
+
+<Screenshot name="registry-form-dcql" alt="La pestaña DCQL de un formulario: la consulta que se hace a un wallet." />
+
+- **Verificar**: pega lo que respondió un wallet para comprobarlo a mano. La
+  [pestaña Verificar de un verificador](/es/use/organisation/verifiers/) lo
+  hace por ti con un código QR.
+- **DCQL** <Mark n={1} />: el mismo formulario, escrito como la pregunta que
+  entiende un wallet <Mark n={2} />. DCQL es simplemente la forma estándar de
+  decir «enséñame estas credenciales, y solo estos datos de ellas».
+- **JSON Schema**: las reglas que deben cumplir las respuestas —qué campos,
+  cuáles son obligatorios, qué formatos—, escritas de la forma estándar que
+  leen los programas. Los sistemas lo usan para revisar las respuestas antes
+  de enviarlas.

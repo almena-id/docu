@@ -1,0 +1,135 @@
+---
+title: Settings
+description: Your name and picture, the wallet's colour and mode, notifications, the PIN, locking, and signing out.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Everything you can change is on the wallet's last tab, **Profile**: your
+picture and your name at the top, and below them one line per section.
+
+<Screenshot phone name="wallet-profile" alt="The Profile tab: the picture and the name, and the list of sections: Profile, Appearance, Messaging, Backup, Security." />
+
+- The square at the top right <Mark n={1} /> shows **your invitation**, the
+  code someone scans to start talking with you ([Messages and
+  calls](/use/wallet/messages/)).
+- The sections <Mark n={2} />: **Profile**, **Appearance**, **Messaging**,
+  **Backup** and **Security** — and, on a computer, **Notifications**. Press
+  one to open it; the arrow at the top takes you back.
+
+## Your name and picture
+
+**Profile → Profile**.
+
+<Screenshot phone name="wallet-profile-name" alt="The Profile section: the picture with its camera button, Change photo, and the Your name box with Save and send." />
+
+<Steps>
+
+1. Press the picture <Mark n={1} />, or **Change photo** <Mark n={2} />, to
+   choose one. **Remove photo** appears once there is one.
+
+2. Type the name your contacts will see <Mark n={3} /> and press **Save and
+   send** <Mark n={4} />. Each contact gets it only through the address they
+   know you by.
+
+</Steps>
+
+Organisations do not see this name: what they see is only what a credential
+says, and only when you show it.
+
+## Colour and mode
+
+**Profile → Appearance**.
+
+<Screenshot phone name="wallet-appearance" alt="Appearance: eight colours in a row, orange ticked, and the mode: System, Dark, Light." />
+
+- **Identity colour** <Mark n={1} />: the colour the wallet wears — orange
+  (the one it comes with), blue, red, yellow, green, cyan, magenta or teal.
+  It changes at once.
+- **Mode** <Mark n={2} />: **Light**, **Dark**, or **System** to follow your
+  device.
+
+<Aside type="note" title="The language">
+The wallet speaks your device's language: there is no switch inside it.
+Today it speaks English and Spanish; in any other language it speaks
+English. To change it, change your phone's or computer's language.
+</Aside>
+
+## Notifications (on a computer)
+
+**Profile → Notifications**, on Windows, Mac and Linux only: a phone is woken
+by a notice that never says who wrote or what.
+
+<Screenshot phone name="wallet-notifications" alt="Notifications: When a message arrives, with three choices — Everything, Who it is from, Nothing identifying." />
+
+Under **When a message arrives** <Mark n={1} />, choose how much the
+computer's notification says while the wallet is not in front:
+**Everything** (who and what), **Who it is from**, or **Nothing
+identifying**. The computer keeps what notifications show in its own history,
+outside the wallet.
+
+## Messaging and backup
+
+**Profile → Messaging** is where your messages wait: see [Choose a
+mediator](/use/mediator/). **Profile → Backup** saves and restores what your
+recovery words do not bring back: see [Your wallet](/use/wallet/#a-copy-of-what-the-words-do-not-bring-back).
+
+## Security
+
+**Profile → Security**.
+
+<Screenshot phone name="wallet-security" alt="Security: the PIN row with its digits, the Biometrics switch, Lock after 1, 5 or 10 minutes, where the identity is kept, and the Sign out button." />
+
+- **PIN** <Mark n={1} />: how many digits it has. Press it to change it
+  (below).
+- **Biometrics** <Mark n={2} />: open the wallet with your face or your
+  fingerprint as well as the PIN. Turning it on asks for the PIN once. When
+  the device cannot do it, the line says **Not available on this device**.
+- **Lock after** <Mark n={3} />: 1, 5 or 10 minutes without use, then the
+  wallet locks itself.
+- **Kept in**: where this device keeps your identity. Nothing to do here.
+- **Sign out** <Mark n={4} />: see below.
+
+On an iPhone set up without a PIN, the wallet opens with **Face ID or the
+iPhone passcode** and has no PIN to change. On a computer there is also
+**Open at login**: the wallet starts with the computer, minimised and locked.
+
+## Change the PIN
+
+<Flow
+	label="Changing the PIN"
+	steps={[
+		{ icon: 'key', title: 'Your current PIN', text: 'So nobody who finds the wallet open can replace it.' },
+		{ icon: 'wrench', title: 'Choose a new one', text: 'As many digits as the one you have.' },
+		{ icon: 'check', title: 'Type it again', text: 'So a slip does not lock you out.' },
+	]}
+/>
+
+<Screenshot phone name="wallet-pin-change" alt="Your current PIN: the empty dots and the keypad." />
+
+Press **PIN** in **Security**. Type your current PIN on the keypad
+<Mark n={2} />; the dots <Mark n={1} /> fill as you type. Then choose the new
+one and type it again. Only the digits change: your identity, your
+credentials and your conversations stay as they are.
+
+<Aside type="caution" title="The attempts are counted">
+After too many wrong PINs, the wallet removes the identity from this device,
+and only your recovery words bring it back. When three or fewer attempts are
+left, the lock screen says how many.
+</Aside>
+
+## Sign out
+
+<Screenshot phone name="wallet-sign-out" alt="Sign out: what goes with it, the question Do you have your phrase in front of you?, the slider and Stay signed in." />
+
+Signing out removes your identity from this device <Mark n={1} />, and your
+conversations with it. Read the screen: there is no support line that can
+undo it. The slider <Mark n={2} /> unlocks after a few seconds; slide it to
+the end to sign out. **Stay signed in** <Mark n={3} /> takes you back.
+
+Your recovery words are the only way back, on this device or any other.
+Without them, the identity is gone for good. Make a [backup](/use/wallet/#a-copy-of-what-the-words-do-not-bring-back)
+first if you want your credentials and conversations back too.

@@ -54,7 +54,7 @@ sidebar: { order: 20 }
 | --- | --- |
 | 200 | [TenantDetail](/reference/api/schemas/#tenantdetail) |
 | 403 | [`not_admin`](/reference/errors/#not_admin) |
-| 422 | [`name_required`](/reference/errors/#name_required), [`mediator_not_found`](/reference/errors/#mediator_not_found) (neither the tenant's nor a public one), [`signer_required`](/reference/errors/#signer_required) ([`single_user`](/reference/errors/#single_user) with nobody), [`signer_not_member`](/reference/errors/#signer_not_member), [`languages_invalid`](/reference/errors/#languages_invalid) (none, repeated or not the platform's), [`languages_anchor`](/reference/errors/#languages_anchor) (the trust anchor works in all of them) |
+| 422 | [`name_required`](/reference/errors/#name_required), [`mediator_not_found`](/reference/errors/#mediator_not_found) (neither the tenant's nor a public one), [`signer_required`](/reference/errors/#signer_required) (`single_user` with nobody), [`signer_not_member`](/reference/errors/#signer_not_member), [`languages_invalid`](/reference/errors/#languages_invalid) (none, repeated or not the platform's), [`languages_anchor`](/reference/errors/#languages_anchor) (the trust anchor works in all of them) |
 
 ## What the tenant still needs set up to operate
 

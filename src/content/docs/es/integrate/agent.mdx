@@ -1,0 +1,124 @@
+---
+title: El agente
+description: Pregunta al agente de Almena desde tu propio agente, por A2A 1.0, con un token del registry en cada llamada.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+El **agente de Almena**, en `https://agent.almena.id`, es un agente de IA
+(responde con Claude) al que otros agentes llegan por el protocolo
+**Agent2Agent (A2A)**, versión 1.0. Explica Almena y maneja la cuenta de quien
+llama en el registry: con tu token del registry recibe las [herramientas
+MCP](/es/integrate/mcp/) del registry y actúa como tu cuenta, nada más.
+
+<Flow
+	label="Un mensaje al agente"
+	steps={[
+		{ icon: 'key', title: 'Tu token', text: 'Un token de API del registry, en cada llamada.' },
+		{ icon: 'shield-check', title: 'Lo comprueba', text: 'Con la API: de qué cuenta es.' },
+		{ icon: 'bot', title: 'Responde', text: 'Con las herramientas del registry, como esa cuenta.' },
+		{ icon: 'send', title: 'Lo va enviando', text: 'La respuesta, en una tarea que es solo tuya.' },
+	]}
+/>
+
+## Los endpoints
+
+| Método | Ruta | |
+| --- | --- | --- |
+| `GET` | `/.well-known/agent-card.json` | La tarjeta del agente: nombre, habilidades, capacidades, endpoints y el esquema de seguridad que exige. Pública. |
+| `POST` | `/a2a/jsonrpc` | El enlace JSON-RPC 2.0: `SendMessage`, `SendStreamingMessage`, `GetTask`, `ListTasks`, `CancelTask`, `SubscribeToTask`… |
+| cualquiera | `/a2a/rest/…` | El enlace HTTP+JSON: `POST /message:send`, `POST /message:stream`, `GET /tasks/{id}`… |
+
+Toda petición a los enlaces lleva `A2A-Version: 1.0`.
+
+Su tarjeta da dos habilidades: **Almena ID assistant** (preguntas sobre
+Almena: identidades, emisores, verificadores, mediadores, el registry) y
+**Almena registry operator** (configurar y consultar las cuentas de quien
+llama, y preparar las peticiones al wallet que aprueban quienes firman).
+
+## Autenticación
+
+**Toda llamada a los enlaces necesita un token de API del registry**:
+`Authorization: Bearer almena_…`, creado en el registry ([Tokens de
+API](/es/use/organisation/tokens/)) o con `almena token create`. Solo la
+tarjeta del agente y las páginas sencillas (`/`, `/health`) son públicas; la
+tarjeta declara el token como su esquema obligatorio.
+
+El agente pregunta a la API de quién es el token (la cuenta que ha entrado,
+`GET /api/v1/auth/me`) y recuerda la respuesta un minuto. Sin un token que la
+API acepte, el modelo nunca se ejecuta. Un token revocado sigue hablando como
+mucho ese minuto, sin las herramientas del registry.
+
+| Estado | Cuándo | `code` JSON-RPC / `status` REST |
+| --- | --- | --- |
+| `401` con `WWW-Authenticate: Bearer` | Sin token, o uno que la API rechaza | `-32000` / `UNAUTHENTICATED` |
+| `429` con `Retry-After` | Demasiadas llamadas de una cuenta, o demasiados tokens rechazados desde una dirección, en la ventana | `-32603` / `RESOURCE_EXHAUSTED` |
+| `503` con `Retry-After` | La API no puede comprobar un token que aún no se recuerda | `-32603` / `UNAVAILABLE` |
+
+<Aside type="note" title="Límites">
+Las llamadas se cuentan **por cuenta**, en una ventana de un minuto: 30 por
+defecto. Los tokens rechazados se cuentan por dirección del cliente: tras 10
+en la ventana, esa dirección espera a que acabe. Respeta `Retry-After`.
+</Aside>
+
+## Tareas y conversaciones, por cuenta
+
+La cuenta es quien llama, y lo que empieza es suyo:
+
+- **Tareas**: `GetTask`, `ListTasks`, `CancelTask` y `SubscribeToTask` solo
+  ven las de quien llama. La tarea de otra cuenta *no se encuentra*, como si
+  no existiera.
+- **Conversaciones**: los mensajes que comparten un `contextId` son una
+  conversación; el agente ve los turnos anteriores. Un contexto se queda con
+  la cuenta que lo empezó: si otra cuenta lo continúa, se **rechaza**, porque
+  su historial guarda lo que el registry le dijo a la primera.
+- Ambas viven en la memoria del agente: un reinicio las pierde. Una
+  conversación inactiva se descarta tras una hora, y también una tarea
+  terminada que nadie ha leído en una hora. Una descartada no se encuentra; un
+  mensaje a un contexto descartado empieza de cero.
+
+## Envía un mensaje
+
+<Steps>
+
+1. Lee la tarjeta, para conocer los endpoints:
+
+   ```bash
+   curl -s https://agent.almena.id/.well-known/agent-card.json
+   ```
+
+2. Envía un mensaje con tu token:
+
+   ```bash
+   curl -s https://agent.almena.id/a2a/rest/message:send \
+     -H "A2A-Version: 1.0" -H "Authorization: Bearer $ALMENA_TOKEN" \
+     -H "Content-Type: application/json" \
+     -d '{"message": {"messageId": "1", "role": "ROLE_USER",
+          "parts": [{"text": "¿Qué le falta a mi cuenta?"}]}}'
+   ```
+
+3. La respuesta es una tarea. Su contestación es un artefacto de texto,
+   `response` (que llega a trozos con `message:stream` /
+   `SendStreamingMessage`). Para seguir la conversación, envía el siguiente
+   mensaje con el `contextId` de la tarea.
+
+</Steps>
+
+Una tarea termina:
+
+- `COMPLETED`, con la respuesta;
+- `REJECTED` si el mensaje no tiene texto, el modelo lo rechaza, la
+  conversación está llena o es de otra cuenta, o el endpoint MCP del registry
+  rechaza el token;
+- `FAILED` si no se llega al modelo (la causa queda en el registro del
+  agente).
+
+<Aside type="caution" title="Nunca firma">
+Como las [herramientas MCP](/es/integrate/mcp/) que usa, el agente no puede
+borrar, publicar ni decidir, y lo que acaba en una firma (una identidad, una
+credencial, un cambio de estado) vuelve como una petición al wallet: quien
+firma por la cuenta la aprueba en su propio wallet de Almena.
+</Aside>
+
+La CLI también habla con el agente: [`almena agent`](/reference/cli/agent/).

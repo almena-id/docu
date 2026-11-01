@@ -1,14 +1,20 @@
 ---
 // The language menu, as in catalog: each language named in itself, leading to
 // the same page in that language (Starlight shows the default language's page,
-// with a notice, where a translation is missing). Only on multilingual sites.
+// with a notice, where a translation is missing) — on the not-found page, its
+// home page. Only on multilingual sites.
 import config from 'virtual:starlight/user-config';
 import ChoiceMenu from './ChoiceMenu.astro';
 
-const { locale: current } = Astro.locals.starlightRoute;
+const { locale: current, id } = Astro.locals.starlightRoute;
+// The not-found page is one page, served in place of whatever was asked for:
+// there is no /404/ in another language to lead to, so each language leads to
+// its home page.
+const notFound = id === '404' || id.endsWith('/404');
 
 /** The current path in another locale ('root' has no prefix). */
 function localizedPath(code: string): string {
+	if (notFound) return code === 'root' ? '/' : `/${code}/`;
 	let path = Astro.url.pathname;
 	if (current) path = path.replace(new RegExp(`^/${current}(?=/|$)`), '') || '/';
 	return code === 'root' ? path : `/${code}${path}`;

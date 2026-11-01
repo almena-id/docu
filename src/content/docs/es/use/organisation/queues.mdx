@@ -1,0 +1,52 @@
+---
+title: Colas
+description: Deja que tus propios sistemas se enteren de lo que le pasa a un emisor o a un verificador.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Si tu organización tiene su propio sistema —una aplicación de expedientes,
+el control de una puerta—, puede enterarse, en el momento, de lo que llega a
+un emisor o a un verificador: una solicitud enviada, una decisión, una
+credencial entregada o retirada, una credencial comprobada. Cada emisor y
+cada verificador puede tener una **cola** para eso: un buzón que tu sistema
+lee.
+
+<Flow
+	label="Cómo funciona una cola"
+	steps={[
+		{ icon: 'layers', title: 'Crea la cola', text: 'Un administrador, desde la pestaña Cola.' },
+		{ icon: 'key', title: 'Guarda la contraseña', text: 'Se enseña una vez, para tu sistema.' },
+		{ icon: 'send', title: 'Pasan cosas', text: 'Solicitudes, decisiones, comprobaciones.' },
+		{ icon: 'server', title: 'Tu sistema lee', text: 'Cada aviso según llega.' },
+	]}
+/>
+
+Abre el emisor o el verificador y su pestaña **Cola** <Mark n={1} />.
+
+<Screenshot name="registry-queue" alt="La pestaña Cola de un emisor: el nombre de la cola, su usuario, dirección y host virtual, y el botón para borrarla." />
+
+<Steps>
+
+1. Un administrador pulsa **Crear la cola**.
+
+2. Aparece una contraseña, **que se muestra solo esta vez**. Cópiala en la
+   configuración de tu sistema junto con los demás datos <Mark n={2} />: la
+   **Cola**, el **Usuario**, la **Dirección** y el **Host virtual**. El
+   registry no guarda la contraseña.
+
+3. Tu sistema se conecta con ellos y lee lo que llega.
+
+</Steps>
+
+**Borrar la cola** <Mark n={3} /> la elimina, con los mensajes que aún tenga,
+y su usuario: tu sistema deja de leerla. Antes se pregunta.
+
+<Aside type="tip">
+Quien conecte el sistema encontrará los mensajes y cómo leerlos en
+[Colas, en Integrar](/es/integrate/queues/). Una contraseña perdida se cambia con la API o la
+CLI, no desde esta pantalla.
+</Aside>

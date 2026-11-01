@@ -1,0 +1,66 @@
+---
+title: Settings and signing
+description: Your organisation's name, mediator and languages, and who signs for it.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+In the registry your organisation is an **account**. Its details are under
+**Settings**, in the side menu under **Account**. Only administrators change
+them; members can read them.
+
+## Name, mediator and languages
+
+<Screenshot name="registry-tenant" alt="The account's settings: name, mediator, the languages ticked and the Save button." />
+
+<Steps>
+
+1. **Name** <Mark n={1} />: your organisation as people will read it.
+
+2. **Mediator** <Mark n={2} />: the service through which wallets reach your
+   organisation. Leave Almena's unless you were told otherwise; you can pick
+   one of your own or another public one.
+
+3. **Languages** <Mark n={3} />: the languages your organisation works in, at
+   least one. Your forms, fields and descriptions are written in these; the
+   globe in each text box opens one line per language.
+
+4. Press **Save** <Mark n={4} />.
+
+</Steps>
+
+The **JSON** tab shows your organisation's identity document, for whoever
+connects systems.
+
+## Who signs
+
+Some things your organisation does are signed from a wallet: its identity,
+its issuers' and verifiers' identities, the credentials it gives. **Signing**,
+in the side menu under **Trust**, says who does it.
+
+<Screenshot name="registry-signing" alt="The Signing screen: the signing flow chosen on the left, how it works on the right." />
+
+<Steps>
+
+1. Choose the **Signing flow** <Mark n={1} />:
+   - **Any one admin**: any administrator with a linked wallet signs.
+     Nobody holds things up, but any admin publishes without another seeing it.
+   - **One specific user**: only the member you choose signs. One person
+     answers for what is published, but if they are away nothing is.
+
+2. **How it works** <Mark n={2} /> draws the flow you chose, with what it
+   gains and what it costs.
+
+3. Press **Save** <Mark n={3} />.
+
+</Steps>
+
+<Aside type="caution">
+Whoever signs needs an Almena wallet linked to their profile. Until they
+link one, they cannot sign.
+</Aside>
+
+Each issuer and verifier also has its own **Signing** tab: the member who
+signs its credentials and status changes.

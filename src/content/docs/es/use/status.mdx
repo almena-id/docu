@@ -1,0 +1,98 @@
+---
+title: ¿Funciona Almena?
+description: "La página de estado en status.almena.id: qué significa cada estado, los últimos 90 días, las incidencias y cómo seguirlas."
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+¿Algo no funciona —el catálogo no abre, un código no responde—? Antes que
+nada, abre [status.almena.id](https://status.almena.id). Dice si cada parte
+de Almena funciona ahora mismo, y cómo le ha ido a cada una en los últimos 90
+días. Está solo en inglés, y siempre en oscuro.
+
+Funciona por su cuenta, lejos del resto de Almena, así que sigue en pie y te
+avisa cuando el resto se cae.
+
+<Flow
+	label="Cómo lo sabe la página de estado"
+	steps={[
+		{ icon: 'radio-tower', title: 'Comprueba', text: 'Cada servicio, cada minuto, desde fuera.' },
+		{ icon: 'activity', title: 'Juzga', text: 'Una buena respuesta, una lenta o ninguna.' },
+		{ icon: 'globe', title: 'Muestra', text: 'Ahora, y cada uno de los últimos 90 días.' },
+		{ icon: 'send', title: 'Avisa', text: 'Caídas e incidencias, en su canal.' },
+	]}
+/>
+
+<Screenshot name="status-home" alt="La página de estado: los filtros por tipo, el estado general en una franja de color y cada servicio con sus 90 días." />
+
+- La franja <Mark n={1} /> resume toda la red en una línea, con la hora de la
+  última actualización.
+- Los filtros <Mark n={2} /> enseñan solo un tipo de servicio: **Identity**
+  (identidad), **Mediators** (mediadores), **APIs**, **Agents** (agentes),
+  **Portals** (portales) o **Third-party services** —lo que Almena usa de
+  otros, como sus proveedores de inicio de sesión—. **All** lo enseña todo.
+- Cada servicio <Mark n={3} />: su nombre, quién lo lleva, su dirección, su
+  estado ahora y una barra por día de los últimos 90, con el porcentaje de
+  tiempo que funcionó. Pasa el ratón por un día (o tócalo) para ver sus
+  cifras.
+
+## Qué significa cada estado
+
+Para toda la red, en la franja:
+
+| La franja dice | Qué significa |
+| --- | --- |
+| **All systems operational** | Todo responde como debe. |
+| **Degraded performance** | Algo responde, pero despacio. Funciona; puede tardar más. |
+| **Partial outage** | Algunos servicios no responden. Lo que necesitas puede seguir funcionando. |
+| **Major outage** | Nada responde. Vuelve a intentarlo más tarde. |
+| **Maintenance in progress** | Trabajos planificados, anunciados antes. |
+| **Status not known yet** | La página acaba de empezar a comprobar. |
+
+Para cada servicio:
+
+| El servicio dice | Qué significa |
+| --- | --- |
+| **Operational** | Responde, a tiempo. |
+| **Degraded** | Responde, pero tarda más de dos segundos, o dice que no está al cien por cien. |
+| **Partial outage** | Una incidencia dice que parte de él no funciona. |
+| **Outage** | Ha fallado dos veces seguidas, o una incidencia dice que está caído. |
+| **Maintenance** | Trabajos planificados en él, ahora. |
+| **No data** | No hay una comprobación reciente: la página no puede decirlo. |
+
+La barra de cada día es verde si el servicio respondió siempre, amarilla si
+fue lento, naranja si hubo una caída corta (menos del 5% del día), roja si fue
+más larga, azul si hubo mantenimiento planificado y gris si no hay datos.
+
+## Incidencias y mantenimiento
+
+Cuando algo falla, o hay trabajos planificados, quienes llevan Almena lo
+escriben en la página: **Ongoing** (en curso) arriba mientras dura,
+**Scheduled maintenance** (mantenimiento programado) antes de que empiece, y
+**Past incidents** (incidencias pasadas) debajo. Cada una dice a qué servicios
+afecta y cómo fue, paso a paso: **Investigating**, **Identified**,
+**Monitoring**, **Resolved** —o **Scheduled**, **In progress**,
+**Completed** en un mantenimiento—. **Incident history** muestra todas las de
+los últimos 90 días.
+
+## Síguela
+
+No hace falta tener la página abierta:
+
+- **Atom** (al pie de la página, o
+  [status.almena.id/feed.xml](https://status.almena.id/feed.xml)): un canal
+  con las incidencias, los mantenimientos y cada caída que vieron las
+  comprobaciones, de los últimos 90 días. Añádelo a cualquier lector de
+  noticias, o a un canal de chat que lea canales Atom, y te enterarás en el
+  momento.
+- **JSON** (`/api/status.json`): lo mismo que la página, para un programa.
+
+<Aside type="tip" title="¿Todo en verde y aun así no funciona?">
+La página comprueba Almena desde fuera. Si dice que todo funciona y tú sigues
+sin poder entrar, el problema puede estar de tu lado: tu conexión, tu
+navegador o el [mediador](/es/use/mediator/) de tu wallet, si no es el de
+Almena.
+</Aside>

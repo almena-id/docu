@@ -1,0 +1,107 @@
+---
+title: Elegir un mediador
+description: Qué es un mediador, cuál usar y cómo elegirlo en el wallet y en el registry.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import Screens from '@docs/Screens.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Un **mediador** es un buzón en internet. Tu móvil no siempre está encendido,
+así que los mensajes para ti —de tus contactos, de una organización— esperan
+allí hasta que tu wallet los recoge. Es también la dirección en la que te
+encuentran los demás.
+
+Un mediador no puede leer lo que guarda: cada mensaje se cierra para ti antes
+de salir, y solo tu wallet lo abre. No sabe qué se dice, ni en una llamada qué
+se oye.
+
+<Flow
+	label="Cómo te llega un mensaje"
+	steps={[
+		{ icon: 'send', title: 'Alguien escribe', text: 'Su wallet cierra el mensaje solo para ti.' },
+		{ icon: 'server', title: 'Tu mediador lo guarda', text: 'Sin poder abrirlo.' },
+		{ icon: 'smartphone', title: 'Tu wallet lo recoge', text: 'Cuando se enciende, o al momento si está abierto.' },
+		{ icon: 'message', title: 'Lo lees', text: 'Solo tu wallet puede.' },
+	]}
+/>
+
+## Cuál
+
+Almena tiene un mediador público, **mediator.almena.id**, gratuito para todo
+wallet y toda organización: es el que se ofrece en todas partes, y la opción
+correcta salvo que alguien de confianza te diga otra cosa —tu organización,
+por ejemplo, si tiene el suyo—. Sirve cualquier mediador que hable el mismo
+estándar (DIDComm), siempre que use una dirección segura (HTTPS).
+
+Si el mediador de Almena funciona ahora mismo lo dice la [página de
+estado](/es/use/status/).
+
+## En tu wallet
+
+**Perfil → Mensajería**.
+
+<Screens>
+	<Screenshot phone name="wallet-mediator" alt="Conectar con un mediador: el campo con la dirección de Almena ya escrita y el botón Conectar." />
+	<Screenshot phone from={3} name="wallet-messaging" alt="Mensajería: conectado a mediator.almena.id, con Buscar mensajes y Desconectar." />
+</Screens>
+
+<Steps>
+
+1. Si aún no tienes ninguno, la sección dice **Sin conectar**: pulsa
+   **Conectar con un mediador**.
+
+2. El campo <Mark n={1} /> ya trae la dirección de Almena. Para usar otro,
+   pega en su lugar su enlace de invitación o su dirección.
+
+3. Pulsa **Conectar** <Mark n={2} />.
+
+</Steps>
+
+Una vez conectado, la sección dice cuál usas <Mark n={3} /> y cuántos
+mensajes esperan. **Buscar mensajes** <Mark n={4} /> los recoge ahora;
+**Desconectar** <Mark n={5} /> lo deja.
+
+Un mediador también puede enseñarte un código (su propia página tiene uno,
+como [mediator.almena.id](https://mediator.almena.id)): escanéalo con
+**Escanear QR**.
+
+<Screenshot phone name="wallet-mediator-invitation" alt="Conectar a un mediador: el mediador ofrecido, el que usas ahora y el botón Aceptar." />
+
+El wallet te dice qué mediador es <Mark n={1} /> y cuál usas ahora. Pulsa
+**Aceptar** <Mark n={2} /> para conectarte.
+
+<Aside type="caution" title="Elige una vez">
+Tus contactos te encuentran por el mediador que tenías cuando os conocisteis.
+Si lo cambias, sus mensajes dejan de llegar. Por eso, mientras tengas
+contactos a través de tu mediador actual, el wallet no deja que un código o
+un enlace lo cambie. Si un mediador dice que está lleno, ahora no admite
+wallets nuevos: prueba más tarde o elige otro.
+</Aside>
+
+## Para tu organización
+
+En el registry, una organización elige mediador en dos sitios: para toda la
+cuenta, y para cada emisor y verificador. Los wallets de las personas llegan a
+tus servicios a través de él.
+
+<Screenshot name="registry-tenant" alt="Los ajustes de la cuenta: nombre, mediador, los idiomas marcados y el botón Guardar." />
+
+<Steps>
+
+1. Abre **Ajustes** y elige el **Mediador** <Mark n={2} />: uno propio o uno
+   público. Una cuenta nueva empieza con el de Almena; déjalo salvo que
+   tengas el tuyo. Pulsa **Guardar**.
+
+2. Cuando creas un emisor o un verificador, su **Mediador** viene rellenado
+   igual ([Crear un emisor](/es/use/organisation/issuers/)).
+
+</Steps>
+
+Para tener tu propio mediador, la cuenta necesita un [dominio
+verificado](/es/use/organisation/domains/): un mediador responde en una
+dirección bajo él, como `mediator.nova.example`. Créalo en **Mediadores**,
+firma su identidad y publícalo, como un emisor. Un mediador que marques como
+**público** se ofrece a todas las organizaciones una vez publicado.

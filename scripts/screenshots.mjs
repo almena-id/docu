@@ -6,14 +6,19 @@
 //
 // Needs the demo API (scripts/demo_api.py, its sessions in .demo/) and the
 // portals served against it: REGISTRY_URL (default http://localhost:3107),
-// CATALOG_URL (http://localhost:3199), API_URL (http://127.0.0.1:8766).
+// CATALOG_URL (http://localhost:3199), API_URL (http://127.0.0.1:8766), and
+// the status page, STATUS_URL (http://localhost:3200), with its own history.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { DatabaseSync } from "node:sqlite";
 import { chromium } from "playwright";
 import sharp from "sharp";
 
 const REGISTRY = process.env.REGISTRY_URL ?? "http://localhost:3107";
 const CATALOG = process.env.CATALOG_URL ?? "http://localhost:3199";
 const API = process.env.API_URL ?? "http://127.0.0.1:8766";
+// The status page (../status, `task dev` or its build): English only and
+// always dark, so every language and theme takes the same picture.
+const STATUS = process.env.STATUS_URL ?? "http://localhost:3200";
 const LANGS = ["en", "es"];
 const THEMES = ["light", "dark"];
 const VIEWPORT = { width: 1280, height: 800 };
@@ -38,6 +43,46 @@ const offer = (await api("/catalog/offers")).items.find(
   (item) => item.credential_type.id === "academic_degree",
 );
 const offerPath = `/credentials/${offer.issuer.slug}/${offer.credential_type.id}`;
+// The seed's published verifier, its academic office and the form that asks
+// for a credential.
+const verifier = (await readFile(".demo/verifier.id", "utf8")).trim();
+const issuer = (await readFile(".demo/issuer.id", "utf8")).trim();
+const entryForm = (await readFile(".demo/form.id", "utf8")).trim();
+const tenant = (await api("/tenants"))[0].id;
+const issuerDid = (await api(`/tenants/${tenant}/issuers/${issuer}`)).identity.did;
+
+// The Verify tab's answer: no wallet scans the code here, so the demo's
+// database takes the verdict a wallet presenting Amina's card would get —
+// the tab, polling, shows it as it shows a real one.
+function answer() {
+  const db = new DatabaseSync(".demo/demo.db");
+  const result = {
+    verified: true,
+    credentials: [
+      {
+        key: "membership",
+        presented: true,
+        verified: true,
+        query: "membership_sd_jwt",
+        format: "dc+sd-jwt",
+        issuer: issuerDid,
+        claims: { given_name: "Amina", family_name: "Haddad", organization_name: "Nova University" },
+        fills: { given_name: "Amina", family_name: "Haddad" },
+        problems: [],
+      },
+    ],
+  };
+  db.prepare(
+    "UPDATE verifications SET answered_at = ?, verified = 1, result = ? WHERE user_id IS NOT NULL AND answered_at IS NULL",
+  ).run(new Date().toISOString().replace("T", " ").replace("Z", ""), JSON.stringify(result));
+  db.close();
+}
+
+// Showing the Verify tab's code: pick the form, press the button.
+async function showCode(page) {
+  await page.locator("main button:right-of(#verify-form)").first().click();
+  await page.locator('main a[href^="almena://"]').waitFor();
+}
 
 /**
  * Each screen: the portal, the address, who is signed in (none: signed out),
@@ -114,6 +159,259 @@ const shots = [
     ],
   },
   {
+    name: "registry-overview-more",
+    portal: REGISTRY,
+    path: "/dashboard",
+    // The whole overview: activity, its tiles and the account's health.
+    height: 1560,
+    session: "demo",
+    marks: [
+      { sel: 'main a[href="/dashboard?days=7"]' },
+      { sel: 'main a[href="/dashboard/applications"]', nth: 1, at: "start" },
+      { sel: "main h2", nth: 7, at: "start" },
+      { sel: 'main a[href="/dashboard/tenant"]', nth: 1 },
+    ],
+  },
+  {
+    name: "registry-pending",
+    portal: REGISTRY,
+    path: "/dashboard/pending",
+    session: "demo",
+    marks: [
+      { sel: "main ul li", nth: 0, at: "start" },
+      { sel: 'main a[href$="/sign"]' },
+      { sel: 'main a[href*="/issuers/"][href$="/signing"]' },
+    ],
+  },
+  {
+    name: "registry-verifiers",
+    portal: REGISTRY,
+    path: "/dashboard/verifiers",
+    session: "demo",
+    marks: [
+      { sel: 'main a[href="/dashboard/verifiers/new"]' },
+      { sel: 'main a[href^="/dashboard/verifiers/"]:not([href$="/new"])', nth: 1, at: "start" },
+    ],
+  },
+  {
+    name: "registry-verifier",
+    portal: REGISTRY,
+    path: `/dashboard/verifiers/${verifier}`,
+    session: "demo",
+    marks: [
+      { sel: "main [role=tablist]", at: "start" },
+      { sel: "main form button[type=submit]", nth: 0 },
+      { sel: 'main a[href$="/delete"]' },
+    ],
+  },
+  {
+    name: "registry-verify",
+    portal: REGISTRY,
+    path: `/dashboard/verifiers/${verifier}/verify`,
+    height: 1000,
+    session: "demo",
+    act: showCode,
+    marks: [
+      { sel: "main #verify-form", at: "start" },
+      { sel: "main .qr" },
+      { sel: 'main a[href^="almena://"]' },
+    ],
+  },
+  {
+    name: "registry-verify-result",
+    portal: REGISTRY,
+    path: `/dashboard/verifiers/${verifier}/verify`,
+    session: "demo",
+    act: async (page) => {
+      await showCode(page);
+      answer();
+      await page.locator("main [aria-live=polite]").waitFor({ timeout: 15000 });
+    },
+    marks: [
+      { sel: "main [aria-live=polite] h2", at: "start" },
+      { sel: "main [aria-live=polite] ul > li", at: "start" },
+      { sel: "main [aria-live=polite] dl", at: "start" },
+    ],
+  },
+  {
+    name: "registry-forms",
+    portal: REGISTRY,
+    path: "/dashboard/forms",
+    session: "demo",
+    marks: [
+      { sel: 'main a[href="/dashboard/forms/new"]' },
+      { sel: "main ul > li button", nth: 0, at: "start" },
+    ],
+  },
+  {
+    name: "registry-form-edit",
+    portal: REGISTRY,
+    path: `/dashboard/forms/${entryForm}/edit`,
+    // Tall enough for the credential it asks for.
+    height: 1700,
+    session: "demo",
+    marks: [
+      { sel: "main #name", at: "start" },
+      { sel: "main #description", at: "start" },
+      { sel: "main form section", nth: 0, at: "start" },
+      { sel: "main form section", nth: 1, at: "start" },
+    ],
+  },
+  {
+    name: "registry-form-dcql",
+    portal: REGISTRY,
+    path: `/dashboard/forms/${entryForm}/dcql`,
+    session: "demo",
+    marks: [
+      { sel: 'main [role=tablist] a[href$="/dcql"]' },
+      { sel: "main pre", at: "start" },
+    ],
+  },
+  {
+    name: "registry-domains",
+    portal: REGISTRY,
+    path: "/dashboard/domains",
+    session: "demo",
+    // The row opened, to show the record to publish.
+    act: async (page) => {
+      await page.locator("main ul > li button").first().click();
+      await page.locator("main dl").waitFor();
+    },
+    marks: [
+      { sel: 'main a[href="/dashboard/domains/new"]' },
+      { sel: "main dl", at: "start" },
+      { sel: "main [data-state=open] button", nth: -1 },
+    ],
+  },
+  {
+    name: "registry-domain-new",
+    portal: REGISTRY,
+    path: "/dashboard/domains/new",
+    session: "demo",
+    marks: [{ sel: "main #domain", at: "start" }, { sel: "main form button[type=submit]" }],
+  },
+  {
+    name: "registry-users",
+    portal: REGISTRY,
+    path: "/dashboard/users",
+    session: "demo",
+    marks: [
+      { sel: 'main a[href="/dashboard/users/new"]' },
+      { sel: "main ul > li", nth: 1, at: "start" },
+      { sel: "main ul > li button", nth: 1 },
+    ],
+  },
+  {
+    name: "registry-user-new",
+    portal: REGISTRY,
+    path: "/dashboard/users/new",
+    session: "demo",
+    marks: [
+      { sel: "main #email", at: "start" },
+      { sel: "main input[name=role]", nth: 0 },
+      { sel: "main form button[type=submit]" },
+    ],
+  },
+  {
+    name: "registry-fields",
+    portal: REGISTRY,
+    path: "/dashboard/fields",
+    session: "demo",
+    marks: [
+      { sel: "main #yours", at: "start" },
+      { sel: "main #almena", at: "start" },
+      { sel: "main section input", at: "start" },
+    ],
+  },
+  {
+    name: "registry-credential-types",
+    portal: REGISTRY,
+    path: "/dashboard/credential-types",
+    session: "demo",
+    marks: [
+      { sel: "main #your-types", at: "start" },
+      { sel: "main #credentials", at: "start" },
+    ],
+  },
+  {
+    name: "registry-value-lists",
+    portal: REGISTRY,
+    path: "/dashboard/value-lists",
+    session: "anchor",
+    marks: [
+      { sel: 'main a[href="/dashboard/value-lists/new"]' },
+      { sel: 'main a[href$="/edit"]', nth: 0, at: "start" },
+    ],
+  },
+  {
+    name: "registry-categories",
+    portal: REGISTRY,
+    path: "/dashboard/categories/fields",
+    session: "anchor",
+    marks: [
+      { sel: 'main a[href="/dashboard/categories/fields/new"]' },
+      { sel: 'main a[href$="/edit"]', nth: 0, at: "start" },
+    ],
+  },
+  {
+    name: "registry-billing",
+    portal: REGISTRY,
+    path: "/dashboard/billing",
+    session: "demo",
+    marks: [
+      { sel: "main h2", nth: 5, at: "start" },
+      { sel: "main h3", nth: 0, at: "start" },
+    ],
+  },
+  {
+    name: "registry-tenant",
+    portal: REGISTRY,
+    path: "/dashboard/tenant",
+    session: "demo",
+    marks: [
+      { sel: "main #name", at: "start" },
+      { sel: "main #mediator", at: "start" },
+      { sel: "main button[role=checkbox]", nth: 0 },
+      { sel: "main form button[type=submit]" },
+    ],
+  },
+  {
+    name: "registry-signing",
+    portal: REGISTRY,
+    path: "/dashboard/signing",
+    session: "demo",
+    marks: [
+      { sel: "main #signingFlow", at: "start" },
+      { sel: "main #flows-title", at: "start" },
+      { sel: "main form button[type=submit]" },
+    ],
+  },
+  {
+    name: "registry-queue",
+    portal: REGISTRY,
+    path: `/dashboard/issuers/${issuer}/queue`,
+    session: "demo",
+    marks: [
+      { sel: 'main [role=tablist] a[href$="/queue"]' },
+      { sel: "main dl", at: "start" },
+      { sel: "main dl ~ div button" },
+    ],
+  },
+  {
+    name: "registry-tokens",
+    portal: REGISTRY,
+    path: "/dashboard/account",
+    height: 1000,
+    session: "demo",
+    marks: [
+      { sel: "main section", nth: 1, at: "start" },
+      { sel: "main section ul > li", nth: -1, at: "start" },
+      { sel: "main #token-name", at: "start" },
+      { sel: "main #token-days", at: "start" },
+      { sel: "main form button[type=submit]", nth: -1 },
+    ],
+  },
+  {
     name: "catalog-home",
     portal: CATALOG,
     path: "/",
@@ -121,6 +419,58 @@ const shots = [
       { sel: "main input[name=q]", at: "start" },
       { sel: 'main a[href^="/?category="]' },
       { sel: 'main a[href^="/credentials/"]', at: "start" },
+    ],
+  },
+  {
+    name: "status-home",
+    portal: STATUS,
+    path: "/",
+    marks: [
+      { sel: "main nav + *", at: "start" },
+      { sel: "main nav", at: "start" },
+      { sel: "main .divide-y > div", nth: 0, at: "start" },
+    ],
+  },
+  {
+    name: "catalog-search",
+    portal: CATALOG,
+    // The issuer's name is the same in every language: the search finds it
+    // on both pages.
+    path: "/?q=Academic",
+    // Tall enough for the cards found and their issuer.
+    height: 1180,
+    marks: [
+      { sel: "main input[name=q]", at: "start" },
+      { sel: "main input[name=q] ~ span button" },
+      { sel: 'main a[href^="/credentials/"]', at: "start" },
+      { sel: 'main a[href^="/issuers/"]' },
+    ],
+  },
+  {
+    name: "catalog-issuer",
+    portal: CATALOG,
+    path: `/issuers/${offer.issuer.slug}`,
+    marks: [
+      { sel: "main h1", at: "start" },
+      { sel: "main header button" },
+      { sel: "main #issuer-offers", at: "start" },
+      { sel: 'main a[href^="/credentials/"]', at: "start" },
+    ],
+  },
+  {
+    name: "catalog-applications",
+    portal: CATALOG,
+    path: offerPath,
+    // An application started in this browser, then the list of them.
+    act: async (page) => {
+      await page.locator("main form button[type=submit]").first().click();
+      await page.waitForURL(/\/apply\//);
+      await page.goto(`${CATALOG}/applications`, { waitUntil: "networkidle" });
+    },
+    marks: [
+      { sel: 'header a[href="/applications"]' },
+      { sel: "main ul > li", nth: 0, at: "start" },
+      { sel: 'main a[href^="/apply/"]' },
     ],
   },
   {
@@ -159,12 +509,14 @@ async function place(page, viewport, { sel, nth = 0, at = "center" }) {
   return { x: pct(x, viewport.width), y: pct(y, viewport.height) };
 }
 
+// SHOTS=a,b retakes only those (while working on them); none, every one.
+const only = process.env.SHOTS?.split(",");
 const browser = await chromium.launch();
 // Merged with what is there: the wallet's marks come from wallet-screenshots.mjs.
 const marks = JSON.parse(await readFile("src/data/screenshots.json", "utf8").catch(() => "{}"));
 for (const lang of LANGS)
   for (const theme of THEMES) {
-    for (const shot of shots) {
+    for (const shot of only ? shots.filter((item) => only.includes(item.name)) : shots) {
       const viewport = { ...VIEWPORT, height: shot.height ?? VIEWPORT.height };
       const context = await browser.newContext({
         viewport,

@@ -421,10 +421,11 @@ is the whole list in its order.
 
 | Field | Type | Notes |
 | --- | --- | --- |
-| `check` | `name`, `signing_flow`, `domain`, `identity`, `mediator` |  |
+| `check` | `name`, `signing_flow`, `domain`, `identity`, `mediator`, `signers`, `status_lists`, `queues`, `published` |  |
 | `done` | boolean |  |
-| `issue` | `missing`, `unverified`, `pending`, `outdated`, `unsigned`, `unpublished`, `unchosen`, `no_signer`, `no_wallet` or null |  |
+| `issue` | `missing`, `unverified`, `pending`, `outdated`, `unsigned`, `unpublished`, `unchosen`, `no_signer`, `no_wallet`, `stale` or null |  |
 | `item` *(optional)* | string (uuid) or null |  |
+| `item_kind` *(optional)* | `identity`, `mediator`, `issuer`, `verifier` or null |  |
 
 ## HTTPValidationError
 
@@ -979,6 +980,7 @@ an SD-JWT VC (`document`: its header, payload and disclosures; see
 | `id` | string (uuid) |  |
 | `slug` | string |  |
 | `secret` | string |  |
+| `expires_at` | string (date-time) |  |
 
 ## StartIn
 

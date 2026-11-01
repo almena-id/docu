@@ -1,0 +1,113 @@
+---
+title: MCP
+description: Da a un asistente de IA las operaciones del registry como herramientas, mediante el endpoint MCP de la API y un token del registry.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+La API es también un servidor **Model Context Protocol**: un asistente de IA
+que hable MCP (Claude, un IDE, tu propio agente) recibe las operaciones del
+registry como herramientas y actúa como la cuenta cuyo token tiene: ver lo
+pendiente, crear un formulario, leer una solicitud, pedir una firma.
+
+<Flow
+	label="Una llamada a una herramienta"
+	steps={[
+		{ icon: 'bot', title: 'El asistente llama', text: 'A una herramienta, con sus argumentos y tu token.' },
+		{ icon: 'server', title: 'La API la dirige', text: 'A la operación REST que es esa herramienta.' },
+		{ icon: 'shield-check', title: 'Se comprueba igual', text: 'Token, pertenencia, rol, validación.' },
+		{ icon: 'send', title: 'Responde', text: 'La respuesta de la ruta, como resultado.' },
+	]}
+/>
+
+## El endpoint
+
+| | |
+| --- | --- |
+| **URL** | `https://api.almena.id/mcp` |
+| **Transporte** | Streamable HTTP, **sin estado**: cada mensaje es una petición JSON-RPC, enviada por `POST` y respondida como JSON. Sin flujo SSE ni sesión (`GET` y `DELETE` responden `405`). |
+| **Versiones del protocolo** | `2025-11-25` (la que se responde si la tuya no se conoce), `2025-06-18`, `2025-03-26`; una cabecera `MCP-Protocol-Version` con otra es `400` |
+| **Métodos** | `initialize`, `ping`, `tools/list`, `tools/call`; las notificaciones se confirman con `202` |
+| **Autenticación** | `Authorization: Bearer almena_…` en cada petición: el mismo token que la API |
+
+Usa un **token de API** de la cuenta (se crea en **Perfil** en el registry,
+[Tokens de API](/es/use/organisation/tokens/), o con `almena token create`).
+Las herramientas actúan como la cuenta de ese token: ven y hacen solo lo que
+ella puede, y un token rechazado se rechaza como cualquier llamada a la API.
+Un navegador solo puede llamar desde los orígenes de los propios portales
+(`403 origin_not_allowed` si no).
+
+## Conecta un cliente
+
+<Steps>
+
+1. Crea un token de API para la persona o el sistema para el que trabaja el
+   asistente. Dale la vida más corta que baste.
+
+2. Añade el servidor a tu cliente como servidor MCP remoto (HTTP) con esa
+   cabecera. Por ejemplo, en un cliente que lee una configuración JSON:
+
+   ```json
+   {
+     "mcpServers": {
+       "almena": {
+         "type": "http",
+         "url": "https://api.almena.id/mcp",
+         "headers": { "Authorization": "Bearer almena_…" }
+       }
+     }
+   }
+   ```
+
+3. Pregunta. Las instrucciones del servidor le dicen al asistente que empiece
+   por `list_tenants`: casi todas las herramientas piden un `tenant_id`.
+
+</Steps>
+
+Sin cliente, lo mismo con `curl`:
+
+```bash
+curl -s https://api.almena.id/mcp \
+  -H "Authorization: Bearer $ALMENA_TOKEN" -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+       "params": {"name": "list_pending", "arguments": {"tenant_id": "…"}}}'
+```
+
+## Las herramientas
+
+Cada herramienta es una ruta de la [API REST](/reference/api/): su entrada son
+los parámetros de ruta y de consulta, y su cuerpo JSON como `body`; su
+resultado es la respuesta de la ruta, como texto y, si es un objeto, como
+`structuredContent`. Un error es el de la propia API (`isError`, con el estado
+HTTP y el código, como `mediator_not_found`; mira
+[Errores](/es/reference/errors/)). `tools/list` da el esquema de cada una,
+construido desde el documento OpenAPI de la API, con indicaciones: de solo
+lectura para las lecturas, destructiva para `PUT` y `PATCH`.
+
+| Área | Herramientas |
+| --- | --- |
+| La cuenta | `get_me`, `list_tenants`, `get_tenant`, `update_tenant`, `get_tenant_health`, `get_tenant_activity`, `list_members`, `invite_member`, `change_member_role`, `get_subscription` |
+| Dominios | `list_domains`, `add_domain`, `check_domain` |
+| Emisores, verificadores, mediadores | `list_issuers`, `get_issuer`, `create_issuer`, `update_issuer`, lo mismo para `verifier` y `mediator`, `list_mediator_choices` |
+| Identidades y firma | `list_identities`, `get_identity`, `create_identity`, `rename_identity`, `list_pending`, `sign_identity`, `get_signing`, `set_signing` |
+| Colas | `get_queue` |
+| Verificar | `open_verification`, `get_verification`, `verify_presentations` |
+| El catálogo público | `list_published`, `list_offers`, `list_offer_categories`, `get_issuer_offers`, `get_field_catalogue`, `get_credential_catalogue` |
+| Campos, tipos, formularios | `list_custom_fields`, `create_custom_field`, `update_custom_field`, `list_value_domains`, `create_value_domain`, `update_value_domain`, `list_categories`, `create_category`, `update_category`, `list_credential_types`, `create_credential_type`, `update_credential_type`, `list_forms`, `get_form`, `create_form`, `update_form`, `get_form_schema`, `get_form_dcql` |
+| Emitir | `get_issuer_credential_types`, `set_issuer_credential_types`, `list_applications`, `get_application`, `get_issuance_proposal`, `save_issuance_draft`, `request_issuance_signature`, `list_status_lists`, `sign_status_list`, `set_credential_status` |
+| El ancla de confianza | `list_accounts`, `get_account`, `set_account_subscription` |
+
+<Aside type="caution" title="Lo que no es una herramienta">
+Solo son herramientas las lecturas y las operaciones que una persona todavía
+puede parar. Borrar cualquier cosa, publicar y despublicar, decidir
+solicitudes, las contraseñas de las colas y las formas de entrar de la propia
+cuenta (métodos de entrada, tokens, el wallet vinculado) quedan para el portal
+y la CLI. Y el asistente nunca firma nada: `sign_identity`,
+`request_issuance_signature`, `sign_status_list` y `set_credential_status`
+solo crean una **petición al wallet**: el asistente enseña su `deep_link` a
+quien firma por la cuenta, que la aprueba, o no, en su wallet de Almena.
+</Aside>
+
+El [agente de Almena](/es/integrate/agent/) es uno de esos clientes: usa estas
+herramientas con el token de quien habla con él.

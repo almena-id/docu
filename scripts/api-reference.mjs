@@ -13,6 +13,8 @@ const NAMES = { did: "DIDs", mcp: "MCP", "status lists": "Status lists" };
 const title = (tag) => NAMES[tag] ?? tag.charAt(0).toUpperCase() + tag.slice(1);
 const slug = (tag) => tag.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 const CODE = /`([a-z][a-z0-9]*(?:_[a-z0-9]+)+)`/g;
+// The codes the errors page has an anchor for (ErrorCodes.astro).
+const refusals = spec["x-refusals"] ?? {};
 
 /** Markdown text, safe: what is outside code spans cannot open HTML. */
 function text(value = "") {
@@ -96,7 +98,11 @@ function parameters(operation) {
 function responses(operation) {
   const rows = Object.entries(operation.responses ?? {}).map(([status, response]) => {
     const schema = Object.values(response.content ?? {})[0]?.schema;
-    const said = (response.description ?? "").replace(CODE, (_, code) => `[\`${code}\`](/reference/errors/#${code})`);
+    // Only an error code links to the errors page; another word in code (a
+    // signing flow's name, a field) stays as it is.
+    const said = (response.description ?? "").replace(CODE, (whole, code) =>
+      code in refusals ? `[\`${code}\`](/reference/errors/#${code})` : whole,
+    );
     const what = [schema ? type(schema) : "", status.startsWith("2") && /successful/i.test(said) ? "" : cell(said)]
       .filter(Boolean)
       .join(" — ");

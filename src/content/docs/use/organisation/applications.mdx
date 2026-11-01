@@ -3,12 +3,25 @@ title: Review applications
 description: See what people sent, accept or reject it, and give the credential.
 ---
 
+import Flow from '@docs/Flow.astro';
 import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import { Steps } from '@astrojs/starlight/components';
 
 Every application to your issuers arrives under **Applications**, in the
 side menu.
+
+<Flow
+	label="From application to credential"
+	steps={[
+		{ icon: 'send', title: 'It arrives', text: 'A person applies from the catalog and signs it with their wallet.' },
+		{ icon: 'file-text', title: 'You read it', text: 'The answers, signed by the person who sent them.' },
+		{ icon: 'check', title: 'You decide', text: 'Accept or reject, with a note if you want.' },
+		{ icon: 'key', title: 'The signer signs', text: 'The credential, from the issuer signer’s wallet.' },
+		{ icon: 'wallet', title: 'They take it', text: 'From the catalog, into the same wallet they applied with.' },
+	]}
+/>
+
 
 <Screenshot name="registry-applications" alt="The list of applications, newest first, each with its status." />
 

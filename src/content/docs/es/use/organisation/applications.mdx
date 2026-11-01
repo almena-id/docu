@@ -3,12 +3,25 @@ title: Revisar solicitudes
 description: Mira lo que enviaron las personas, acéptalo o recházalo, y entrega la credencial.
 ---
 
+import Flow from '@docs/Flow.astro';
 import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import { Steps } from '@astrojs/starlight/components';
 
 Todas las solicitudes a tus emisores llegan a **Solicitudes**, en el menú
 lateral.
+
+<Flow
+	label="De la solicitud a la credencial"
+	steps={[
+		{ icon: 'send', title: 'Llega', text: 'Una persona la pide desde el catálogo y la firma con su wallet.' },
+		{ icon: 'file-text', title: 'La lees', text: 'Las respuestas, firmadas por quien las envió.' },
+		{ icon: 'check', title: 'Decides', text: 'Aceptar o rechazar, con una nota si quieres.' },
+		{ icon: 'key', title: 'Firma quien firma', text: 'La credencial, desde el wallet de quien firma por el emisor.' },
+		{ icon: 'wallet', title: 'Se la lleva', text: 'Desde el catálogo, al mismo wallet con el que la pidió.' },
+	]}
+/>
+
 
 <Screenshot name="registry-applications" alt="La lista de solicitudes, de la más reciente a la más antigua, cada una con su estado." />
 

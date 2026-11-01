@@ -3,6 +3,7 @@ title: Ask for a credential
 description: Find a credential in the catalog, apply for it with your wallet and receive it.
 ---
 
+import Flow from '@docs/Flow.astro';
 import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import Screens from '@docs/Screens.astro';
@@ -10,6 +11,18 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 
 You need the Almena wallet set up on your phone ([how](/use/wallet/)) and a
 browser — on your computer, or on the phone itself.
+
+<Flow
+	label="Asking for a credential"
+	steps={[
+		{ icon: 'search', title: 'Find it', text: 'In the catalog, by name, organisation or category.' },
+		{ icon: 'qr', title: 'Pair your wallet', text: 'Scan the first code to start.' },
+		{ icon: 'file-text', title: 'Fill in and send', text: 'Your wallet signs what you send.' },
+		{ icon: 'building', title: 'They decide', text: 'The organisation reviews it and gives it.' },
+		{ icon: 'download', title: 'Keep it', text: 'Scan the last code: it goes into your wallet.' },
+	]}
+/>
+
 
 ## 1. Find the credential
 
@@ -28,6 +41,34 @@ you can ask for and who gives each one.
 3. Open the credential you want <Mark n={3} />.
 
 </Steps>
+
+### Searching
+
+The list changes as you type, a moment after the last key.
+
+<Screenshot name="catalog-search" alt="The catalog searched for Academic: the two services found, the count and the button to clear the search." />
+
+- The search box <Mark n={1} /> finds a word in the credential's name, the
+  organisation's or the category's. The cross <Mark n={2} /> clears it, and
+  **Clear filters** clears the search and the category together.
+- What is found <Mark n={3} /> shows as cards, each with who gives it
+  <Mark n={4} />. When nothing matches, the page says **No services match**:
+  try other words, or another category.
+
+### Who gives it
+
+Press the name of the organisation on a card, or on a credential's page, to
+see who it is and everything it gives.
+
+<Screenshot name="catalog-issuer" alt="An issuer's page in the catalog: its initials and name, its description, its identity and the services it offers." />
+
+- At the top, its name <Mark n={1} /> and what it does, and since when it is
+  in the catalog.
+- The long line under it is its identity on the internet, the same one its
+  credentials carry. The button beside it <Mark n={2} /> copies it, for
+  whoever wants to check it.
+- **Services** <Mark n={3} />: every credential it gives. Open one <Mark n={4} />
+  or press **Apply** under it.
 
 ## 2. Start the application
 
@@ -77,10 +118,23 @@ The page moves on by itself once your wallet answers.
 
 </Steps>
 
-<Aside type="note" title="Keep this page">
-Your application lives in this browser. An application not sent within a
-day is removed, so fill it in in one go.
+<Aside type="note" title="Keep this browser">
+Your application lives in this browser: there is no account to sign in to.
+An application not sent within a day is removed, so fill it in in one go.
 </Aside>
+
+### Come back to an application
+
+Closed the page? **My applications**, at the top right of the catalog
+<Mark n={1} />, lists the applications started in this browser and still open
+in it.
+
+<Screenshot name="catalog-applications" alt="My applications: an application to Nova Academic Office for an academic qualification, not sent yet, with the Open button." />
+
+Each one <Mark n={2} /> says who you applied to, for what, and how it stands
+(**Started**, **In progress**, **Sent**, **Accepted**, **Not accepted**, **Issued**). **Open** <Mark n={3} /> takes you
+back to where you left it — for example, to take the credential once it is
+given. Another browser, or another device, does not see them.
 
 ## 5. Receive it
 

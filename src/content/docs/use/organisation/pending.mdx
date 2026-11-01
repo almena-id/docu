@@ -1,0 +1,51 @@
+---
+title: What waits for you
+description: The Pending list, the activity of your organisation and its health, on the overview.
+---
+
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside } from '@astrojs/starlight/components';
+
+The overview tells you, at a glance, what is waiting for you, what your
+issuers and verifiers did and what your organisation still needs to set up.
+
+## Pending
+
+**Pending**, in the side menu under **Activity**, lists everything that is
+waiting to be signed, published or given, in the order it has to be done.
+The overview shows the first five under **Awaiting you**.
+
+<Screenshot name="registry-pending" alt="The Pending list: an identity to sign, a verifier still a draft and credentials to issue." />
+
+- <Mark n={1} /> Each line is one thing: its name (press it to open it), what
+  it is, and why it waits — **Pending signature**, **Draft**, **To issue**…
+- <Mark n={2} /> When you are the one who does it, the button to do it:
+  **Sign**, **Publish** or **Issue**.
+- <Mark n={3} /> When something has to happen first, the line says what —
+  for example **Its issuer has no signer.** — and takes you there.
+
+<Aside type="tip">
+Signing is done from your Almena wallet. If the list says **Link your Almena
+wallet to sign.**, link it first from your
+[profile](/use/organisation/tokens/).
+</Aside>
+
+## Activity and health
+
+Further down the overview:
+
+<Screenshot name="registry-overview-more" alt="The overview's activity chart, its tiles, and the account health with what is left to set up." />
+
+- <Mark n={1} /> **Activity**: applications sent, credentials issued and
+  credentials checked, day by day. Choose **7 days**, **30 days** or
+  **90 days**. A red dot above a day means something was rejected or failed.
+- <Mark n={2} /> The tiles under the chart: **Applications waiting** for a
+  decision, those **Accepted, to issue**, the credentials you issued (valid,
+  suspended, revoked) and the checks your verifiers made. Press a tile to go
+  to the list behind it.
+- <Mark n={3} /> **Account health**: what your organisation needs before it
+  works fully — a name, a mediator, someone who signs — with a tick when done
+  and the percentage done.
+- <Mark n={4} /> Next to anything still to do, **Set up** takes you where it
+  is done, and a line says why it matters.

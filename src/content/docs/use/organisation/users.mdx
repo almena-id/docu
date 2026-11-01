@@ -1,0 +1,65 @@
+---
+title: Users
+description: Invite the people who work in your organisation's account, and choose what they may do.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Several people can work in the same account. Each is an **Admin** or a
+**Member**:
+
+- **Member**: works with issuers, verifiers, forms and applications.
+- **Admin**: the same, and also adds and manages users, publishes, and
+  changes the account's settings.
+
+<Flow
+	label="Inviting someone"
+	steps={[
+		{ icon: 'users', title: 'Add user', text: 'Their email and their role.' },
+		{ icon: 'send', title: 'They get an email', text: 'The invitation, from Almena.' },
+		{ icon: 'user', title: 'They sign in', text: 'With that same address.' },
+		{ icon: 'check', title: 'They are in', text: 'The account appears in their list.' },
+	]}
+/>
+
+## The list
+
+Open **Users**, in the side menu under **Account**.
+
+<Screenshot name="registry-users" alt="The users of the account: an admin with a wallet linked and an invited member." />
+
+Everyone in the account is listed, with their role and whether they have a
+wallet linked. **Add user** <Mark n={1} /> invites someone. Someone invited who has not come in yet shows as **Invited**
+<Mark n={2} />.
+
+The menu at the end of each line <Mark n={3} /> lets an administrator **Make
+admin** or **Make member**, **Remove from the account** or, for an
+invitation, **Cancel the invitation**. On your own line it offers **Leave the
+account**. Each is asked once more before it is done.
+
+## Invite someone
+
+<Screenshot name="registry-user-new" alt="The screen to add a user: email and role." />
+
+<Steps>
+
+1. Press **Add user** on the list.
+
+2. Type their **Email** <Mark n={1} /> and choose their **Role**
+   <Mark n={2} />.
+
+3. Press **Send invitation** <Mark n={3} />.
+
+</Steps>
+
+They get an email. They join the next time they sign in to the registry with
+that address — no other step.
+
+<Aside type="note">
+The last administrator cannot be removed, nor can whoever signs for the
+account: choose someone else to sign first, under
+[Signing](/use/organisation/settings/).
+</Aside>

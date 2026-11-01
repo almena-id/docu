@@ -3,6 +3,7 @@ title: Crear un emisor
 description: Crea la parte de tu organización que da credenciales, y ofrécelas en el catálogo.
 ---
 
+import Flow from '@docs/Flow.astro';
 import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import { Aside, Steps } from '@astrojs/starlight/components';
@@ -10,6 +11,17 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 Un **emisor** es la parte de tu organización que da credenciales: la
 secretaría académica de una universidad, la secretaría de un club. Su nombre
 es lo que las personas leen en las credenciales que da.
+
+<Flow
+	label="Crear un emisor"
+	steps={[
+		{ icon: 'building', title: 'Créalo', text: 'Un nombre, una línea sobre él y un mediador.' },
+		{ icon: 'file-text', title: 'Ofrece credenciales', text: 'Cada una con el formulario que se rellena para pedirla.' },
+		{ icon: 'key', title: 'Firma su identidad', text: 'Desde el wallet de quien firma por vosotros.' },
+		{ icon: 'globe', title: 'Publícalo', text: 'Aparece en el catálogo y las personas pueden pedir.' },
+	]}
+/>
+
 
 ## Créalo
 

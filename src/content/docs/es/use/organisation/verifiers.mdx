@@ -1,0 +1,112 @@
+---
+title: Comprobar credenciales
+description: Crea un verificador, elige qué pedir, publícalo y comprueba la credencial de una persona con un código QR.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Un **verificador** es la parte de tu organización que comprueba
+credenciales: la puerta de un edificio, el mostrador de una biblioteca, la
+caja de una tienda. Las personas ven su nombre en el wallet cuando les pide
+enseñar una credencial.
+
+<Flow
+	label="Comprobar una credencial"
+	steps={[
+		{ icon: 'building', title: 'Crea un verificador', text: 'Su nombre es lo que enseña el wallet.' },
+		{ icon: 'file-text', title: 'Elige qué pedir', text: 'Un formulario con las credenciales a enseñar.' },
+		{ icon: 'globe', title: 'Publícalo', text: 'Firma su identidad y activa Publicar.' },
+		{ icon: 'qr', title: 'Enseña el código', text: 'Desde su pestaña Verificar, a quien tienes delante.' },
+		{ icon: 'shield-check', title: 'Lee el resultado', text: 'Auténtica, de quién, y solo lo que pediste.' },
+	]}
+/>
+
+## 1. Crea el verificador
+
+Abre **Verificadores** en el menú lateral, bajo **Servicios**.
+
+<Screenshot name="registry-verifiers" alt="La lista de verificadores, cada uno marcado como publicado o borrador, con el botón Crear." />
+
+Pulsa **Crear** <Mark n={1} />, ponle un **Nombre** que la gente reconozca
+y, si quieres, una descripción, y pulsa **Crear**. Aparece en la lista
+<Mark n={2} />, primero como **Borrador**.
+
+## 2. Elige qué pedir
+
+Lo que pide un verificador es un [formulario](/es/use/organisation/forms/)
+con **Credenciales a presentar**: por ejemplo «Entrada al campus», que pide
+un carné de socio y, de él, solo el nombre. Haz uno en **Formularios** si no
+tienes ninguno. Cualquiera de tus formularios que pida credenciales sirve a
+cualquiera de tus verificadores.
+
+## 3. Publícalo
+
+A un wallet solo le pide un verificador que cualquiera pueda consultar, así
+que antes hay que publicarlo.
+
+<Screenshot name="registry-verifier" alt="La página de un verificador: sus pestañas, y los botones de publicar y eliminar junto a su nombre." />
+
+<Steps>
+
+1. **Firma su identidad.** En la pestaña **Resumen**, quien firma por tu
+   organización pulsa **Firmar** y escanea el código con su wallet. (También
+   aparece en [Pendientes](/es/use/organisation/pending/).)
+
+2. **Publícalo.** Un administrador pulsa el botón del ojo junto a su nombre
+   <Mark n={2} />: **Publicar**. El mismo botón, **Retirar**, lo deshace.
+   [Más sobre publicar](/es/use/organisation/publish/).
+
+</Steps>
+
+Las pestañas <Mark n={1} /> tienen todo lo demás: **Datos** (nombre,
+descripción, mediador), **Firma** (quién firma por él), **Cola** (para tus
+sistemas), **Verificar** y **JSON**. La papelera <Mark n={3} /> lo elimina.
+
+## 4. Comprueba la credencial de alguien
+
+Abre el verificador y su pestaña **Verificar**, con la persona delante.
+
+<Screenshot name="registry-verify" alt="La pestaña Verificar: el formulario elegido, el código QR y el botón para abrirlo en el wallet." />
+
+<Steps>
+
+1. Elige el **Formulario** <Mark n={1} /> con lo que quieres ver y pulsa
+   **Mostrar el código**.
+
+2. Enséñale el código <Mark n={2} />. Lo escanea con la pestaña **Escanear
+   QR** de su wallet de Almena, que le dice quién pide y exactamente qué se
+   compartiría, y pulsa **Presentar** ([lo que ve](/es/use/wallet/show/)). En
+   el mismo móvil, **Abrir en el wallet de Almena** <Mark n={3} /> hace lo
+   mismo sin escanear.
+
+3. Espera: la pantalla dice **Esperando a que responda el wallet…** y cambia
+   sola cuando responde. Un código dura cinco minutos; si caduca, pulsa
+   **Mostrar un código nuevo**.
+
+</Steps>
+
+## 5. Lee el resultado
+
+<Screenshot name="registry-verify-result" alt="El resultado: verificado, la credencial de afiliación, quién la emitió y los datos compartidos." />
+
+- <Mark n={1} /> La respuesta, en una línea: **Verificado: todas las
+  credenciales que necesita el formulario son válidas.** o **No
+  verificado.**
+- <Mark n={2} /> Cada credencial: **Verificada**, **No es válida** o **No
+  presentada**, su formato y el **Emisor** que la dio.
+- <Mark n={3} /> Los datos compartidos —solo lo que pedía tu formulario— y
+  qué campos del formulario rellenan.
+
+Cuando una credencial no es válida, el resultado dice por qué debajo:
+caducada, suspendida o revocada por su emisor, de un emisor en el que no
+confías, hecha para otra petición… La [referencia de
+errores](/es/reference/errors/) enumera cada motivo.
+
+<Aside type="tip" title="Desde tus propios sistemas">
+La misma comprobación puede hacerse desde tu web, tu app o el control de una
+puerta, sin el registry abierto: mira [Verificar por
+QR](/es/integrate/verify-by-qr/).
+</Aside>

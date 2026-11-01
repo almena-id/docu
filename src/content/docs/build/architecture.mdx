@@ -51,8 +51,11 @@ import Architecture from '@docs/Architecture.astro';
 3. The application reaches the issuer in **registry** and in its queue. The
    issuer's signer signs the credential from their **wallet**; the api keeps
    no signing keys.
-4. Verifiers resolve the issuer's `did:webvh` from the identity domain and
-   read its status list to know whether the credential still holds.
+4. Verifiers resolve the issuer's `did:webvh` from the identity domain, and
+   fetch its status list from the **api** — `{public_url}/status-lists/{slug}`
+   (`https://api.almena.id/status-lists/…`, outside `/api/v1`), the URL the
+   credential's `status` names, a Status List Token the issuer's signer
+   signed — to know whether the credential still holds.
 
 Wallets reach each other only through **mediators**, which carry messages they
 cannot read.

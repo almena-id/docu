@@ -1,0 +1,109 @@
+---
+title: Check credentials
+description: Create a verifier, choose what to ask for, publish it and check a person's credential with a QR code.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+A **verifier** is the part of your organisation that checks credentials: a
+building's door, a library desk, a shop counter. People see its name in their
+wallet when it asks them to show a credential.
+
+<Flow
+	label="Checking a credential"
+	steps={[
+		{ icon: 'building', title: 'Create a verifier', text: 'Its name is what the wallet shows.' },
+		{ icon: 'file-text', title: 'Choose what to ask', text: 'A form with the credentials to show.' },
+		{ icon: 'globe', title: 'Publish it', text: 'Sign its identity, then turn on Publish.' },
+		{ icon: 'qr', title: 'Show the code', text: 'From its Verify tab, to the person in front of you.' },
+		{ icon: 'shield-check', title: 'Read the result', text: 'Genuine, from whom, and only what you asked.' },
+	]}
+/>
+
+## 1. Create the verifier
+
+Open **Verifiers** in the side menu, under **Services**.
+
+<Screenshot name="registry-verifiers" alt="The list of verifiers, each tagged published or draft, with the Create button." />
+
+Press **Create** <Mark n={1} />, give it a **Name** people will recognise
+and, if you want, a description, and press **Create**. It appears in the list
+<Mark n={2} />, as a **Draft** at first.
+
+## 2. Choose what to ask for
+
+What a verifier asks for is a [form](/use/organisation/forms/) with
+**Credentials to present**: for example "Campus entry", which asks for a
+membership card and, from it, only the name. Make one under **Forms** if you
+have none. Any of your forms that asks for credentials can be used by any of
+your verifiers.
+
+## 3. Publish it
+
+A wallet is only asked by a verifier anyone can look up, so it must be
+published first.
+
+<Screenshot name="registry-verifier" alt="A verifier's page: its tabs, and the publish and delete buttons beside its name." />
+
+<Steps>
+
+1. **Sign its identity.** On the **Summary** tab, whoever signs for your
+   organisation presses **Sign** and scans the code with their wallet. (It
+   is also listed under [Pending](/use/organisation/pending/).)
+
+2. **Publish it.** An administrator presses the eye button beside its name
+   <Mark n={2} />: **Publish**. The same button, **Unpublish**, takes it back.
+   [More on publishing](/use/organisation/publish/).
+
+</Steps>
+
+The tabs <Mark n={1} /> hold everything else: **Data** (name, description,
+mediator), **Signing** (who signs for it), **Queue** (for your systems),
+**Verify** and **JSON**. The bin <Mark n={3} /> deletes it.
+
+## 4. Check someone's credential
+
+Open the verifier and its **Verify** tab, with the person in front of you.
+
+<Screenshot name="registry-verify" alt="The Verify tab: the form chosen, the QR code and the button to open it in the wallet." />
+
+<Steps>
+
+1. Choose the **Form** <Mark n={1} /> with what you want to see, and press
+   **Show the code**.
+
+2. Show the person the code <Mark n={2} />. They scan it with the **Scan QR**
+   tab of their Almena wallet, which tells them who asks and exactly what
+   would be shared, and they press **Present** ([what they
+   see](/use/wallet/show/)). On the same phone, **Open in Almena wallet**
+   <Mark n={3} /> does the same without scanning.
+
+3. Wait: the screen says **Waiting for the wallet to answer…** and changes
+   by itself when they answer. A code lasts five minutes; if it runs out,
+   press **Show a new code**.
+
+</Steps>
+
+## 5. Read the result
+
+<Screenshot name="registry-verify-result" alt="The result: verified, the membership credential, who issued it and the data shown." />
+
+- <Mark n={1} /> The answer, in one line: **Verified: every credential the
+  form needs holds.** or **Not verified.**
+- <Mark n={2} /> Each credential: **Verified**, **Does not hold** or **Not
+  presented**, its format and the **Issuer** who gave it.
+- <Mark n={3} /> The data shared — only what your form asked for — and which
+  of the form's fields it fills.
+
+When a credential does not hold, the result says why under it: expired,
+suspended or revoked by its issuer, from an issuer you do not trust, made
+for another request… The [errors reference](/reference/errors/) lists every
+reason.
+
+<Aside type="tip" title="From your own systems">
+The same check can run from your website, your app or a door's controller,
+without the registry open: see [Verify by QR](/integrate/verify-by-qr/).
+</Aside>

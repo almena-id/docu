@@ -1,0 +1,127 @@
+---
+title: Queues
+description: Read what happens to an issuer or a verifier, as it happens, from its own AMQP queue.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Each issuer and each verifier can have a **queue** of its own at Almena's
+message broker (RabbitMQ): the platform puts in it what happens to that
+issuer or verifier, and your back office reads it over AMQP. An issuer's
+queue hears of its applications and the credentials it gave; a verifier's,
+of its verifications by QR. The portal side of this is
+[Queues](/use/organisation/queues/) in the guides.
+
+<Flow
+	label="A queue"
+	steps={[
+		{ icon: 'layers', title: 'Make it', text: 'An admin, from the portal, the API or the CLI.' },
+		{ icon: 'key', title: 'Keep the password', text: 'Shown once, for a user that may only read.' },
+		{ icon: 'send', title: 'Things happen', text: 'The platform publishes each as a JSON message.' },
+		{ icon: 'server', title: 'Your system consumes', text: 'Over AMQP, at its own pace.' },
+	]}
+/>
+
+## The queue and its user
+
+| | |
+| --- | --- |
+| **Queue** | `subject.{slug}` — the issuer's or verifier's slug, e.g. `subject.iss_aq0qu6r38c8g`. Durable. |
+| **User** | `{slug}` — the same slug. It may **read** that queue and nothing else: no other queue, no configuring, no publishing. |
+| **Password** | Made by the API and shown **once**, when the queue is made or rotated. The broker keeps it; the registry does not. |
+| **Address** | `amqps://broker.almena.id:5671` (TLS) |
+| **Virtual host** | `almena` |
+
+A draft and a published issuer or verifier alike may have one. Each queue
+has its own user, so a different system can serve each issuer or verifier
+and none can read another's.
+
+## Make it
+
+<Steps>
+
+1. As an **admin** of the account, from the issuer's or verifier's **Queue**
+   tab in the registry, or:
+
+   ```bash
+   almena issuer queue create <issuer-id>      # or: almena verifier queue create <id>
+   ```
+
+   ```http
+   POST /api/v1/tenants/{tenant}/{issuers|verifiers}/{id}/queue
+   ```
+
+   The answer (`201`) has `queue`, `user`, `amqp_url`, `vhost`, `created_at`
+   and the `password`, this once. A second one is refused (`409
+   queue_exists`); the broker out of reach is `503 broker_unavailable`.
+
+2. Put those in your consumer's settings and consume `subject.{slug}`. Any
+   AMQP 0-9-1 client works; acknowledge each message once it is handled.
+
+</Steps>
+
+- **See it**: `GET …/queue` (any member; `almena … queue get`): `queue` is
+  `null` while there is none. No password.
+- **Lost the password**: `POST …/queue/access` (admins; `almena … queue
+  rotate`) gives the user a new one; the old one stops working.
+- **Delete it**: `DELETE …/queue` (admins; `almena … queue delete`) removes
+  the queue, every message still in it, and its user.
+
+## The messages
+
+Each message is JSON, persistent, published to the default exchange with the
+queue's name as routing key. Its AMQP `type` property is the same as its
+`type` field, its `content_type` is `application/json` and its `message_id`
+a fresh UUID — use it to drop a message delivered twice. Every message has
+`type` and `at` (when it was published, ISO 8601).
+
+### An issuer's queue
+
+Each names the `issuer` (`id`, `slug`, `did`) and the `application` (`id`,
+`slug`, `status`, `credential_type`, `form_id`, `holder_did`,
+`submitted_at`).
+
+| `type` | When | Also carries |
+| --- | --- | --- |
+| `application.submitted` | A holder signed and sent an application | `content` (what they signed), its `digest` and `signature`, `presented` (the credentials presented), and `files`: each with its metadata and the `url` the API serves it from — an API token of the account downloads it |
+| `application.decided` | It was accepted or rejected | `decided_at`, `note` |
+| `application.issued` | The credential was issued | `issued_at`, `valid_until` |
+| `credential.status` | An issued credential was suspended, reinstated or revoked | `credential_status`, `changed_at` |
+
+```json
+{
+  "type": "application.decided",
+  "at": "2026-11-01T10:12:04.511Z",
+  "issuer": { "id": "8f0c…", "slug": "iss_aq0qu6r38c8g", "did": "did:webvh:…" },
+  "application": {
+    "id": "551e85c7-…",
+    "slug": "app_qr3mhsydo2le",
+    "status": "accepted",
+    "credential_type": "academic_degree",
+    "form_id": "9b4e19bf-…",
+    "holder_did": "did:key:z6Mk…",
+    "submitted_at": "2026-11-01T09:58:40.002Z"
+  },
+  "decided_at": "2026-11-01T10:12:04.498Z",
+  "note": "Welcome to Nova University."
+}
+```
+
+### A verifier's queue
+
+| `type` | When | Carries |
+| --- | --- | --- |
+| `presentation.verified` | A wallet answered one of its verifications by QR | `verifier` (`id`, `slug`, `did`); `verification` (`id`, `form_id`, `form`, `answered_at`); and the verdict: `verified`, and `credentials`, each with its `key`, whether it was `presented` and `verified`, its `format`, `issuer`, `claims`, the form's fields it `fills` and its `problems` |
+
+It is the same verdict `GET …/verifications/{id}` gives: see [Verify by
+QR](/integrate/verify-by-qr/). The meaning of each problem is in the
+[errors reference](/reference/errors/).
+
+<Aside type="note" title="Never a condition">
+Publishing never holds anything up. Without a queue nothing is sent; when the
+broker does not take a message, what happened stands (the application is
+still decided, the verdict still kept) and the failure goes to the API's log.
+So treat the queue as a notice, and the API as the record: on start-up, or
+after a gap, read the state from the API.
+</Aside>

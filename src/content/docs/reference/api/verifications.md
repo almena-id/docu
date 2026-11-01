@@ -80,4 +80,5 @@ sidebar: { order: 21 }
 | 404 | [`request_not_found`](/reference/errors/#request_not_found) |
 | 409 | [`already_answered`](/reference/errors/#already_answered) |
 | 410 | [`request_expired`](/reference/errors/#request_expired) |
+| 413 | [`body_too_large`](/reference/errors/#body_too_large) |
 | 422 | [HTTPValidationError](/reference/api/schemas/#httpvalidationerror) — Validation Error |

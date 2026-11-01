@@ -1,0 +1,51 @@
+---
+title: Queues
+description: Let your own systems hear what happens to an issuer or a verifier.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+If your organisation has its own system — a student records application, a
+door controller — it can be told, as it happens, what arrives for an issuer
+or a verifier: an application sent, a decision, a credential given or
+withdrawn, a credential checked. Each issuer and each verifier can have a
+**queue** for that: a mailbox your system reads.
+
+<Flow
+	label="How a queue works"
+	steps={[
+		{ icon: 'layers', title: 'Make the queue', text: 'An administrator, from the Queue tab.' },
+		{ icon: 'key', title: 'Keep the password', text: 'Shown once, for your system.' },
+		{ icon: 'send', title: 'Things happen', text: 'Applications, decisions, checks.' },
+		{ icon: 'server', title: 'Your system reads', text: 'Each event as it arrives.' },
+	]}
+/>
+
+Open the issuer or verifier and its **Queue** tab <Mark n={1} />.
+
+<Screenshot name="registry-queue" alt="An issuer's Queue tab: the queue's name, its user, address and virtual host, and the button to delete it." />
+
+<Steps>
+
+1. An administrator presses **Make the queue**.
+
+2. A password appears, **shown this once**. Copy it into your system's
+   settings with the other details <Mark n={2} />: the **Queue**, the
+   **User**, the **Address** and the **Virtual host**. The registry does not
+   keep the password.
+
+3. Your system connects with them and reads what arrives.
+
+</Steps>
+
+**Delete the queue** <Mark n={3} /> removes it, with any message still in it,
+and its user: your system stops reading. You are asked first.
+
+<Aside type="tip">
+Whoever connects the system will find the messages and how to read them in
+[Queues, in Integrate](/integrate/queues/). A lost password is replaced with the API or the CLI,
+not from this screen.
+</Aside>

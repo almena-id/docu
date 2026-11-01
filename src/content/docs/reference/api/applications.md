@@ -103,7 +103,7 @@ sidebar: { order: 3 }
 | --- | --- |
 | 200 | object |
 | 409 | [`application_not_paired`](/reference/errors/#application_not_paired), [`application_closed`](/reference/errors/#application_closed) |
-| 413 | [`file_too_large`](/reference/errors/#file_too_large) (10 MB) |
+| 413 | [`file_too_large`](/reference/errors/#file_too_large): past 10 MiB, the limit sent beside it as max_bytes |
 | 422 | [`file_field_unknown`](/reference/errors/#file_field_unknown), [`file_type_invalid`](/reference/errors/#file_type_invalid), [`file_empty`](/reference/errors/#file_empty) |
 
 ## Remove an uploaded file
@@ -213,6 +213,7 @@ answered as the catalog's QR 3 is.
 | 404 | [`request_not_found`](/reference/errors/#request_not_found) |
 | 409 | [`already_answered`](/reference/errors/#already_answered), [`answers_incomplete`](/reference/errors/#answers_incomplete), [`already_paired`](/reference/errors/#already_paired), [`already_received`](/reference/errors/#already_received) |
 | 410 | [`request_expired`](/reference/errors/#request_expired) |
+| 413 | [`body_too_large`](/reference/errors/#body_too_large) |
 | 422 | [HTTPValidationError](/reference/api/schemas/#httpvalidationerror) — Validation Error |
 
 ## Public: an issuer's offer of a credential type, with its form

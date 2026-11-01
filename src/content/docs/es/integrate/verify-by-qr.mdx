@@ -1,0 +1,194 @@
+---
+title: Verificar por QR
+description: Pide credenciales a un wallet como uno de tus verificadores, desde tus propios sistemas, y lee el veredicto.
+---
+
+import Flow from '@docs/Flow.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Un verificador pide al wallet de una persona, mediante un código QR, lo que
+uno de tus formularios pide presentar; la API comprueba lo que envía el
+wallet y guarda el veredicto. Es lo que hace la pestaña **Verificar** del
+registry ([la guía para organizaciones](/es/use/organisation/verifiers/));
+aquí está el mismo flujo desde tus propios sistemas: una web, un quiosco, el
+control de una puerta.
+
+<Flow
+	label="Verificación por QR"
+	steps={[
+		{ icon: 'server', title: 'Abre una verificación', text: 'Tu sistema la pide a la API, como un verificador, con un formulario.' },
+		{ icon: 'qr', title: 'Enseña el código', text: 'El enlace, como QR o como enlace en el móvil.' },
+		{ icon: 'smartphone', title: 'El wallet lee', text: 'Quién pide, para qué, y la consulta DCQL.' },
+		{ icon: 'send', title: 'El wallet responde', text: 'Un vp_token, por direct_post de OpenID4VP.' },
+		{ icon: 'shield-check', title: 'La API comprueba', text: 'Firma, vinculación de clave, nonce, emisor, estado.' },
+		{ icon: 'refresh', title: 'Lees el veredicto', text: 'Preguntando, o desde la cola del verificador.' },
+	]}
+/>
+
+## Antes de empezar
+
+- Un [token de API](/es/integrate/quick-start/) de un miembro de la cuenta.
+- Un verificador **publicado**: al wallet se le enseña su DID, así que un
+  borrador no puede pedir (`verifier_unpublished`).
+- Un [formulario](/es/use/organisation/forms/) con al menos una credencial a
+  presentar (si no, `nothing_to_present`). Su consulta DCQL es lo que se
+  pregunta al wallet: `GET /tenants/{tenant}/forms/{form}/dcql` la enseña.
+
+Lo más rápido para probarlo es la CLI, que abre la verificación, dibuja el QR
+en la terminal y espera el veredicto:
+
+```bash
+almena verifier verify <verifier-id> --form <form-id>
+```
+
+## El flujo
+
+<Steps>
+
+1. **Abre una verificación.** Como miembro de la cuenta:
+
+   ```http
+   POST /api/v1/tenants/{tenant}/verifiers/{verifier}/verifications
+   Authorization: Bearer almena_…
+   Content-Type: application/json
+
+   { "form_id": "9b4e19bf-…" }
+   ```
+
+   La respuesta (`201`) es la verificación, `pending`, con el enlace a
+   enseñar:
+
+   ```json
+   {
+     "id": "5c1d…",
+     "status": "pending",
+     "verifier": { "id": "1c76…", "name": "Campus Access", "did": "did:webvh:…:almena.id:ids:idn_…" },
+     "form": { "id": "9b4e…", "name": { "en": "Campus entry", "es": "Entrada al campus" } },
+     "expires_at": "2026-11-01T18:31:02Z",
+     "deep_link": "almena://auth?request_uri=https%3A%2F%2Falmena.id%2Fapi%2Fv1%2Fverifications%2F5c1d…%2Frequest",
+     "answered_at": null,
+     "result": null
+   }
+   ```
+
+2. **Enseña el código.** Dibuja `deep_link` como código QR para un wallet en
+   otro dispositivo, u ofrécelo como enlace en el mismo móvil. Dura cinco
+   minutos (`expires_at`); después, abre una verificación nueva.
+
+3. **El wallet lee la petición.** El wallet de Almena —o cualquier wallet que
+   hable OpenID4VP— sigue `request_uri`, en el canal de wallets de la
+   plataforma (`https://almena.id/api/v1/verifications/{id}/request`). Recibe
+   una petición OpenID4VP con `response_type` `vp_token`, `response_mode`
+   `direct_post`, el `client_id` (el portal del registry,
+   `https://registry.almena.id`), un `nonce`, el `purpose` `verify`, el
+   verificador por nombre y DID, el nombre y la descripción del formulario,
+   su `dcql_query` y la finalidad de cada credencial. La persona ve quién
+   pide y exactamente qué saldría, y decide.
+
+4. **El wallet responde.** Envía su `vp_token` a `response_uri`
+   —`…/verifications/{id}/request/response`—, como formulario o como JSON:
+   para cada id de consulta DCQL, las presentaciones correspondientes. Cada
+   SD-JWT VC lleva un JWT de vinculación de clave cuyo `aud` es el
+   `client_id` y cuyo `nonce` es el de la petición. Una petición se responde
+   una sola vez.
+
+5. **La API lo comprueba**, credencial a credencial: la firma del emisor,
+   las revelaciones, la vinculación de clave del titular, la audiencia y el
+   nonce, las fechas de validez, la confianza en el emisor (cualquier emisor
+   publicado que otorgue el tipo, o los que nombre el formulario) y su lista
+   de estado (ni suspendida ni revocada). Guarda el veredicto y, si el
+   verificador tiene una [cola](/es/use/organisation/queues/), lo deja en
+   ella.
+
+6. **Lee el veredicto.** Pregunta hasta que el estado deje de ser `pending`
+   (el portal pregunta cada dos segundos):
+
+   ```http
+   GET /api/v1/tenants/{tenant}/verifiers/{verifier}/verifications/{id}
+   ```
+
+   Respondida, trae `result`:
+
+   ```json
+   {
+     "status": "answered",
+     "answered_at": "2026-11-01T18:27:40Z",
+     "result": {
+       "verified": true,
+       "credentials": [
+         {
+           "key": "membership",
+           "presented": true,
+           "verified": true,
+           "query": "membership_sd_jwt",
+           "format": "dc+sd-jwt",
+           "issuer": "did:webvh:…:almena.id:ids:idn_…",
+           "claims": { "given_name": "Amina", "family_name": "Haddad" },
+           "fills": { "given_name": "Amina", "family_name": "Haddad" },
+           "problems": []
+         }
+       ]
+     }
+   }
+   ```
+
+   `expired` significa que nadie respondió a tiempo.
+
+</Steps>
+
+## Leer el veredicto
+
+- `verified` es `true` cuando se presentaron y son válidas todas las
+  credenciales **obligatorias**, y nada de lo presentado falló. Actúa según
+  él, no según cada credencial por separado.
+- Cada credencial dice si se presentó (`presented`) y si es válida
+  (`verified`), a qué consulta DCQL respondió (`query`), su `format` y su
+  `issuer`, los `claims` revelados (solo los que pide el formulario, y solo
+  si es válida) y `fills`: los campos del formulario que rellena.
+- `problems` dice por qué una no es válida, con códigos: `expired`,
+  `revoked`, `suspended`, `issuer_untrusted`, `nonce_mismatch`,
+  `holder_binding_invalid`… Todos están en la [referencia de
+  errores](/es/reference/errors/), en *Problemas de una presentación*. Una
+  credencial obligatoria que el wallet no presentó lleva el problema
+  `not_presented`.
+
+## Desde la cola en lugar de preguntar
+
+Un verificador con cola (creada desde su pestaña **Cola**, o con `POST
+/tenants/{tenant}/verifiers/{verifier}/queue`) recibe cada veredicto en el
+momento, como un mensaje AMQP de tipo `presentation.verified`:
+
+```json
+{
+  "type": "presentation.verified",
+  "at": "2026-11-01T18:27:40Z",
+  "verifier": { "id": "1c76…", "slug": "ver_…", "did": "did:webvh:…" },
+  "verification": { "id": "5c1d…", "form_id": "9b4e…", "form": "Campus entry", "answered_at": "2026-11-01T18:27:40Z" },
+  "verified": true,
+  "credentials": [ … ]
+}
+```
+
+## Cuando se rechaza
+
+| Código | Estado | Cuándo |
+| --- | --- | --- |
+| `verifier_unpublished` | 409 | El verificador es un borrador o su DID no está firmado: publícalo antes. |
+| `nothing_to_present` | 409 | El formulario no pide credenciales. |
+| `verifier_not_found`, `form_not_found` | 404 | No es de la cuenta. |
+| `verification_not_found` | 404 | Ese verificador no tiene una verificación con ese id. |
+| `request_not_found` | 404 | El wallet siguió un enlace que no lleva a ninguna petición. |
+| `already_answered` | 409 | El wallet respondió dos veces: solo cuenta la primera. |
+| `request_expired` | 410 | El wallet respondió pasados los cinco minutos. |
+| `invalid_vp_token` | 400 | Lo que envió el wallet no se puede leer como un `vp_token`. |
+
+La [referencia de errores](/es/reference/errors/) tiene cada código con el
+que responde la API, y la [referencia de la API](/reference/api/verifications/)
+cada campo.
+
+<Aside type="tip">
+Para comprobar un `vp_token` que hayas conseguido de otra forma —con tu
+propia petición OpenID4VP, tu nonce y tu audiencia—, envíalo a `POST
+/tenants/{tenant}/forms/{form}/verify`: la misma comprobación, el mismo
+veredicto.
+</Aside>

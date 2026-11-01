@@ -3,6 +3,8 @@ title: Inicio rápido
 description: Un token de API, la CLI almena y tu primera llamada a la API.
 ---
 
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
 Necesitas una cuenta en el [registry](https://registry.almena.id) ([cómo
@@ -15,6 +17,12 @@ entrar](/es/use/organisation/sign-in/)).
    token**: ponle un nombre y cuántos días dura (de 1 a 365). Cópialo en ese
    momento: solo se enseña una vez. Actúa como tú hasta que caduca o lo
    revocas.
+
+   <Screenshot name="registry-tokens" alt="El Perfil del registry, con la sección Tokens de API: el nombre, los días de validez y el botón Crear token." />
+
+   La sección <Mark n={1} /> enumera tus tokens <Mark n={2} />; escribe el
+   **Nombre** <Mark n={3} /> y los **Días de validez** <Mark n={4} />, y pulsa
+   **Crear token** <Mark n={5} />.
 
 2. **Instala la CLI.**
 

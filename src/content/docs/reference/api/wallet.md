@@ -58,9 +58,11 @@ sidebar: { order: 22 }
 | --- | --- |
 | 204 | — |
 | 400 | [`invalid_token`](/reference/errors/#invalid_token), [`invalid_did`](/reference/errors/#invalid_did), [`invalid_proof`](/reference/errors/#invalid_proof), [`not_an_update_key`](/reference/errors/#not_an_update_key), [`not_your_key`](/reference/errors/#not_your_key) |
+| 403 | [`not_the_issuers_signer`](/reference/errors/#not_the_issuers_signer): no longer the issuer's signer |
 | 404 | [`request_not_found`](/reference/errors/#request_not_found) |
 | 409 | [`already_answered`](/reference/errors/#already_answered) |
 | 410 | [`request_expired`](/reference/errors/#request_expired) |
+| 413 | [`body_too_large`](/reference/errors/#body_too_large) |
 | 422 | [HTTPValidationError](/reference/api/schemas/#httpvalidationerror) — Validation Error |
 
 ## What came of a request, for the portal that asked (poll until not `pending`)

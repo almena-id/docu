@@ -1,0 +1,97 @@
+---
+title: Forms
+description: What people fill in to ask for a credential, and what a verifier asks them to show.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+A **form** is the list of what you ask a person for. The same form works in
+two places:
+
+- **To give a credential**: what someone fills in when they apply for it in
+  the catalog.
+- **To check a credential**: what a [verifier](/use/organisation/verifiers/)
+  asks a wallet to show.
+
+A form has **fields** — things the person types or picks, like a name or a
+date — and **credentials to present** — credentials they already have in
+their wallet and show instead of typing.
+
+<Flow
+	label="Making a form"
+	steps={[
+		{ icon: 'file-text', title: 'Name it', text: 'A name and a line on what it is for.' },
+		{ icon: 'search', title: 'Add fields', text: "Picked from Almena's catalogue, in order." },
+		{ icon: 'badge-check', title: 'Ask for credentials', text: 'If you want people to show one from their wallet.' },
+		{ icon: 'check', title: 'Create', text: 'Use it in an issuer or a verifier.' },
+	]}
+/>
+
+## Your forms
+
+Open **Forms** in the side menu, under **Templates**.
+
+<Screenshot name="registry-forms" alt="The list of forms, each with how many fields and credentials it asks for." />
+
+Press **Create** <Mark n={1} /> to make a new one. Each line <Mark n={2} /> is
+a form; press it to see its fields and credentials, and open it to edit it.
+
+## Make or change one
+
+**Create** opens an empty form; **Edit**, on an open form, the same screen
+filled in.
+
+<Screenshot name="registry-form-edit" alt="A form being edited: its name and description, its fields and the credential it asks to be shown." />
+
+<Steps>
+
+1. Its **Name** <Mark n={1} /> and, if you want, a **Description**
+   <Mark n={2} />: what it is for and what people need at hand. The globe in
+   each box lets you write it in each of your languages.
+
+2. **Fields** <Mark n={3} />: press **Add field** and search the catalogue
+   (given name, date of birth, email…). For each one, tick **Required** or
+   not, add a line of **Help** if it helps, and, under **Restrict**, narrow
+   what is accepted — a shorter text, a range of dates, only some values.
+   The arrows change the order.
+
+3. **Credentials to present** <Mark n={4} />: press **Add credential** and
+   choose the kind of credential, for example a membership card. Write the
+   **Purpose** the wallet will show ("To check you belong to Nova
+   University"), tick the **Claims** — the pieces of it you want to see; only
+   those are shared — and choose **Trusted from**: any issuer published in
+   Almena, or only the ones you pick.
+
+4. Press **Create** (or **Save changes**) at the bottom.
+
+</Steps>
+
+A credential fills the form's fields with the same name: if the form asks for
+a given name and a membership card that has one, the name comes from the
+card, already checked.
+
+<Aside type="caution" title="Forms in use">
+Once an issuer offers a form or people have answered it, it is **in use**:
+you can add optional fields and credentials and change its words, but not
+take anything away or make it stricter, and it cannot be deleted.
+</Aside>
+
+## DCQL and JSON Schema
+
+An open form has three tabs. You do not need them to use Almena; they are for
+whoever connects other systems.
+
+<Screenshot name="registry-form-dcql" alt="The DCQL tab of a form: the query a wallet is asked." />
+
+- **Verify**: paste what a wallet answered, to check it by hand. The
+  [Verify tab of a verifier](/use/organisation/verifiers/) does this for you
+  with a QR code.
+- **DCQL** <Mark n={1} />: the same form, written as the question a wallet
+  understands <Mark n={2} />. DCQL is simply the standard way to say "show me
+  these credentials, and only these pieces of them".
+- **JSON Schema**: the rules the answers must follow — which fields, which
+  are required, which formats — written in the standard way programs read.
+  Systems use it to check answers before sending them.

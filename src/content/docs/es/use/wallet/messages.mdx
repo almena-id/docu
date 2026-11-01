@@ -1,0 +1,130 @@
+---
+title: Mensajes y llamadas
+description: Añade un contacto con una invitación, escríbele y llámale por voz o vídeo.
+---
+
+import Flow from '@docs/Flow.astro';
+import Mark from '@docs/Mark.astro';
+import Screenshot from '@docs/Screenshot.astro';
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+El wallet es también una mensajería privada: escribes y llamas a las personas
+que eliges, y solo vosotros dos podéis leer u oír lo que se dice. Nadie recibe
+tu teléfono ni tu correo: un contacto te conoce por una dirección hecha solo
+para vosotros dos.
+
+<Flow
+	label="Hablar con alguien"
+	steps={[
+		{ icon: 'server', title: 'Ten un mediador', text: 'Donde esperan tus mensajes. Se ofrece el de Almena.' },
+		{ icon: 'qr', title: 'Comparte tu invitación', text: 'Un código que escanean, o un enlace que mandas.' },
+		{ icon: 'check', title: 'La aceptan', text: 'Y aparecéis en los contactos del otro.' },
+		{ icon: 'message', title: 'Escribe y llama', text: 'Mensajes, voz y vídeo, cifrados de punta a punta.' },
+	]}
+/>
+
+Primero necesitas un **mediador**: el buzón que guarda tus mensajes mientras
+tu dispositivo está apagado. El wallet ofrece el de Almena; mira [Elegir un
+mediador](/es/use/mediator/).
+
+## Añadir un contacto
+
+### Enseña tu invitación
+
+En **Perfil**, pulsa el cuadrado de arriba a la derecha.
+
+<Screenshot phone name="wallet-invite" alt="Tu invitación: un código QR y el botón Copiar el enlace." />
+
+Quien escanee este código <Mark n={1} /> con su wallet de Almena podrá empezar
+una conversación contigo. Si no está delante, **Copiar el enlace**
+<Mark n={2} /> y mándaselo como quieras. Cada persona que acepta recibe una
+dirección propia, así que nadie puede saber con quién más hablas.
+
+### Acepta la invitación de alguien
+
+Escanea su código con **Escanear QR**, o abre el enlace que te mandó en el
+dispositivo que tiene el wallet.
+
+<Screenshot phone name="wallet-contact-invitation" alt="Invitación de contacto: Alguien quiere empezar una conversación contigo, con la huella y el botón Aceptar." />
+
+El wallet muestra una **Invitación de contacto** <Mark n={1} />. La **Huella**
+es un código corto de la tarjeta de la otra persona: si quieres asegurarte,
+pídele que te lea la suya en voz alta. Pulsa **Aceptar** <Mark n={2} />, o
+**Cancelar**.
+
+Hasta que responda, su línea dice **Esperando a que responda**, y podrás
+escribirle cuando lo haga.
+
+## Tus conversaciones
+
+La pestaña **Mensajes** las muestra, la más reciente primero.
+
+<Screenshot phone name="wallet-messages" alt="Mensajes: Ana Torres con dos sin leer, Marco Rossi y un contacto que aún no ha respondido." />
+
+- Cada línea <Mark n={1} /> es un contacto: el último mensaje, cuándo, y
+  cuántos no has leído.
+- La flecha circular <Mark n={2} /> busca mensajes nuevos ahora. También
+  llegan solos mientras el wallet está abierto.
+- **+** <Mark n={3} /> abre **Nueva conversación**.
+
+Para borrar una conversación, desliza su línea a la izquierda (en un
+ordenador, clic derecho) y pulsa **Eliminar**. El contacto se queda; solo se
+va lo que os dijisteis.
+
+<Screenshot phone name="wallet-new-conversation" alt="Nueva conversación: Buscar en el directorio, y la lista de contactos, cada uno con desde cuándo." />
+
+**Nueva conversación** muestra tus **Contactos** <Mark n={2} />, cada uno con
+desde cuándo os conocéis, o **Esperando a que responda** <Mark n={3} />. Pulsa
+uno para escribirle. **Buscar en el directorio** <Mark n={1} /> todavía no
+está disponible: de momento, comparte una invitación.
+
+## Escribir
+
+<Screenshot phone name="wallet-conversation" alt="Una conversación con Ana Torres: su nombre arriba con los botones de llamada, los mensajes y el campo para escribir." />
+
+<Steps>
+
+1. Escribe en el campo **Mensaje** <Mark n={4} /> y pulsa **Enviar**. Tus
+   mensajes <Mark n={3} /> van a la derecha, en tu color.
+
+2. Un mensaje que no ha podido salir dice **No enviado. Reintentar**: púlsalo
+   para volver a enviarlo.
+
+3. Pulsa el nombre de arriba <Mark n={1} /> para ver el contacto.
+
+</Steps>
+
+## Llamar
+
+En una conversación, el teléfono <Mark n={2} /> hace una llamada de voz y la
+cámara de al lado una videollamada. El wallet pide el micrófono y la cámara la
+primera vez.
+
+<Screenshot phone name="wallet-call" alt="Una videollamada entrante de Ana Torres, con los botones Rechazar y Aceptar." />
+
+Cuando alguien te llama, el wallet muestra quién <Mark n={1} /> y si es una
+llamada de voz o una videollamada. Pulsa **Rechazar** <Mark n={2} /> o
+**Aceptar** <Mark n={3} />. Durante la llamada puedes silenciar el micrófono,
+apagar la cámara y **Colgar**. Si el wallet está bloqueado, desbloquéalo para
+responder.
+
+La llamada pasa por el relé de tu mediador, así que la otra persona nunca
+sabe dónde está tu dispositivo. Si tu mediador no retransmite llamadas, el
+wallet lo dice y no se puede llamar.
+
+## Un contacto
+
+<Screenshot phone name="wallet-contact" alt="Un contacto: su nombre, su huella y desde cuándo, y Cómo lo llamas tú con el botón Guardar." />
+
+- **Contacto** <Mark n={1} />: el nombre que se dio, la **Huella** y desde
+  cuándo os conocéis.
+- **Cómo lo llamas tú** <Mark n={2} />: un nombre que solo ves tú, en este
+  dispositivo, en lugar del suyo. **Guardar** <Mark n={3} />; **Usar su
+  nombre** lo quita.
+
+<Aside type="caution" title="Tus conversaciones viven en tu dispositivo">
+Los mensajes solo se guardan en este dispositivo, cifrados para tu identidad.
+Cerrar la sesión los borra, y tus palabras de recuperación no los devuelven:
+una [copia de seguridad](/es/use/wallet/#una-copia-de-lo-que-las-palabras-no-recuperan)
+sí.
+</Aside>
