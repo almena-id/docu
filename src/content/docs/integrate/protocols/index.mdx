@@ -23,8 +23,12 @@ own, the addition is specified and published here.
 
 ## Between a wallet and the registry
 
-The registry's portals show a QR code with an `almena://` link; the wallet
-reads the request from the identity domain (`almena.id`) and answers there.
+The registry's portals show a QR code with the wallet's link,
+`https://almena.id/w/…` — the same as `almena://…`, but a link only the Almena
+wallet may open, since `almena.id` names it (iOS universal links,
+`/.well-known/apple-app-site-association`; Android App Links,
+`/.well-known/assetlinks.json`); the wallet reads the request from the
+identity domain (`almena.id`) and answers there.
 
 | Purpose | Standard | What travels |
 | --- | --- | --- |

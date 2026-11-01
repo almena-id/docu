@@ -65,7 +65,8 @@ almena verifier verify <verifier-id> --form <form-id>
      "verifier": { "id": "1c76…", "name": "Campus Access", "did": "did:webvh:…:almena.id:ids:idn_…" },
      "form": { "id": "9b4e…", "name": { "en": "Campus entry", "es": "Entrada al campus" } },
      "expires_at": "2026-11-01T18:31:02Z",
-     "deep_link": "almena://auth?request_uri=https%3A%2F%2Falmena.id%2Fapi%2Fv1%2Fverifications%2F5c1d…%2Frequest",
+     "deep_link": "https://almena.id/w/auth?request_uri=https%3A%2F%2Falmena.id%2Fapi%2Fv1%2Fverifications%2F5c1d…%2Frequest",
+     "scheme_link": "almena://auth?request_uri=https%3A%2F%2Falmena.id%2Fapi%2Fv1%2Fverifications%2F5c1d…%2Frequest",
      "answered_at": null,
      "result": null
    }
@@ -73,7 +74,13 @@ almena verifier verify <verifier-id> --form <form-id>
 
 2. **Enseña el código.** Dibuja `deep_link` como código QR para un wallet en
    otro dispositivo, u ofrécelo como enlace en el mismo móvil. Dura cinco
-   minutos (`expires_at`); después, abre una verificación nueva.
+   minutos (`expires_at`); después, abre una verificación nueva. `deep_link`
+   es un enlace https en el dominio de identidad (`https://almena.id/w/…`):
+   en un móvil con el wallet de Almena el sistema lo abre allí y en ninguna
+   otra app (universal links de iOS, App Links de Android), incluso desde la
+   cámara; sin el wallet, el navegador enseña una página que lo explica.
+   `scheme_link` es la misma petición como `almena://…`, el esquema propio
+   del wallet, para un ordenador, que no tiene universal links.
 
 3. **El wallet lee la petición.** El wallet de Almena —o cualquier wallet que
    hable OpenID4VP— sigue `request_uri`, en el canal de wallets de la
