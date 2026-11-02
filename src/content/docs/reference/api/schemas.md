@@ -421,11 +421,11 @@ is the whole list in its order.
 
 | Field | Type | Notes |
 | --- | --- | --- |
-| `check` | `name`, `signing_flow`, `domain`, `identity`, `mediator`, `signers`, `status_lists`, `queues`, `published` |  |
+| `check` | `name`, `signing_flow`, `identity`, `mediator`, `signers`, `status_lists`, `queues`, `published` |  |
 | `done` | boolean |  |
-| `issue` | `missing`, `unverified`, `pending`, `outdated`, `unsigned`, `unpublished`, `unchosen`, `no_signer`, `no_wallet`, `stale` or null |  |
+| `issue` | `missing`, `pending`, `outdated`, `unsigned`, `unpublished`, `no_signer`, `no_wallet`, `stale` or null |  |
 | `item` *(optional)* | string (uuid) or null |  |
-| `item_kind` *(optional)* | `identity`, `mediator`, `issuer`, `verifier` or null |  |
+| `item_kind` *(optional)* | `identity`, `issuer`, `verifier` or null |  |
 
 ## HTTPValidationError
 
@@ -696,6 +696,7 @@ What a form may make stricter; which apply depends on the field's type.
 | `name` | string |  |
 | `description` | map of string or null |  |
 | `did` | string |  |
+| `domains` | array of string |  |
 
 ## OfferPage
 
@@ -878,6 +879,7 @@ What the wallet reads: who asks, for what, and where to answer.
 | `id` | string (uuid) |  |
 | `request_uri` | string |  |
 | `deep_link` | string |  |
+| `scheme_link` | string |  |
 | `poll` | string |  |
 | `expires_at` | string (date-time) |  |
 
@@ -1165,6 +1167,7 @@ an SD-JWT VC (`document`: its header, payload and disclosures; see
 | `form` | object |  |
 | `expires_at` | string (date-time) |  |
 | `deep_link` | string or null |  |
+| `scheme_link` | string or null |  |
 | `answered_at` | string (date-time) or null |  |
 | `result` | [VerifyOut](/reference/api/schemas/#verifyout) or null |  |
 

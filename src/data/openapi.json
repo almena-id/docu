@@ -202,6 +202,57 @@
     }
    }
   },
+  "/.well-known/apple-app-site-association": {
+   "get": {
+    "tags": [
+     "did",
+     "wallet"
+    ],
+    "summary": "The apps that open the wallet's links on this domain (iOS universal links)",
+    "operationId": "apple_app_site_association__well_known_apple_app_site_association_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "type": "object",
+         "title": "Response Apple App Site Association  Well Known Apple App Site Association Get"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/.well-known/assetlinks.json": {
+   "get": {
+    "tags": [
+     "did",
+     "wallet"
+    ],
+    "summary": "The apps that open the wallet's links on this domain (Android App Links)",
+    "operationId": "assetlinks__well_known_assetlinks_json_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "additionalProperties": true,
+          "type": "object"
+         },
+         "type": "array",
+         "title": "Response Assetlinks  Well Known Assetlinks Json Get"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/.well-known/security.txt": {
    "get": {
     "tags": [
@@ -9869,7 +9920,6 @@
       "enum": [
        "name",
        "signing_flow",
-       "domain",
        "identity",
        "mediator",
        "signers",
@@ -9889,12 +9939,10 @@
         "type": "string",
         "enum": [
          "missing",
-         "unverified",
          "pending",
          "outdated",
          "unsigned",
          "unpublished",
-         "unchosen",
          "no_signer",
          "no_wallet",
          "stale"
@@ -9924,7 +9972,6 @@
         "type": "string",
         "enum": [
          "identity",
-         "mediator",
          "issuer",
          "verifier"
         ]
@@ -11081,6 +11128,13 @@
      "did": {
       "type": "string",
       "title": "Did"
+     },
+     "domains": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Domains"
      }
     },
     "type": "object",
@@ -11088,7 +11142,8 @@
      "slug",
      "name",
      "description",
-     "did"
+     "did",
+     "domains"
     ],
     "title": "OfferIssuer"
    },
@@ -11668,6 +11723,10 @@
       "type": "string",
       "title": "Deep Link"
      },
+     "scheme_link": {
+      "type": "string",
+      "title": "Scheme Link"
+     },
      "poll": {
       "type": "string",
       "title": "Poll"
@@ -11683,6 +11742,7 @@
      "id",
      "request_uri",
      "deep_link",
+     "scheme_link",
      "poll",
      "expires_at"
     ],
@@ -12817,6 +12877,17 @@
       ],
       "title": "Deep Link"
      },
+     "scheme_link": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Scheme Link"
+     },
      "answered_at": {
       "anyOf": [
        {
@@ -12848,6 +12919,7 @@
      "form",
      "expires_at",
      "deep_link",
+     "scheme_link",
      "answered_at",
      "result"
     ],

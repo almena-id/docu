@@ -11,6 +11,8 @@ sidebar: { order: 6 }
 - `GET /.well-known/did.jsonl` — The identity domain's did:webvh log: the root tenant's
 - `GET /.well-known/did.json` — The identity domain's DID document (did:web): the root tenant's
 - `GET /.well-known/did-configuration.json` — The origin's DID configuration (DIF Well Known DID Configuration)
+- `GET /.well-known/apple-app-site-association` — The apps that open the wallet's links on this domain (iOS universal links)
+- `GET /.well-known/assetlinks.json` — The apps that open the wallet's links on this domain (Android App Links)
 - `GET /.well-known/security.txt` — Where to report a vulnerability (RFC 9116)
 
 ## An identity's did:webvh log
@@ -62,6 +64,22 @@ sidebar: { order: 6 }
 | Status | Answer |
 | --- | --- |
 | 200 | any |
+
+## The apps that open the wallet's links on this domain (iOS universal links)
+
+`GET /.well-known/apple-app-site-association` · public
+
+| Status | Answer |
+| --- | --- |
+| 200 | object |
+
+## The apps that open the wallet's links on this domain (Android App Links)
+
+`GET /.well-known/assetlinks.json` · public
+
+| Status | Answer |
+| --- | --- |
+| 200 | array of object |
 
 ## Where to report a vulnerability (RFC 9116)
 
