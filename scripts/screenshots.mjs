@@ -7,7 +7,8 @@
 // Needs the demo API (scripts/demo_api.py, its sessions in .demo/) and the
 // portals served against it: REGISTRY_URL (default http://localhost:3107),
 // CATALOG_URL (http://localhost:3199), API_URL (http://127.0.0.1:8766), and
-// the status page, STATUS_URL (http://localhost:3200), with its own history.
+// the status page, STATUS_URL (http://localhost:3200), with a history
+// (`task status-demo`).
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { DatabaseSync } from "node:sqlite";
 import { chromium } from "playwright";
@@ -425,6 +426,8 @@ const shots = [
     name: "status-home",
     portal: STATUS,
     path: "/",
+    // `task status-demo` serves it with `next dev`, whose badge would show.
+    act: (page) => page.addStyleTag({ content: "nextjs-portal { display: none }" }),
     marks: [
       { sel: "main nav + *", at: "start" },
       { sel: "main nav", at: "start" },

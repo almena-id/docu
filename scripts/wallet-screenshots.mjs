@@ -305,7 +305,7 @@ const shots = [
       await page.locator(".screen__header .icon-button").nth(1).click();
       await page.locator(".card .row").first().waitFor();
     },
-    marks: [{ sel: "form.card", at: "start" }, { sel: ".card .row", nth: 0, at: "start" }, { sel: ".card .row", nth: 2, at: "start" }],
+    marks: [{ sel: ".card .row", nth: 0, at: "start" }, { sel: ".card .row", nth: 2, at: "start" }],
   },
   {
     name: "wallet-conversation",

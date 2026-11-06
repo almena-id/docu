@@ -73,6 +73,11 @@ tasks:
     cmds:
       - PYTHONPATH=../api uv run --project ../api python scripts/demo_api.py .demo
 
+  status-demo:
+    desc: Serve ../status on port 3200 with every probe answering and 90 made-up days, for its screenshot (scripts/status_demo.mjs; throwaway database in .demo/status/)
+    cmds:
+      - node scripts/status_demo.mjs
+
   screenshots:
     desc: Retake every screenshot, in every language and theme — registry and catalog served against `task demo` (REGISTRY_URL, CATALOG_URL), the wallet's interface from `pnpm dev` in ../wallet (WALLET_URL)
     deps: [install]
