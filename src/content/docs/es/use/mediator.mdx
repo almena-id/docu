@@ -15,8 +15,7 @@ allí hasta que tu wallet los recoge. Es también la dirección en la que te
 encuentran los demás.
 
 Un mediador no puede leer lo que guarda: cada mensaje se cierra para ti antes
-de salir, y solo tu wallet lo abre. No sabe qué se dice, ni en una llamada qué
-se oye.
+de salir, y solo tu wallet lo abre. No sabe qué se dice.
 
 <Flow
 	label="Cómo te llega un mensaje"
@@ -45,7 +44,7 @@ estado](/es/use/status/).
 
 <Screens>
 	<Screenshot phone name="wallet-mediator" alt="Conectar con un mediador: el campo con la dirección de Almena ya escrita y el botón Conectar." />
-	<Screenshot phone from={3} name="wallet-messaging" alt="Mensajería: conectado a mediator.almena.id, con Buscar mensajes y Desconectar." />
+	<Screenshot phone from={3} name="wallet-messaging" alt="Mensajería: conectado a mediator.almena.id, un aviso del mediador anterior que se sigue revisando, y Buscar mensajes, Cambiar de mediador y Desconectar." />
 </Screens>
 
 <Steps>
@@ -60,9 +59,20 @@ estado](/es/use/status/).
 
 </Steps>
 
-Una vez conectado, la sección dice cuál usas <Mark n={3} /> y cuántos
-mensajes esperan. **Buscar mensajes** <Mark n={4} /> los recoge ahora;
-**Desconectar** <Mark n={5} /> lo deja.
+Una vez conectado, la sección dice cuál usas <Mark n={3} />, cuántas
+direcciones usas en él de las que permite —cada contacto ocupa una, tu buzón y
+tu invitación una cada uno, y cada mediador pone su propio límite— y cuántos
+mensajes esperan. Cerca del límite el wallet te avisa; cuando se llena, no se
+puede añadir ningún contacto nuevo hasta que cambies a un mediador con más
+espacio. **Buscar mensajes** <Mark n={5} /> los recoge ahora.
+**Cambiar de mediador** <Mark n={6} /> conecta otro en su lugar, y
+**Desconectar** <Mark n={7} /> lo deja: el wallet pregunta antes y te dice
+cuántos contactos dejarían de poder escribirte.
+
+Usas un mediador cada vez. Cuando lo cambias, tus contactos se mudan contigo:
+el wallet le dice a cada uno dónde escribirte a partir de ahora, y sigue
+revisando el mediador anterior durante 30 días <Mark n={4} />, para que no se
+pierda nada de lo que enviaron antes de enterarse.
 
 Un mediador también puede enseñarte un código (su propia página tiene uno,
 como [mediator.almena.id](https://mediator.almena.id)): escanéalo con
@@ -71,15 +81,22 @@ como [mediator.almena.id](https://mediator.almena.id)): escanéalo con
 <Screenshot phone name="wallet-mediator-invitation" alt="Conectar a un mediador: el mediador ofrecido, el que usas ahora y el botón Aceptar." />
 
 El wallet te dice qué mediador es <Mark n={1} /> y cuál usas ahora. Pulsa
-**Aceptar** <Mark n={2} /> para conectarte.
+**Aceptar** <Mark n={2} /> para conectarte: si tenías otro, tus contactos se
+mudan a este.
 
-<Aside type="caution" title="Elige una vez">
-Tus contactos te encuentran por el mediador que tenías cuando os conocisteis.
-Si lo cambias, sus mensajes dejan de llegar. Por eso, mientras tengas
-contactos a través de tu mediador actual, el wallet no deja que un código o
-un enlace lo cambie. Si un mediador dice que está lleno, ahora no admite
-wallets nuevos: prueba más tarde o elige otro.
+<Aside type="note" title="Cuando un mediador está lleno">
+Si un mediador dice que está lleno, ahora no admite wallets nuevos: prueba
+más tarde o elige otro.
 </Aside>
+
+## Mediadores privados
+
+Un mediador es público o privado. Cualquiera puede usar uno público, como el
+de Almena. Uno privado —el de una familia, el de una empresa— guarda solo los
+buzones de los wallets que invitan sus administradores. Ellos te dan una
+invitación, un código para escanear o un enlace: ábrela con el wallet y
+acepta. Sin ella, el wallet te dice **Este mediador es privado** y te pide una
+invitación.
 
 ## Para tu organización
 

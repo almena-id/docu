@@ -69,10 +69,11 @@
   const lang = navigator.language.startsWith("es") ? "es" : "en";
   // The people this wallet talks to, and what was said with one of them.
   const minutes = 60;
+  const almena = "did:web:mediator.almena.id";
   const contacts = [
-    { id: "c-ana", name: "Ana Torres", alias: null, theirName: "Ana Torres", fingerprint: "7F3A 91C2 0B4E", pending: false, since: now - 30 * day, unread: 2, last: { content: lang === "es" ? "¿Nos vemos a las diez?" : "See you at ten?", at: now - 4 * minutes, mine: false }, cleared: false },
-    { id: "c-marco", name: "Marco Rossi", alias: null, theirName: "Marco Rossi", fingerprint: "C21D 5E08 A9F7", pending: false, since: now - 12 * day, unread: 0, last: { content: lang === "es" ? "Gracias, ¡recibido!" : "Thanks, got it!", at: now - day, mine: true }, cleared: false },
-    { id: "c-new", name: "4B9E 22D1 07AC", alias: null, theirName: null, fingerprint: "4B9E 22D1 07AC", pending: true, since: now - 2 * minutes, unread: 0, last: null, cleared: false },
+    { id: "c-ana", name: "Ana Torres", alias: null, theirName: "Ana Torres", fingerprint: "7F3A 91C2 0B4E", pending: false, since: now - 30 * day, unread: 2, last: { content: lang === "es" ? "¿Nos vemos a las diez?" : "See you at ten?", at: now - 4 * minutes, mine: false }, cleared: false, mediator: almena },
+    { id: "c-marco", name: "Marco Rossi", alias: null, theirName: "Marco Rossi", fingerprint: "C21D 5E08 A9F7", pending: false, since: now - 12 * day, unread: 0, last: { content: lang === "es" ? "Gracias, ¡recibido!" : "Thanks, got it!", at: now - day, mine: true }, cleared: false, mediator: almena },
+    { id: "c-new", name: "4B9E 22D1 07AC", alias: null, theirName: null, fingerprint: "4B9E 22D1 07AC", pending: true, since: now - 2 * minutes, unread: 0, last: null, cleared: false, mediator: almena },
   ];
   const said = {
     en: [
@@ -112,10 +113,26 @@
     messages_sync: () => ({ changed: 0, contacts }),
     conversation_read: ({ id }) => ({ contact: contacts.find((c) => c.id === id) ?? contacts[0], entries: id === "c-ana" ? said : [] }),
     invitation_show: () => ({ url: "almena://invite?_oob=eyJ0eXBlIjoiaHR0cHM6Ly9kaWRjb21tLm9yZy9vdXQtb2YtYmFuZC8yLjAvaW52aXRhdGlvbiJ9" }),
-    mediator_status: () =>
-      mediated
-        ? { mediator: "did:web:mediator.almena.id", inbox: "did:peer:2.Ez6LSdemo" }
-        : { mediator: null, inbox: null },
+    // Almena's mediator; with `mediators: "changing"`, the one it replaced
+    // is still collected for a few weeks.
+    mediator_status: () => {
+      if (!mediated) return { mediator: null, inbox: null, mediators: [] };
+      const entry = (mediator, extra) => ({
+        mediator,
+        inbox: "did:peer:2.Ez6LSdemo",
+        default: false,
+        leaving: null,
+        contacts: contacts.filter((c) => c.mediator === mediator).length,
+        dids: 2 + contacts.filter((c) => c.mediator === mediator).length,
+        maxDids: 1000,
+        ...extra,
+      });
+      const mediators =
+        scene.mediators === "changing"
+          ? [entry(almena, { default: true }), entry("did:web:mediator.old-provider.example", { leaving: now + 21 * day })]
+          : [entry(almena, { default: true })];
+      return { mediator: almena, inbox: "did:peer:2.Ez6LSdemo", mediators };
+    },
     mediator_check: () => ({ messageCount: 0 }),
     profile_read: () => ({ name: "Lucía García" }),
     profile_photo_read: () => null,

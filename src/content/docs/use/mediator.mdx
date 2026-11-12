@@ -14,8 +14,7 @@ messages for you — from your contacts, from an organisation — wait there
 until your wallet picks them up. It is also the address others reach you at.
 
 A mediator cannot read what it keeps: every message is locked for you before
-it leaves, and only your wallet opens it. It does not know what is said, nor
-in a call what is heard.
+it leaves, and only your wallet opens it. It does not know what is said.
 
 <Flow
 	label="How a message reaches you"
@@ -44,7 +43,7 @@ page](/use/status/).
 
 <Screens>
 	<Screenshot phone name="wallet-mediator" alt="Connect to a mediator: the box with Almena's address already in it, and the Connect button." />
-	<Screenshot phone from={3} name="wallet-messaging" alt="Messaging: connected to mediator.almena.id, with Check for messages and Disconnect." />
+	<Screenshot phone from={3} name="wallet-messaging" alt="Messaging: connected to mediator.almena.id, a note on the previous mediator still checked, and Check for messages, Change mediator and Disconnect." />
 </Screens>
 
 <Steps>
@@ -59,9 +58,20 @@ page](/use/status/).
 
 </Steps>
 
-Once connected, the section shows which one you use <Mark n={3} /> and how
-many messages are waiting. **Check for messages** <Mark n={4} /> picks them
-up now; **Disconnect** <Mark n={5} /> leaves it.
+Once connected, the section shows which one you use <Mark n={3} />, how many
+addresses you use there out of the ones it allows — each contact takes one,
+your mailbox and your invitation one each, and each mediator sets its own
+limit — and how many messages are waiting. Near the limit the wallet warns
+you; when it is full, a new contact cannot be added until you change to a
+mediator with more room. **Check for messages** <Mark n={5} /> picks them
+up now. **Change mediator** <Mark n={6} /> connects another one instead, and
+**Disconnect** <Mark n={7} /> leaves it: the wallet asks first, and says how
+many contacts would stop reaching you.
+
+You use one mediator at a time. When you change it, your contacts move with
+you: the wallet tells each of them where to write from now on, and keeps
+checking the old mediator for 30 days <Mark n={4} />, so nothing they sent
+before they knew is lost.
 
 A mediator can also show you a code (its own page has one, as on
 [mediator.almena.id](https://mediator.almena.id)): scan it with **Scan QR**.
@@ -69,15 +79,21 @@ A mediator can also show you a code (its own page has one, as on
 <Screenshot phone name="wallet-mediator-invitation" alt="Connect to a mediator: the mediator offered, the one used now, and the Accept button." />
 
 The wallet shows which mediator it is <Mark n={1} /> and the one you use now.
-Press **Accept** <Mark n={2} /> to connect.
+Press **Accept** <Mark n={2} /> to connect: if you had another one, your
+contacts move to this one.
 
-<Aside type="caution" title="Choose once">
-Your contacts reach you through the mediator you had when you met them. If
-you change it, their messages stop arriving. That is why, while you have
-contacts through your current mediator, the wallet does not let a code or a
-link change it. If a mediator says it is full, it is not taking new wallets
-for now: try later, or choose another.
+<Aside type="note" title="When a mediator is full">
+If a mediator says it is full, it is not taking new wallets for now: try
+later, or choose another.
 </Aside>
+
+## Private mediators
+
+A mediator is public or private. Anyone can use a public one, like Almena's.
+A private one — a family's, a company's — keeps only the mailboxes of the
+wallets its administrators invite. They give you an invitation, a code to scan
+or a link: open it with the wallet and accept. Without one, the wallet says
+**This mediator is private** and asks you to get an invitation.
 
 ## For your organisation
 

@@ -1,6 +1,6 @@
 ---
-title: Mensajes y llamadas
-description: Añade un contacto con una invitación, escríbele y llámale por voz o vídeo.
+title: Mensajes
+description: Añade un contacto con una invitación y escríbele.
 ---
 
 import Flow from '@docs/Flow.astro';
@@ -8,8 +8,8 @@ import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import { Aside, Steps } from '@astrojs/starlight/components';
 
-El wallet es también una mensajería privada: escribes y llamas a las personas
-que eliges, y solo vosotros dos podéis leer u oír lo que se dice. Nadie recibe
+El wallet es también una mensajería privada: escribes a las personas
+que eliges, y solo vosotros dos podéis leer lo que se dice. Nadie recibe
 tu teléfono ni tu correo: un contacto te conoce por una dirección hecha solo
 para vosotros dos.
 
@@ -19,7 +19,7 @@ para vosotros dos.
 		{ icon: 'server', title: 'Ten un mediador', text: 'Donde esperan tus mensajes. Se ofrece el de Almena.' },
 		{ icon: 'qr', title: 'Comparte tu invitación', text: 'Un código que escanean, o un enlace que mandas.' },
 		{ icon: 'check', title: 'La aceptan', text: 'Y aparecéis en los contactos del otro.' },
-		{ icon: 'message', title: 'Escribe y llama', text: 'Mensajes, voz y vídeo, cifrados de punta a punta.' },
+		{ icon: 'message', title: 'Escribe', text: 'Mensajes cifrados de punta a punta.' },
 	]}
 />
 
@@ -79,12 +79,12 @@ uno para escribirle.
 
 ## Escribir
 
-<Screenshot phone name="wallet-conversation" alt="Una conversación con Ana Torres: su nombre arriba con los botones de llamada, los mensajes y el campo para escribir." />
+<Screenshot phone name="wallet-conversation" alt="Una conversación con Ana Torres: su nombre arriba, los mensajes y el campo para escribir." />
 
 <Steps>
 
-1. Escribe en el campo **Mensaje** <Mark n={4} /> y pulsa **Enviar**. Tus
-   mensajes <Mark n={3} /> van a la derecha, en tu color.
+1. Escribe en el campo **Mensaje** <Mark n={3} /> y pulsa **Enviar**. Tus
+   mensajes <Mark n={2} /> van a la derecha, en tu color.
 
 2. Un mensaje que no ha podido salir dice **No enviado. Reintentar**: púlsalo
    para volver a enviarlo.
@@ -92,24 +92,6 @@ uno para escribirle.
 3. Pulsa el nombre de arriba <Mark n={1} /> para ver el contacto.
 
 </Steps>
-
-## Llamar
-
-En una conversación, el teléfono <Mark n={2} /> hace una llamada de voz y la
-cámara de al lado una videollamada. El wallet pide el micrófono y la cámara la
-primera vez.
-
-<Screenshot phone name="wallet-call" alt="Una videollamada entrante de Ana Torres, con los botones Rechazar y Aceptar." />
-
-Cuando alguien te llama, el wallet muestra quién <Mark n={1} /> y si es una
-llamada de voz o una videollamada. Pulsa **Rechazar** <Mark n={2} /> o
-**Aceptar** <Mark n={3} />. Durante la llamada puedes silenciar el micrófono,
-apagar la cámara y **Colgar**. Si el wallet está bloqueado, desbloquéalo para
-responder.
-
-La llamada pasa por el relé de tu mediador, así que la otra persona nunca
-sabe dónde está tu dispositivo. Si tu mediador no retransmite llamadas, el
-wallet lo dice y no se puede llamar.
 
 ## Un contacto
 

@@ -240,9 +240,15 @@ const shots = [
   },
   {
     name: "wallet-messaging",
-    scene: { vault: "locked" },
+    scene: { vault: "locked", mediators: "changing" },
     act: profile(2),
-    marks: [{ sel: ".detail-list", at: "start" }, { sel: ".card .button", nth: 0 }, { sel: ".card .button", nth: 1 }],
+    marks: [
+      { sel: ".detail-list", at: "start" },
+      { sel: ".card .card__note", at: "start" },
+      { sel: ".card .button", nth: 0 },
+      { sel: ".card .button", nth: 1 },
+      { sel: ".card .button", nth: 2 },
+    ],
   },
   {
     name: "wallet-mediator",
@@ -313,7 +319,6 @@ const shots = [
     act: conversation,
     marks: [
       { sel: ".conversation__who" },
-      { sel: ".screen__header .icon-button", nth: 0 },
       { sel: ".bubble--mine", at: "start" },
       { sel: ".composer", at: "start" },
     ],
@@ -324,25 +329,9 @@ const shots = [
     act: async (page) => {
       await conversation(page);
       await page.locator(".conversation__who").click();
-      await page.locator(".detail-list").waitFor();
+      await page.locator(".detail-list").first().waitFor();
     },
     marks: [{ sel: ".detail-list", at: "start" }, { sel: ".field__input", at: "start" }, { sel: ".button--primary" }],
-  },
-  {
-    name: "wallet-call",
-    scene: { vault: "locked" },
-    act: async (page) => {
-      await unlock(page);
-      await page.evaluate(() =>
-        window.__MOCK_EMIT__("call-signal", {
-          contact: "c-ana",
-          call: "call-demo",
-          signal: { kind: "offer", media: "video", sdp: "v=0" },
-        }),
-      );
-      await page.locator(".call__button--accept").waitFor();
-    },
-    marks: [{ sel: ".call__name", at: "start" }, { sel: ".call__button--end" }, { sel: ".call__button--accept" }],
   },
 ];
 

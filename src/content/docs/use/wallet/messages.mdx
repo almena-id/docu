@@ -1,6 +1,6 @@
 ---
-title: Messages and calls
-description: Add a contact with an invitation, write to them, and call them with voice or video.
+title: Messages
+description: Add a contact with an invitation and write to them.
 ---
 
 import Flow from '@docs/Flow.astro';
@@ -8,8 +8,8 @@ import Mark from '@docs/Mark.astro';
 import Screenshot from '@docs/Screenshot.astro';
 import { Aside, Steps } from '@astrojs/starlight/components';
 
-The wallet is also a private messenger: you write to and call the people you
-choose, and only the two of you can read or hear what is said. Nobody gets
+The wallet is also a private messenger: you write to the people you
+choose, and only the two of you can read what is said. Nobody gets
 your phone number or your email: a contact knows you by an address made for
 the two of you alone.
 
@@ -19,7 +19,7 @@ the two of you alone.
 		{ icon: 'server', title: 'Have a mediator', text: 'Where your messages wait. Almena’s is offered.' },
 		{ icon: 'qr', title: 'Share your invitation', text: 'A code they scan, or a link you send.' },
 		{ icon: 'check', title: 'They accept it', text: 'And you appear in each other’s contacts.' },
-		{ icon: 'message', title: 'Write and call', text: 'Messages, voice and video, end to end.' },
+		{ icon: 'message', title: 'Write', text: 'Messages, end to end.' },
 	]}
 />
 
@@ -78,12 +78,12 @@ Press one to write.
 
 ## Write
 
-<Screenshot phone name="wallet-conversation" alt="A conversation with Ana Torres: her name at the top with the call buttons, the messages, and the box to write." />
+<Screenshot phone name="wallet-conversation" alt="A conversation with Ana Torres: her name at the top, the messages, and the box to write." />
 
 <Steps>
 
-1. Type in the **Message** box <Mark n={4} /> and press **Send**. Your
-   messages <Mark n={3} /> are on the right, in your colour.
+1. Type in the **Message** box <Mark n={3} /> and press **Send**. Your
+   messages <Mark n={2} /> are on the right, in your colour.
 
 2. A message that could not go says **Not sent. Try again**: press it to
    send it again.
@@ -91,23 +91,6 @@ Press one to write.
 3. Press the name at the top <Mark n={1} /> to see the contact.
 
 </Steps>
-
-## Call
-
-In a conversation, the telephone <Mark n={2} /> makes a voice call and the
-camera beside it a video call. The wallet asks for the microphone and the
-camera the first time.
-
-<Screenshot phone name="wallet-call" alt="An incoming video call from Ana Torres, with the Decline and Accept buttons." />
-
-When someone calls you, the wallet shows who <Mark n={1} /> and whether it is
-a voice or a video call. Press **Decline** <Mark n={2} /> or **Accept**
-<Mark n={3} />. During the call you can mute the microphone, turn the camera
-off and **Hang up**. If the wallet is locked, unlock it to answer.
-
-The call goes through your mediator's relay, so the other person never
-learns where your device is. If your mediator does not relay calls, the
-wallet says **Your mediator does not relay calls, so none can be made.**
 
 ## A contact
 
