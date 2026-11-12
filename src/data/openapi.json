@@ -4340,71 +4340,6 @@
     }
    }
   },
-  "/api/v1/applications/{application_id}/collect": {
-   "post": {
-    "tags": [
-     "applications"
-    ],
-    "summary": "The holder's wallet asks to receive its issued credential",
-    "description": "The wallet proves it is the holder and gets a `receive` request,\nanswered as the catalog's QR 3 is.",
-    "operationId": "collect_api_v1_applications__application_id__collect_post",
-    "parameters": [
-     {
-      "name": "application_id",
-      "in": "path",
-      "required": true,
-      "schema": {
-       "type": "string",
-       "format": "uuid",
-       "title": "Application Id"
-      }
-     }
-    ],
-    "requestBody": {
-     "required": true,
-     "content": {
-      "application/json": {
-       "schema": {
-        "$ref": "#/components/schemas/CollectIn"
-       }
-      }
-     }
-    },
-    "responses": {
-     "200": {
-      "description": "Successful Response",
-      "content": {
-       "application/json": {
-        "schema": {
-         "type": "object",
-         "additionalProperties": true,
-         "title": "Response Collect Api V1 Applications  Application Id  Collect Post"
-        }
-       }
-      }
-     },
-     "400": {
-      "description": "`invalid_token`, `invalid_did`"
-     },
-     "404": {
-      "description": "`application_not_found`"
-     },
-     "409": {
-      "description": "`not_issued`, `already_received`"
-     },
-     "422": {
-      "description": "Validation Error",
-      "content": {
-       "application/json": {
-        "schema": {
-         "$ref": "#/components/schemas/HTTPValidationError"
-        }
-       }
-      }
-     }
-    }
-   }
-  },
   "/api/v1/applications/{application_id}/request": {
    "get": {
     "tags": [
@@ -8541,20 +8476,6 @@
      "email"
     ],
     "title": "CodeRequest"
-   },
-   "CollectIn": {
-    "properties": {
-     "id_token": {
-      "type": "string",
-      "maxLength": 8192,
-      "title": "Id Token"
-     }
-    },
-    "type": "object",
-    "required": [
-     "id_token"
-    ],
-    "title": "CollectIn"
    },
    "CredentialRequest": {
     "properties": {
@@ -13321,7 +13242,6 @@
   "body_too_large": "The request's body is larger than this endpoint takes (a wallet's answer, or anything past the API's limit): `max_bytes` says how large it may be.",
   "invalid_token": "The wallet's token is not a valid JWS, or not for this request.",
   "invalid_did": "The DID the wallet answers with cannot be read.",
-  "invalid_didcomm": "The `didcomm` DID the wallet pairs with is not a `did:peer:2` it can be written to.",
   "invalid_signature": "The signature does not hold over what was sent.",
   "invalid_proof": "The proof over the identity's log entry does not hold.",
   "not_canonical": "The log entry is not written as its canonical JSON.",

@@ -13,7 +13,6 @@ sidebar: { order: 3 }
 - `DELETE /api/v1/applications/{application_id}/files/{key}` — Remove an uploaded file
 - `POST /api/v1/applications/{application_id}/wallet` — Ask the holder's wallet: pair (QR 1), present credentials, submit (QR 2) or receive the credential (QR 3)
 - `GET /api/v1/applications/{application_id}/wallet` — Whether the wallet has answered the request in course (the catalog polls)
-- `POST /api/v1/applications/{application_id}/collect` — The holder's wallet asks to receive its issued credential
 - `GET /api/v1/applications/{application_id}/request` — The wallet request in course, as the wallet reads it
 - `POST /api/v1/applications/{application_id}/request/response` — The wallet's answer: an `id_token`, a `vp_token` or a `signature`; for `receive`, an `id_token` answered with the credential
 - `GET /api/v1/catalog/issuers/{issuer_slug}/offers/{type_id}` — Public: an issuer's offer of a credential type, with its form
@@ -154,31 +153,6 @@ sidebar: { order: 3 }
 | Status | Answer |
 | --- | --- |
 | 200 | object |
-| 422 | [HTTPValidationError](/reference/api/schemas/#httpvalidationerror) — Validation Error |
-
-## The holder's wallet asks to receive its issued credential
-
-`POST /api/v1/applications/{application_id}/collect` · public
-
-The wallet proves it is the holder and gets a `receive` request,
-answered as the catalog's QR 3 is.
-
-| Parameter | In | Type | Notes |
-| --- | --- | --- | --- |
-| `application_id` | path | string (uuid) |  |
-
-**Body** (`application/json`): [CollectIn](/reference/api/schemas/#collectin)
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `id_token` | string | max length 8192 |
-
-| Status | Answer |
-| --- | --- |
-| 200 | object |
-| 400 | [`invalid_token`](/reference/errors/#invalid_token), [`invalid_did`](/reference/errors/#invalid_did) |
-| 404 | [`application_not_found`](/reference/errors/#application_not_found) |
-| 409 | [`not_issued`](/reference/errors/#not_issued), [`already_received`](/reference/errors/#already_received) |
 | 422 | [HTTPValidationError](/reference/api/schemas/#httpvalidationerror) — Validation Error |
 
 ## The wallet request in course, as the wallet reads it

@@ -147,13 +147,6 @@ What changes; the kind and the key never do. An icon left out is kept.
 | `email` | string (email) |  |
 | `locale` *(optional)* | `en`, `es` | default `"en"` |
 
-## CollectIn
-
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `id_token` | string | max length 8192 |
-
 ## CredentialRequest
 
 
