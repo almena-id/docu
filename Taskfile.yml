@@ -59,12 +59,12 @@ tasks:
       - pnpm astro sync
 
   refs:
-    desc: Regenerate what is generated — the API reference from a ../api checkout, the CLI's from ../almena (built here), the protocols from ../mediator and ../wallet
+    desc: Regenerate what is generated — the API reference from a ../api checkout, the CLI's from ../cli (built here), the protocols from ../mediator and ../wallet
     deps: [install]
     cmds:
       - uv run --project ../api python scripts/openapi.py
       - node scripts/api-reference.mjs
-      - cargo build --manifest-path ../almena/Cargo.toml --quiet
+      - cargo build --manifest-path ../cli/Cargo.toml --quiet
       - node scripts/cli-reference.mjs
       - node scripts/protocols.mjs
 
